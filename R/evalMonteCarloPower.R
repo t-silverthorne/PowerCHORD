@@ -1,18 +1,21 @@
-#'Use Monte Carlo method to estimate power 
-#' 
+#'Use Monte Carlo method to estimate power
+#'
 #' @description
 #' Performs harmonic regression on a simulated dataset of independent samples
 #' and returns the portion of samples that have statistically significant p-values.
 #' Useful for comparison with the exact expression for statistical power,
-#' see [eval_exact_power]. Relies on [rowCosinor].
-#' 
+#' see [evalExactPower()]. Relies on [rowCosinor()].
+#'
 #' @param tvec vector of measurement times
-#' @param param$Amp amplitude of signal 
+#' @param param$Amp amplitude of signal
 #' @param param$freq frequency fo signal
 #' @param param$acro phase of signal in radians
 #' @param Nmc number of Monte Carlo samples
-#' @param alpha type I error, default value \code{alpha=.05} 
-#' 
+#' @param alpha type I error, default value \code{alpha=.05}
+#' @param method set to \code{method='Ftest'} for F-test or \code{method='perm'} for
+#' permutation based hypothesis test
+#' @param Nperm number of permutations to use for permutation based test
+#'
 #' @return Monte Carlo estimate of power
 #' @author Turner Silverthorne
 #' @export
@@ -33,7 +36,7 @@ evalMonteCarloPower<-function(tvec,param,Nmc,alpha=.05,method='Ftest',Nperm=1e2)
         Pdat[ii,] = Ydat[ii,sample(1:length(tvec))]
       }
       perm_mat[,perm]=rowCosinor(Pdat,tvec,1/freq) %>% {.$pvalue}
-    } 
+    }
     pmat_true = replicate(Nperm,pvec_true)
     perm_mat < pmat_true
     R = (perm_mat<pmat_true) %>% rowSums()

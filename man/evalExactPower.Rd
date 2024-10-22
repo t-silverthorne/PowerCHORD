@@ -2,14 +2,20 @@
 % Please edit documentation in R/evalExactPower.R
 \name{evalExactPower}
 \alias{evalExactPower}
-\title{Evaluate exact power of harmonic regression hypothesis test.}
+\title{Evaluate exact power of cosinor model.}
 \usage{
 evalExactPower(t, param, alpha = 0.05, method = "schur", lambda_in = NULL)
 }
 \arguments{
-\item{t}{measurement schedule}
+\item{t}{vector of measurement times assumed to lie in interval [0,1]}
 
 \item{alpha}{type I error, by default \code{alpha=.05}}
+
+\item{method}{method for computing non-centrality parameter, by default
+\code{method='schur'} uses the Schur complement formula.}
+
+\item{lambda_in}{allows user to specify the noncentrality parameter instead of
+calculating it from parameters of the signal.}
 
 \item{param$Amp}{amplitude of signal}
 
@@ -18,13 +24,21 @@ evalExactPower(t, param, alpha = 0.05, method = "schur", lambda_in = NULL)
 \item{param$acro}{phase of signal in radians}
 }
 \value{
-statistical power
+Statistical power
 }
 \description{
-Returns exact power of harmonic regression hypothesis test.
+Returns exact power of one-frequency harmonic regression hypothesis test
+using the cosinor model.
 }
 \note{
 Assumes the noise has mean zero and unit standard deviation.
+
+The default value of \code{method='schur'} should be sufficient for the vast
+majority of use cases.   Alternative methods are as follows:
+\code{'full'} which solves a linear system to obtain the noncentrality parameter,
+\code{'ncp'} which lets user specify the noncentrality parameter, \code{'old'} which uses
+the power formula from \href{https://onlinelibrary.wiley.com/doi/full/10.1002/sim.9803}{Zong et al 2023},
+which is only applicable for equispaced measurement times.
 }
 \author{
 Turner Silverthorne

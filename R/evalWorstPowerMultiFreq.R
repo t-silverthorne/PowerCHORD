@@ -1,4 +1,21 @@
-evalWorstPowerMultiFreq=function(mt,param,alpha=.05,method='eig',returnType='min'){
+#' Evaluate worst-case power across multiple frequencies
+#'
+#' @description
+#' For a given amplitude, return the lowest value of the power across all
+#' acrophases and range of frequencies.
+#'
+#' @param t vector of measurement times assumed to lie in interval [0,1]
+#' @param param$Amp amplitude of signal
+#' @param param$fmin minimum frequency under consideration
+#' @param param$fmax maximum frequency under consideration
+#' @param alpha type I error rate, by default \code{alpha=0.05}
+#' @param returnType either \code{'min'} which returns the worst-case power across frequency and acrophase
+#' or \code{'all'} which returns the worst case power of each frequency
+#'
+#' @return minimum power across acrophase and frequency rangej
+#' @author Turner Silverthorne
+#' @export
+evalWorstPowerMultiFreq=function(mt,param,alpha=.05,returnType='min'){
   Amp   = param[['Amp']]
   fmin  = param[['fmin']]
   fmax  = param[['fmax']]
@@ -8,7 +25,7 @@ evalWorstPowerMultiFreq=function(mt,param,alpha=.05,method='eig',returnType='min
 
   worst_pwrs=freqs %>% sapply(function(freq){
     ploc=list(Amp=Amp,freq=freq)
-    evalWorstPower(mt,ploc,alpha,method)
+    evalWorstPower(mt,ploc,alpha,'eig')
   })
 
   if (returnType=='min'){

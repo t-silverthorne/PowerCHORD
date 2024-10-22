@@ -20,6 +20,11 @@ evalMonteCarloPower(
 
 \item{alpha}{type I error, default value \code{alpha=.05}}
 
+\item{method}{set to \code{method='Ftest'} for F-test or \code{method='perm'} for
+permutation based hypothesis test}
+
+\item{Nperm}{number of permutations to use for permutation based test}
+
 \item{param$Amp}{amplitude of signal}
 
 \item{param$freq}{frequency fo signal}
@@ -33,7 +38,7 @@ Monte Carlo estimate of power
 Performs harmonic regression on a simulated dataset of independent samples
 and returns the portion of samples that have statistically significant p-values.
 Useful for comparison with the exact expression for statistical power,
-see [eval_exact_power]. Relies on [rowCosinor].
+see [evalExactPower()]. Relies on [rowCosinor()].
 }
 \author{
 Turner Silverthorne

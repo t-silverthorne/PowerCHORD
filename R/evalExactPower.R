@@ -1,19 +1,31 @@
-#' Evaluate exact power of harmonic regression hypothesis test.
-#' 
+#' Evaluate exact power of cosinor model.
+#'
 #' @description
-#' Returns exact power of harmonic regression hypothesis test. 
-#' 
-#' 
-#' @param t measurement schedule
-#' @param param$Amp amplitude of signal 
+#' Returns exact power of one-frequency harmonic regression hypothesis test
+#' using the cosinor model.
+#'
+#'
+#' @param t vector of measurement times assumed to lie in interval [0,1]
+#' @param param$Amp amplitude of signal
 #' @param param$freq frequency of signal
 #' @param param$acro phase of signal in radians
 #' @param alpha type I error, by default \code{alpha=.05}
-#' 
+#' @param method method for computing non-centrality parameter, by default
+#' \code{method='schur'} uses the Schur complement formula.
+#' @param lambda_in allows user to specify the noncentrality parameter instead of
+#' calculating it from parameters of the signal.
+#'
 #' @note
 #' Assumes the noise has mean zero and unit standard deviation.
-#' 
-#' @return statistical power 
+#'
+#' The default value of \code{method='schur'} should be sufficient for the vast
+#' majority of use cases.   Alternative methods are as follows:
+#' \code{'full'} which solves a linear system to obtain the noncentrality parameter,
+#' \code{'ncp'} which lets user specify the noncentrality parameter, \code{'old'} which uses
+#' the power formula from \href{https://onlinelibrary.wiley.com/doi/full/10.1002/sim.9803}{Zong et al 2023},
+#' which is only applicable for equispaced measurement times.
+#'
+#' @return Statistical power
 #' @author Turner Silverthorne
 #' @export
 evalExactPower <- function(t,param,alpha=.05,method='schur',lambda_in=NULL){
@@ -22,7 +34,10 @@ evalExactPower <- function(t,param,alpha=.05,method='schur',lambda_in=NULL){
   freq   = param[['freq']]
   acro   = param[['acro']]
   N      = length(t)
-   
+
+  if (!is.null(lambda_in)&method!='ncp'){
+    stop("Change method to ncp if you want to manually specify noncentrality parameter")
+  }
   if (method=='full'){
     A      = matrix(c(0,0,1,0,0,1),nrow=3,byrow=T)
     X      = matrix(c(rep(1,N),cos(2*pi*freq*t),sin(2*pi*freq*t)),ncol=3)
@@ -45,7 +60,7 @@ evalExactPower <- function(t,param,alpha=.05,method='schur',lambda_in=NULL){
   }else{
     stop('unknown method')
   }
-  
+
   f0     = qf(p=1-alpha,df1=2,df2=N-3)
   return(1 - pf(q=f0,df1=2,df2=N-3,ncp=lambda))
 }
