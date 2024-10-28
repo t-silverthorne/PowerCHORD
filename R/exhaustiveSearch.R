@@ -1,6 +1,6 @@
 exhaustiveSearch = function(N,Nfine=48,wlen,wdensity=1,
                             freq=1,db_fname=NULL,returnType='optimal'){
-
+  system('rm output_*.txt')
   # call C function to generate database
   if (is.null(db_fname)){
     command = paste("c_src/necklaces_cmd 2", Nfine, "2", N, ">",

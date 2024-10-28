@@ -73,9 +73,3 @@ while (low_power){
 }
 print(paste0('Design with ', N,' measurements achieves ', round(wcp,4) , ' worst-case power.'))
 ```
-
-# Power optimization
-Searching 
-```{r}
-
-```

@@ -1,0 +1,89 @@
+
+# Overview
+
+PowerCHORD includes three optimization methods: 
+* differential evolution
+* exhaustive search
+* semidefinite programming
+In this notebook we denomstrate how to perform an exhaustive search using PowerCHORD in R.
+
+**Note:** We are using a very coarse grid in this notebook `(Nfine=24)` to speed up computations. For research questions, you would likely want to use a finer grid `(Nfine=48)`.
+```{r}
+require(devtools)
+require(data.table)
+devtools::load_all()
+```
+
+# Basic usage
+
+## Example of a search
+
+The `exhaustiveSearch` function uses an underlying `C` library to generate a database of all possible designs, and then filters for those which satisfy the window constraint using `awk`.
+
+
+Schedule 8 measurements in circadian such that:
+* measurements are confined to half hour grid
+* there is a 12 hour window during which no measurements are scheduled
+
+```{r}
+Nfine    = 24 # corresponds to 1hr intervals in circadian study
+N        = 8  # number of measurements to collect
+
+# no measurements for half the study 
+wlen     = 12  # length of window
+wdensity = 0   # perscribed number of measurements during window
+
+# takes a few minutes to run
+bvec = exhaustiveSearch(N=N,
+                 Nfine=Nfine,wlen=wlen,wdensity=wdensity,
+                 returnType='optimal')
+
+# convert to actual measurement times
+tau = c(1:Nfine)/Nfine - 1/Nfine # temporal grid
+meas_times = tau[bvec>0]
+evalWorstPower(meas_times,param=list(Amp=2,freq=1)) 
+
+```
+
+
+## Reusing database 
+Once you have generated the solution database, you can reuse it for subsequent computations.
+* here we illustrate how much worst-case power improves when we cut the window in half 
+```{r}
+db_fname = 'temp/cNecks_24_8.txt'
+
+wlen     = 6 # half the original window length
+bvec = exhaustiveSearch(N=N,
+                 Nfine=Nfine,wlen=wlen,wdensity=wdensity,
+                 returnType='optimal',db_fname=db_fname) meas_times = tau[bvec>0] evalWorstPower(meas_times,param=list(Amp=2,freq=1))
+```
+
+## Return all constrained designs
+Modify output so that all constrained designs are returned (rather than returning only the constrained-optimal design)
+```{r}
+Nfine    = 24 # corresponds to hour intervals in circadian study
+N        = 8  # number of measurements to collect
+
+# no measurements for half the study 
+wlen     = 12  # length of window
+wdensity = 0   # perscribed number of measurements during window
+df = exhaustiveSearch(N=N,
+                 Nfine=Nfine,wlen=wlen,wdensity=wdensity,
+                 returnType='all',db_fname=db_fname)
+nrow(df) # number of constrained solutions
+```
+## Remove window constraint
+If you want to see the entire database, you can turn off the window cosntraint as follows
+```{r}
+
+Nfine    = 24 # corresponds to hour intervals in circadian study
+N        = 8  # number of measurements to collect
+
+# no measurements for half the study 
+wlen     = 1  # length of window
+wdensity = 1   # perscribed number of measurements during window
+df = exhaustiveSearch(N=N,
+                 Nfine=Nfine,wlen=wlen,wdensity=wdensity,
+                 returnType='all',db_fname=db_fname)
+nrow(df) # number of constrained solutions
+```
