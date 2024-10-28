@@ -1,0 +1,81 @@
+```{r}
+require(devtools)
+devtools::load_all()
+```
+
+# Power analysis
+
+## Circadian equispaced study
+Example of a circadian study with a sample size of 8 measurements. As always, measurements are scaled to lie in the interval [0,1]. 
+```{r}
+N    = 8              # sample size
+mt   = c(1:N)/N - 1/N # vector of measurement times
+mt
+```
+
+Show measurement times in circadian units
+```{r}
+24*mt
+```
+
+Specify signal parameters and compare exact vs Monte Carlo power estimate
+```{r}
+Amp  = 2              # signal amplitude
+freq = 1              # frequency
+acro = pi             # acrophase
+param = list(freq=freq,Amp=Amp,acro=acro)
+evalExactPower(mt,param)
+evalMonteCarloPower(mt,param,1e4)
+```
+
+## Circadian study with random measurements
+
+Same measurement budget as above but now measurements are collected at random time intervals
+```{r}
+mt_rand = runif(N)
+evalExactPower(mt_rand,param)
+```
+
+
+## Worst case power
+Given an experimental design, find the lowest power across all acrophases for signals of a fixed frequency and amplitude.
+```{r}
+evalWorstPower(mt,param)
+```
+
+As the frequency approaches the Nyquist rate, we should expect worst-case power of an equispaced design to drop to the type I error rate
+```{r}
+fNyq=4 # Nyquist rate of 8 measurement equispaced
+scales = c(.5,.8,.9,.95,.99,.999)
+for (scale in scales){
+  param$freq=fNyq*scale
+  wcp=evalWorstPower(mt,param)
+  print(paste0('At ', 100*scale, '% of Nyquist freq, worst-case power = ',round(wcp,3)))
+}
+```
+
+
+## Solve for sample size
+
+Assume study wants to use equispaced and detect signals of amplitude > 1 with at least 80% power
+```{r}
+thresh      = .8
+N           = 4
+freq        = 1
+Amp         = 1
+param       = list(freq=freq,Amp=Amp)
+low_power   = T
+while (low_power){
+  mt        = c(1:N)/N - 1/N
+  wcp       =  evalWorstPower(mt,param)
+  low_power = evalWorstPower(mt,param)<thresh
+  N         = N+1
+}
+print(paste0('Design with ', N,' measurements achieves ', round(wcp,4) , ' worst-case power.'))
+```
+
+# Power optimization
+Searching 
+```{r}
+
+```
