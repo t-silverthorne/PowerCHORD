@@ -55,7 +55,9 @@ db_fname = 'temp/cNecks_24_8.txt'
 wlen     = 6 # half the original window length
 bvec = exhaustiveSearch(N=N,
                  Nfine=Nfine,wlen=wlen,wdensity=wdensity,
-                 returnType='optimal',db_fname=db_fname) meas_times = tau[bvec>0] evalWorstPower(meas_times,param=list(Amp=2,freq=1))
+                 returnType='optimal',db_fname=db_fname)
+meas_times = tau[bvec>0]
+evalWorstPower(meas_times,param=list(Amp=2,freq=1))
 ```
 
 ## Return all constrained designs
