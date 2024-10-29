@@ -7,6 +7,6 @@
 # * https://testthat.r-lib.org/articles/special-files.html
 
 library(testthat)
-library(PowerCHORD)
+#library(PowerCHORD)
 
 test_check("PowerCHORD")
