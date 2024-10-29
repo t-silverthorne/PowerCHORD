@@ -8,7 +8,7 @@ R functions for evaluating the exact power of a cosinor-based hypothesis test. A
 MATLAB implementation of differential evolution is useful for constructing an initial estimate of the gain in power due to irregular sampling.
 
 * **Exhaustive searches |**
-R wrapper for generating databases of all possible experimental designs under various timing constraints. This code relies upon a C library written by J. Sawada. Credit should be given appropriately. 
+R wrapper for generating databases of all possible experimental designs under various timing constraints. This code relies upon a C library written by [J. Sawada](https://www.socs.uoguelph.ca/~sawada/). Credit should be given appropriately. 
 
 * **Semidefinite programming |**
 MATLAB wrapper for yalmip and MOSEK code that solves a semidefinite programming problem to maximize power.
@@ -82,5 +82,5 @@ Once you have confirmed that `yalmip` and `MOSEK` are installed and that `MATLAB
 
 
 ## Citations
-TODO Yalmip, Sawada
+[Ruskey, Frank, and Joe Sawada. "An efficient algorithm for generating necklaces with fixed density." SIAM Journal on Computing 29.2 (1999): 671-684.](https://epubs.siam.org/doi/abs/10.1137/S0097539798344112?casa_token=ko7rRR507vUAAAAA:4UT-zE9qX7b_AWCKkDg6bWwEgTnBCZ_83JEda2rdePbMXZQ_S7EnNl1y0iWfvNO22iBb9qMFg4oG)
 
