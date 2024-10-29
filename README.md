@@ -1,7 +1,5 @@
 ## Overview
-PowerCHORD is an open source package for benchmarking and designing biological rhythm detection studies.
-
-The main features of the package are summarized below.
+PowerCHORD is an open source package for maximizing the statistical power of biological rhythm detection studies. The main features of the package are summarized below.
 
 * **Exact power analysis |**
 R functions for evaluating the exact power of a cosinor-based hypothesis test. A Monte-Carlo based method is also included for comparison.
@@ -18,7 +16,6 @@ MATLAB wrapper for yalmip and MOSEK code that solves a semidefinite programming 
 Please cite the manuscript [Silverthorne et al, 2024](https://www.biorxiv.org/content/10.1101/2024.05.19.594858v1.abstract) which contains details concerning the analysis and optimization methods in this package.
 
 ## Installation
-
 
 We suggest installing PowerCHORD as a Git submodule. To do so, navigate to your project's base directory and run the following bash commands. 
 ```bash
