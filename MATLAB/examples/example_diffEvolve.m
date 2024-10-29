@@ -20,3 +20,5 @@ Nfreq = 2^10;
 [Tmat,eigfinal,scores]=diffEvolve(Nm,fmin,fmax,Nfreq,settings);
 
 plot(1:settings.Niter, scores)
+xlabel('iteration')
+ylabel('score')

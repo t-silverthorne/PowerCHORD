@@ -5,7 +5,7 @@ PowerCHORD includes three optimization methods:
 * differential evolution
 * exhaustive search
 * semidefinite programming
-In this notebook we denomstrate how to perform an exhaustive search using PowerCHORD in R.
+In this notebook we demonstrate how to perform an exhaustive search using PowerCHORD in R.
 
 **Note:** We are using a very coarse grid in this notebook `(Nfine=24)` to speed up computations. For research questions, you would likely want to use a finer grid `(Nfine=48)`.
 ```{r}
@@ -68,14 +68,14 @@ N        = 8  # number of measurements to collect
 
 # no measurements for half the study 
 wlen     = 12  # length of window
-wdensity = 0   # perscribed number of measurements during window
+wdensity = 0   # prescribed number of measurements during window
 df = exhaustiveSearch(N=N,
                  Nfine=Nfine,wlen=wlen,wdensity=wdensity,
                  returnType='all',db_fname=db_fname)
 nrow(df) # number of constrained solutions
 ```
 ## Remove window constraint
-If you want to see the entire database, you can turn off the window cosntraint as follows
+If you want to see the entire database, you can turn off the window constraint as follows
 ```{r}
 
 Nfine    = 24 # corresponds to hour intervals in circadian study
@@ -83,7 +83,7 @@ N        = 8  # number of measurements to collect
 
 # no measurements for half the study 
 wlen     = 1  # length of window
-wdensity = 1   # perscribed number of measurements during window
+wdensity = 1   # prescribed number of measurements during window
 df = exhaustiveSearch(N=N,
                  Nfine=Nfine,wlen=wlen,wdensity=wdensity,
                  returnType='all',db_fname=db_fname)
