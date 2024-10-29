@@ -1,6 +1,5 @@
 ## Overview
-PowerCHORD is an open source package for benchmarking and designing biological rhythm detection studies. It contains a lightweight R package for performing exact power analysis and MATLAB wrappers for performing power optimization. The main features and citation guidelines are described below. 
-
+PowerCHORD is an open source package for benchmarking and designing biological rhythm detection studies. It contains a lightweight R package for performing exact power analysis and MATLAB wrappers for performing power optimization. 
 
 The main features of the package are summarized below
 
@@ -16,19 +15,29 @@ C code for generating representatives of all rotational equivalence classes of e
 **Semidefinite programming |**
 While exhaustive searches are guaranteed to produce globally optimal designs, they scale poorly as the sample size increases. To overcome this, we also provide a semidefinite programming approach that performs well on sample sizes beyond the limits of exhaustive searches.
 
-**Citing this package |**
+## Citation guidelines
+
 Please cite the manuscript Silverthorne T. et al, 2024 which contains details concerning the analysis and optimization methods in this package.
 
-## Dependencies
+## Dependencies and Installation
 
-**Power analysis |** If you intend to use this package exclusively for power analysis, only the R dependency is necessary. 
+
+We suggest installing the package as a Git submodule. To do so, navigate to your project's base directory and run the following bash commands. 
+```bash
+ git submodule add https://github.com/t-silverthorne/PowerCHORD PowerCHORD
+ git submodule init
+ git submodule update
+```
+
+
+**Power analysis |** If you intend to use this package exclusively for power analysis, the only dependency is an up-to-date version of `R`. 
 
 |**Dependency**|**Description**|**Version**|
 | --- | --- | --- |
 |[R](https://www.r-project.org)| required for power analysis and optimization | 4.4.0|
 
 **Full package **|
-The optimization methods included in PowerCHORD have additional dependencies because they rely upon lower level optimization routines. To reiterate, these additional are only necessary if you plan on running your own power optimization.
+The optimization methods included in PowerCHORD have additional dependencies because they rely upon lower level optimization routines. These additional dependencies are only necessary if you plan on running your own power optimization.
 
 |**Dependency**|**Description**|**Version**|
 | --- | --- | --- |
@@ -39,16 +48,34 @@ The optimization methods included in PowerCHORD have additional dependencies bec
 |[yalmip](https://yalmip.github.io)| only required for semidefinite programming| R20230622 |
 |[MOSEK](https://www.mosek.com)| only required for semidefinite programming |10.2|
 
-## Setup
-devtools::install_github()
+To install the full package, start by loading PowerCHORD as a Git submodule. If you are on a Unix system, you likely already have `gcc` and `awk` installed. To confirm this, run the following.
 
-1. Run the R tests and look at the examples.
-2. Compile the C code for exhaustive searches
-3. Follow yalmip instructions and verify that MOSEK is accessible in backend
-4. Look at matlab examples to see how optimization works.
+```bash
+which gcc
+which awk
+```
 
-## Hello world 
+These commands should return the paths to your `gcc` and `awk` installations.  Provided that both of these are available, you can compile the `C` code necessary for exhaustive searches
 
+```bash
+cd c_src/
+gcc -o necklaces_cmd necklaces_cmd.c
+```
+
+The only remaining dependencies are `yalmip` and `MOSEK`, see the following for detailed installation instructions. 
+
+* [yalmip installation instructions](https://yalmip.github.io/tutorial/installation/)
+* [MOSEK installation instrucitons](https://docs.mosek.com/latest/install/installation.html)
+
+## Testing your installation
+
+The `R` unit tests check that the power analysis functions are working correctly
+
+```r
+devtools:test()
+```
+
+More involved examples of power analysis and optimization can be found in the `examples/` and `MATLAB/examples` directories.
 
 ## Citations
 TODO Yalmip, Sawada
