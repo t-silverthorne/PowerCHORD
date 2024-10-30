@@ -9,9 +9,7 @@ In this notebook we demonstrate how to perform an exhaustive search using PowerC
 
 **Note:** We are using a very coarse grid in this notebook `(Nfine=24)` to speed up computations. For research questions, you would likely want to use a finer grid `(Nfine=48)`.
 ```{r}
-require(devtools)
-require(data.table)
-devtools::load_all()
+library(PowerCHORD)
 ```
 
 # Basic usage
@@ -31,7 +29,7 @@ N        = 8  # number of measurements to collect
 
 # no measurements for half the study 
 wlen     = 12  # length of window
-wdensity = 0   # perscribed number of measurements during window
+wdensity = 0   # prescribed number of measurements during window
 
 # takes a few minutes to run
 bvec = exhaustiveSearch(N=N,
@@ -77,7 +75,6 @@ nrow(df) # number of constrained solutions
 ## Remove window constraint
 If you want to see the entire database, you can turn off the window constraint as follows
 ```{r}
-
 Nfine    = 24 # corresponds to hour intervals in circadian study
 N        = 8  # number of measurements to collect
 
