@@ -28,6 +28,11 @@
 #' @return Statistical power
 #' @author Turner Silverthorne
 #' @export
+#'
+#' @examples
+#' # The power for a 24hr study sampled every hour, testing for p<0.05
+#' evalExactPower(t=1:24,param=list(Amp=1,acro=0,freq=1/24))
+#'
 evalExactPower <- function(t,param,alpha=.05,method='schur',lambda_in=NULL){
 # return power of one-frequency cosinor model
   Amp    = param[['Amp']]

@@ -40,6 +40,11 @@ majority of use cases.   Alternative methods are as follows:
 the power formula from \href{https://onlinelibrary.wiley.com/doi/full/10.1002/sim.9803}{Zong et al 2023},
 which is only applicable for equispaced measurement times.
 }
+\examples{
+# The power for a 24hr study sampled every hour, testing for p<0.05
+evalExactPower(t=1:24,param=list(Amp=1,acro=0,freq=1/24))
+
+}
 \author{
 Turner Silverthorne
 }

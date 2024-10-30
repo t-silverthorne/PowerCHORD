@@ -17,6 +17,10 @@
 #' \code{method='eig'} to an alternative method.
 #' @author Turner Silverthorne
 #' @export
+#'
+#' @examples
+#' # Worst-case power for a study with equispaced 24 timepoints
+#' evalWorstPower(mt=1:24,param=list(Amp=1,freq=1/24))
 evalWorstPower=function(mt,param,alpha=.05,method='eig'){
   Amp    = param[['Amp']]
   freq   = param[['freq']]
