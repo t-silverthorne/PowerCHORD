@@ -1,3 +1,6 @@
+require(data.table)
+require(here)
+setwd(here::here())
 test_that("correct number of solutions", {
   nsol = exhaustiveSearch(N=8,Nfine=23,wlen=1,wdensity = 1,db_fname=NULL,
                    returnType = 'all') %>% nrow()

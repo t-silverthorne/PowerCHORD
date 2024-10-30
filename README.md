@@ -57,7 +57,7 @@ gcc -o necklaces_cmd necklaces_cmd.c
 To check that the `R` power analysis and exhaustive search functions (which rely on `awk` and `C`) are working correctly, open an `R` session and run the built-in unit tests.
 
 ```r
-devtools:test()
+devtools::test()
 ```
 
 More involved examples of power analysis and optimization can be found in the `examples/`  directory.
