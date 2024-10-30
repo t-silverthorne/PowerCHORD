@@ -12,7 +12,7 @@
 #' @param returnType either \code{'min'} which returns the worst-case power across frequency and acrophase
 #' or \code{'all'} which returns the worst case power of each frequency
 #'
-#' @return minimum power across acrophase and frequency rangej
+#' @return minimum power across acrophase and frequency range
 #' @author Turner Silverthorne
 #' @export
 evalWorstPowerMultiFreq=function(mt,param,alpha=.05,returnType='min'){
