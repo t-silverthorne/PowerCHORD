@@ -35,6 +35,10 @@
 #'
 evalExactPower <- function(t,param,alpha=.05,method='schur',lambda_in=NULL){
 # return power of one-frequency cosinor model
+
+  # Input checks
+  if(!all(sapply(param,length)==1)) stop("All param must be length 1 (one design/condition)")
+
   Amp    = param[['Amp']]
   freq   = param[['freq']]
   acro   = param[['acro']]
