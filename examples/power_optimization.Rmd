@@ -50,7 +50,7 @@ evalWorstPower(meas_times,param=list(Amp=2,freq=1))
 Once you have generated the solution database, you can reuse it for subsequent computations.
 * here we illustrate how much worst-case power improves when we cut the window in half 
 ```{r}
-db_fname = 'temp/cNecks_24_8.txt'
+db_fname = paste0(tempdir(),'/cNecks_24_8.txt')
 
 wlen     = 6 # half the original window length
 bvec = exhaustiveSearch(N=N,

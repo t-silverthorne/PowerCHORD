@@ -9,11 +9,14 @@ exhaustiveSearch = function(N,Nfine=48,wlen,wdensity=1,
   if (length(prev_output)>0){
     system('rm output_*.txt')
   }
-  # call C function to generate database
+
+  # call C function to generate database in R temp directory
+  # TODO: should cleanup tmpdir after?
   if (is.null(db_fname)){
+    dbdir=tempdir()
     command = paste("c_src/necklaces_cmd 2", Nfine, "2", N, ">",
-      paste0("temp/cNecks_", Nfine, "_", N, ".txt"))
-    db_fname = paste0("temp/cNecks_", Nfine, "_", N, ".txt")
+      paste0(dbdir,"/cNecks_", Nfine, "_", N, ".txt"))
+    db_fname = paste0(dbdir,"/cNecks_", Nfine, "_", N, ".txt")
     system(command)
   }
 
