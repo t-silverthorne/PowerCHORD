@@ -1,5 +1,10 @@
 exhaustiveSearch = function(N,Nfine=48,wlen,wdensity=1,
                             freq=1,db_fname=NULL,returnType='optimal'){
+
+  # Check for correct setup
+  if(!file.exists("c_src/necklaces_cmd.c")) stop("The working directory must be set to the PowerCHORD root directory for exhaustiveSearch usage")
+  if(!file.exists("c_src/necklaces_cmd")) stop("Exhaustive seach exe not found, see documentation for exhaustiveSearch usage")
+
   prev_output = Sys.glob("output_*.txt")
   if (length(prev_output)>0){
     system('rm output_*.txt')
