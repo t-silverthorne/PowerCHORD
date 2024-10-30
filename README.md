@@ -15,21 +15,32 @@ MATLAB wrapper for yalmip and MOSEK code that solves a semidefinite programming 
 
 Please cite the manuscript [Silverthorne et al, 2024](https://www.biorxiv.org/content/10.1101/2024.05.19.594858v1.abstract) which contains details concerning the analysis and optimization methods in this package.
 
-## Installation
+## Installation of the PowerCHORD R package for power analysis
 
 We suggest installing PowerCHORD as a Git submodule. To do so, navigate to your project's base directory and run the following bash commands. 
 ```bash
  git submodule add https://github.com/t-silverthorne/PowerCHORD PowerCHORD
  git submodule init
  git submodule update
+PowerCHORD can be installed in R with devtools:
+
+```r
+devtools::install_github("t-silverthorne/PowerCHORD")
 ```
 
-Assuming that you have an up-to-date version of `R` and `MATLAB`, the installation of each component can now proceed separtely.
+Exact power of a design can then be evaluated, e.g. with `evalExactPower`:
 
-|**Dependency**|**Description**|**Version**|
-| --- | --- | --- |
-|[R](https://www.r-project.org)| required for power analysis and optimization | 4.4.0|
-|[MATLAB](https://www.mathworks.com/products/matlab.html)| only required for optimization | 2024a|
+```r
+t=1:24 # Sampling every hour for 24 hours
+param=list(Amp=1,acro=0,freq=1/24) # Oscillation parameters
+evalExactPower(t,param)
+```
+
+```
+[1] 0.8297932
+```
+
+See `examples/power_analysis.Rmd` for further power analysis usage.
 
 
 ### R components of PowerCHORD 
@@ -68,6 +79,7 @@ The differential evolution and semidefinite programming functions in `MATLAB` ha
 
 |**Dependency**|**Description**|**Version**|
 | --- | --- | --- |
+|[MATLAB](https://www.mathworks.com/products/matlab.html)| only required for optimization | 2024a|
 |[yalmip](https://yalmip.github.io)| only required for semidefinite programming| R20230622 |
 |[MOSEK](https://www.mosek.com)| only required for semidefinite programming |10.2|
 
@@ -76,9 +88,6 @@ Detailed installation instructions can be found at the following sites
 * [MOSEK installation instrucitons](https://docs.mosek.com/latest/install/installation.html)
 
 Once you have confirmed that `yalmip` and `MOSEK` are installed and that `MATLAB` can interface with both of these solvers, you should consult the `MATLAB/examples` directory to see how they are used in PowerCHORD. 
-
-
-
 
 
 ## Citations
