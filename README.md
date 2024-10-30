@@ -17,11 +17,6 @@ Please cite the manuscript [Silverthorne et al, 2024](https://www.biorxiv.org/co
 
 ## Installation of the PowerCHORD R package for power analysis
 
-We suggest installing PowerCHORD as a Git submodule. To do so, navigate to your project's base directory and run the following bash commands. 
-```bash
- git submodule add https://github.com/t-silverthorne/PowerCHORD PowerCHORD
- git submodule init
- git submodule update
 PowerCHORD can be installed in R with devtools:
 
 ```r
@@ -42,21 +37,28 @@ evalExactPower(t,param)
 
 See `examples/power_analysis.Rmd` for further power analysis usage.
 
+## Power optimization using PowerCHORD
 
-### R components of PowerCHORD 
+### Exhaustive searches using the R wrapper for C and awk code 
 
-The power analysis and exhaustive search functions in `R` have the following dependencies. 
+The exhaustiveSearch `R` function has the following dependencies. 
 
 |**Dependency**|**Description**|**Version**|
 | --- | --- | --- |
 |[gcc](https://gcc.gnu.org)| only required for exhaustive search optimization | 11.4.0 |
 |[awk](https://invisible-island.net/mawk/) | only required for exhaustive search optimization | mawk 1.3.4 20200120|
 
-
-Once you have loaded PowerCHORD as a Git submodule, you should check that `gcc` and `awk` are installed. If you are on a Unix system, you likely already have `gcc` and `awk` installed. To confirm this, run the following.
+If you are on a Unix system, you likely already have `gcc` and `awk` installed. To confirm this, run the following.
 ```bash
 which gcc
 which awk
+```
+
+The `exhaustiveSearch()` method must be executed within the PowerCHORD directory, 
+therefore, we recommend cloning the repository for this usage:
+
+```bash
+git clone https://github.com/t-silverthorne/PowerCHORD
 ```
 
 These commands should return the paths to your `gcc` and `awk` installations.  Provided that both of these are available, you can compile the `C` code necessary for exhaustive searches
