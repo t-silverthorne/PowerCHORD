@@ -18,21 +18,21 @@ exhaustiveSearch = function(N,Nfine=48,wlen,wdensity=1,
 
   # read database into memory
   files=list.files(pattern = "output_\\d+\\.txt")
-  df=files %>% lapply(function(file){
+  df=files |> lapply(function(file){
     lines = readLines(file)
     md    = do.call(rbind, strsplit(lines, split = ""))
     md    = apply(md, 2, as.numeric)
-    md    = md %>% matrix(ncol=Nfine) %>% as.data.frame()
-  }) %>% rbindlist()
+    md    = md |> matrix(ncol=Nfine) |> as.data.frame()
+  }) |> (\(x){do.call("rbind", x)})() #replaces data.table::rbindlist()
   file.remove(files) # clean up output of awk filtering
 
   # based on returnType find optimal design or return all designs
   tau = c(1:Nfine)/Nfine-1/Nfine
   if (returnType=='optimal'){
-    best_idx = df %>% apply(1,function(x){
-     bv = x %>% as.numeric()
+    best_idx = df |> apply(1,function(x){
+     bv = x |> as.numeric()
       return(evalMinEig(tau[bv>0],freq=freq))
-    }) %>% which.max()
+    }) |> which.max()
     return(df[best_idx,])
   }else if(returnType=='all'){
     return(df)
