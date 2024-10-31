@@ -38,7 +38,7 @@ Monte Carlo estimate of power
 Performs harmonic regression on a simulated dataset of independent samples
 and returns the portion of samples that have statistically significant p-values.
 Useful for comparison with the exact expression for statistical power,
-see [evalExactPower()]. Relies on [rowCosinor()].
+see [evalExactPower()].
 }
 \author{
 Turner Silverthorne

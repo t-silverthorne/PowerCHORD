@@ -1,6 +1,5 @@
 ```{r}
-require(devtools)
-devtools::load_all()
+library(PowerCHORD)
 ```
 
 # Power analysis
@@ -13,12 +12,12 @@ mt   = c(1:N)/N - 1/N # vector of measurement times
 mt
 ```
 
-Show measurement times in circadian units
+Show measurement times in circadian units (hrs)
 ```{r}
 24*mt
 ```
 
-Specify signal parameters and compare exact vs Monte Carlo power estimate
+Specify signal parameters and compare exact vs an approximate Monte Carlo power estimate
 ```{r}
 Amp  = 2              # signal amplitude
 freq = 1              # frequency
@@ -57,7 +56,7 @@ for (scale in scales){
 
 ## Solve for sample size
 
-Assume study wants to use equispaced and detect signals of amplitude > 1 with at least 80% power
+Assume a study wants to use equispaced and detect signals of amplitude > 1 with at least 80% power
 ```{r}
 thresh      = .8
 N           = 4

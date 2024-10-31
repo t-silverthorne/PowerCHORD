@@ -29,6 +29,10 @@ the acrophase and searching for minimum. This will be slower and less accurate t
 do not recommend using this unless the user is writing their own unit tests and wants to compare
 \code{method='eig'} to an alternative method.
 }
+\examples{
+# Worst-case power for a study with equispaced 24 timepoints
+evalWorstPower(mt=1:24,param=list(Amp=1,freq=1/24))
+}
 \author{
 Turner Silverthorne
 }

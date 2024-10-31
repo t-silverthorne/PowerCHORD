@@ -21,7 +21,7 @@ or \code{'all'} which returns the worst case power of each frequency}
 \item{param$fmax}{maximum frequency under consideration}
 }
 \value{
-minimum power across acrophase and frequency rangej
+minimum power across acrophase and frequency range
 }
 \description{
 For a given amplitude, return the lowest value of the power across all

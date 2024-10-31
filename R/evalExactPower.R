@@ -16,9 +16,9 @@
 #' calculating it from parameters of the signal.
 #'
 #' @note
-#' Assumes the noise has mean zero and unit standard deviation.
+#' Assumes the noise has mean zero and a standard deviation of one.
 #'
-#' The default value of \code{method='schur'} should be sufficient for the vast
+#' The default method of \code{method='schur'} should be sufficient for the vast
 #' majority of use cases.   Alternative methods are as follows:
 #' \code{'full'} which solves a linear system to obtain the noncentrality parameter,
 #' \code{'ncp'} which lets user specify the noncentrality parameter, \code{'old'} which uses
@@ -28,8 +28,17 @@
 #' @return Statistical power
 #' @author Turner Silverthorne
 #' @export
+#'
+#' @examples
+#' # The power for a 24hr study sampled every hour, testing for p<0.05
+#' evalExactPower(t=1:24,param=list(Amp=1,acro=0,freq=1/24))
+#'
 evalExactPower <- function(t,param,alpha=.05,method='schur',lambda_in=NULL){
 # return power of one-frequency cosinor model
+
+  # Input checks
+  if(!all(sapply(param,length)==1)) stop("All param must be length 1 (one design/condition)")
+
   Amp    = param[['Amp']]
   freq   = param[['freq']]
   acro   = param[['acro']]
