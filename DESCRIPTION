@@ -1,8 +1,11 @@
 Package: PowerCHORD
 Type: Package
-Title: What the Package Does (Title Case)
+Title: Power Analysis for Homoscedastic Rhythm Detection 
 Version: 0.1.0
-Author: Who wrote it
+Authors@R: 
+  c(person('Silverthorne','Turner',email='turner.silverthorne@gmail.com',role=c('cre','aut')),
+    person('Carlucci','Matthew',role='ctb'),
+    person('Stinchcombe','Adam',role='ctb'))
 Maintainer: The package maintainer <yourself@somewhere.net>
 Description: More about what it does (maybe more than one line)
     Use four spaces when indenting paragraphs within the Description.
@@ -13,7 +16,9 @@ RoxygenNote: 7.3.2
 Depends:
     R (>= 4.1.0)
 Suggests: 
-    testthat (>= 3.0.0)
+    testthat (>= 3.0.0),
+    devtools (>= 2.4.5),
+    data.table (>= 1.16.0)
 Config/testthat/edition: 3
 Imports: 
     matrixTests

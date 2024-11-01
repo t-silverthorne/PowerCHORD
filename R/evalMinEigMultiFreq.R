@@ -21,7 +21,7 @@ evalMinEigMultiFreq=function(mt,param,alpha=.05){
 
   freqs = seq(from=fmin,to=fmax,length.out=Nfreq)
 
-  min_eigs=freqs %>% sapply(function(freq){
+  min_eigs=freqs |> sapply(function(freq){
     evalMinEig(mt,freq)
   })
   min(unlist(min_eigs))

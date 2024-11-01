@@ -25,7 +25,7 @@ evalWorstPowerMultiFreq=function(mt,param,alpha=.05,returnType=c('min','all')){
 
   returnType=match.arg(returnType)
 
-  worst_pwrs=freqs %>% sapply(function(freq){
+  worst_pwrs=freqs |> sapply(function(freq){
     ploc=list(Amp=Amp,freq=freq)
     evalWorstPower(mt,ploc,alpha,'eig')
   })

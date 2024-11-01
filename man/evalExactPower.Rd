@@ -4,7 +4,13 @@
 \alias{evalExactPower}
 \title{Evaluate exact power of cosinor model.}
 \usage{
-evalExactPower(t, param, alpha = 0.05, method = "schur", lambda_in = NULL)
+evalExactPower(
+  t,
+  param,
+  alpha = 0.05,
+  method = c("schur", "ncp", "equispaced"),
+  lambda_in = NULL
+)
 }
 \arguments{
 \item{t}{vector of measurement times assumed to lie in interval [0,1]}
@@ -36,7 +42,7 @@ Assumes the noise has mean zero and a standard deviation of one.
 The default method of \code{method='schur'} should be sufficient for the vast
 majority of use cases.   Alternative methods are as follows:
 \code{'full'} which solves a linear system to obtain the noncentrality parameter,
-\code{'ncp'} which lets user specify the noncentrality parameter, \code{'old'} which uses
+\code{'ncp'} which lets user specify the noncentrality parameter, \code{'equispaced'} which uses
 the power formula from \href{https://onlinelibrary.wiley.com/doi/full/10.1002/sim.9803}{Zong et al 2023},
 which is only applicable for equispaced measurement times.
 }

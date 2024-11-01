@@ -4,7 +4,7 @@
 \alias{evalWorstPowerMultiFreq}
 \title{Evaluate worst-case power across multiple frequencies}
 \usage{
-evalWorstPowerMultiFreq(mt, param, alpha = 0.05, returnType = "min")
+evalWorstPowerMultiFreq(mt, param, alpha = 0.05, returnType = c("min", "all"))
 }
 \arguments{
 \item{alpha}{type I error rate, by default \code{alpha=0.05}}

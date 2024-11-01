@@ -1,5 +1,6 @@
 exhaustiveSearch = function(N,Nfine=48,wlen,wdensity=1,
-                            freq=1,db_fname=NULL,returnType=c('optimal','all')){
+                            freq=1,db_fname=NULL,returnType=c('optimal','all'),
+                            cleanTempDir=F){
   returnType=match.arg(returnType)
   # Check for correct setup
   if(!file.exists("c_src/necklaces_cmd.c")) stop("The working directory must be set to the PowerCHORD root directory for exhaustiveSearch usage")
@@ -36,6 +37,11 @@ exhaustiveSearch = function(N,Nfine=48,wlen,wdensity=1,
 
   # based on returnType find optimal design or return all designs
   tau = c(1:Nfine)/Nfine-1/Nfine
+
+  if (cleanTempDir){
+    system(paste('rm',db_fname))
+  }
+
   if (returnType=='optimal'){
     best_idx = df |> apply(1,function(x){
      bv = x |> as.numeric()

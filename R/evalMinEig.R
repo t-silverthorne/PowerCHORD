@@ -5,9 +5,8 @@
 #' equal to worst-case value of the noncentrality parameter across all signals with amplitude A=1
 #' and noise strength sigma=1.
 #'
-#' @param t vector of measurement times assumed to lie in interval [0,1]
-#' @param freq frequency of signal
-#'
+#' @param t vector of measurement times in same units as \code{freq}
+#' @param freq frequency of signal in same units as \code{t}
 #' @return minimum eigenvalue of the power matrix
 #'
 #' @note To calculate worst eigenvalue across multiple frequencies and acrophases,

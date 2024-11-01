@@ -4,7 +4,7 @@
 \alias{evalWorstPower}
 \title{Evaluate worst-case power}
 \usage{
-evalWorstPower(mt, param, alpha = 0.05, method = "eig")
+evalWorstPower(mt, param, alpha = 0.05, method = c("eig", "test"))
 }
 \arguments{
 \item{alpha}{type I error rate, by default \code{alpha=0.05}}

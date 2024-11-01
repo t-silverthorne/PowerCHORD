@@ -9,7 +9,7 @@ evalMonteCarloPower(
   param,
   Nmc,
   alpha = 0.05,
-  method = "Ftest",
+  method = c("Ftest", "perm"),
   Nperm = 100
 )
 }

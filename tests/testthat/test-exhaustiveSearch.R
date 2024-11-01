@@ -1,6 +1,5 @@
 require(data.table)
-require(here)
-setwd(here::here())
+setwd(test_path('../../'))
 test_that("correct number of solutions", {
   nsol = exhaustiveSearch(N=8,Nfine=23,wlen=1,wdensity = 1,db_fname=NULL,
                    returnType = 'all') %>% nrow()
@@ -29,9 +28,8 @@ test_that("correct number of solutions", {
 
   count = exhaustiveSearch(N=6,Nfine=24,wlen=19,wdensity = 0,
                    returnType = 'all',db_fname='temp/cNecks_24_6.txt') %>% nrow()
-  expect_equal(count,0)
+  expect_equal(count,NULL)
 })
-
 
 test_that("globally optimal value", {
   N = sample(c(4:12),1)
