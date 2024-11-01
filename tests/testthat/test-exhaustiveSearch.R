@@ -53,9 +53,12 @@ test_that("constrained optimal value", {
 })
 
 test_that('parsing multiple solution files',{
-   count = exhaustiveSearch(N=7,Nfine=48,wlen=1,wdensity = 1,db_fname=NULL,
-                   returnType = 'all') %>% nrow()
-   expect_equal(count,1533939)
+   count = exhaustiveSearch(N=7,Nfine=28,wlen=1,wdensity = 1,db_fname=NULL,
+                   returnType = 'all',flines = 1e3) %>% nrow()
+   expect_equal(count,42288)
+   count = exhaustiveSearch(N=7,Nfine=10,wlen=4,wdensity = 1,db_fname=NULL,
+                   returnType = 'all',flines=1) %>% nrow()
+   expect_equal(count,3)
 })
 
 
