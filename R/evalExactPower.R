@@ -21,7 +21,7 @@
 #' The default method of \code{method='schur'} should be sufficient for the vast
 #' majority of use cases.   Alternative methods are as follows:
 #' \code{'full'} which solves a linear system to obtain the noncentrality parameter,
-#' \code{'ncp'} which lets user specify the noncentrality parameter, \code{'old'} which uses
+#' \code{'ncp'} which lets user specify the noncentrality parameter, \code{'equispaced'} which uses
 #' the power formula from \href{https://onlinelibrary.wiley.com/doi/full/10.1002/sim.9803}{Zong et al 2023},
 #' which is only applicable for equispaced measurement times.
 #'
@@ -33,11 +33,12 @@
 #' # The power for a 24hr study sampled every hour, testing for p<0.05
 #' evalExactPower(t=1:24,param=list(Amp=1,acro=0,freq=1/24))
 #'
-evalExactPower <- function(t,param,alpha=.05,method='schur',lambda_in=NULL){
+evalExactPower <- function(t,param,alpha=.05,method=c('schur','ncp','equispaced'),lambda_in=NULL){
 # return power of one-frequency cosinor model
 
   # Input checks
   if(!all(sapply(param,length)==1)) stop("All param must be length 1 (one design/condition)")
+  method=match.arg(method)
 
   Amp    = param[['Amp']]
   freq   = param[['freq']]
@@ -63,11 +64,9 @@ evalExactPower <- function(t,param,alpha=.05,method='schur',lambda_in=NULL){
     lambda = t(beta)%*%invB%*%beta
   }else if (method=='ncp'){
     lambda = lambda_in
-  }else if (method=='old'){
+  }else if (method=='equispaced'){
     cvec   = Amp*cos(2*pi*freq*t-acro)
     lambda = as.numeric(t(cvec)%*%cvec)
-  }else{
-    stop('unknown method')
   }
 
   f0     = qf(p=1-alpha,df1=2,df2=N-3)

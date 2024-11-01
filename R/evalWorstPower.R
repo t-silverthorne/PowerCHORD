@@ -21,10 +21,11 @@
 #' @examples
 #' # Worst-case power for a study with equispaced 24 timepoints
 #' evalWorstPower(mt=1:24,param=list(Amp=1,freq=1/24))
-evalWorstPower=function(mt,param,alpha=.05,method='eig'){
+evalWorstPower=function(mt,param,alpha=.05,method=c('eig','test')){
   Amp    = param[['Amp']]
   freq   = param[['freq']]
   N      = length(t)
+  method=match.arg(method)
   if (length(freq)>1){
     stop('Use evalWorstPowerMutliFreq for handling multiple frequencies')
   }
@@ -47,8 +48,6 @@ evalWorstPower=function(mt,param,alpha=.05,method='eig'){
       return(evalExactPower(mt,ploc,alpha))
     }) |> min()
     min_pwr
-  }else{
-    stop('unknown method')
   }
   return(min_pwr)
 }

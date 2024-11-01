@@ -15,13 +15,15 @@
 #' @return minimum power across acrophase and frequency range
 #' @author Turner Silverthorne
 #' @export
-evalWorstPowerMultiFreq=function(mt,param,alpha=.05,returnType='min'){
+evalWorstPowerMultiFreq=function(mt,param,alpha=.05,returnType=c('min','all')){
   Amp   = param[['Amp']]
   fmin  = param[['fmin']]
   fmax  = param[['fmax']]
   Nfreq = param[['Nfreq']]
 
   freqs = seq(from=fmin,to=fmax,length.out=Nfreq)
+
+  returnType=match.arg(returnType)
 
   worst_pwrs=freqs %>% sapply(function(freq){
     ploc=list(Amp=Amp,freq=freq)
@@ -32,7 +34,5 @@ evalWorstPowerMultiFreq=function(mt,param,alpha=.05,returnType='min'){
     return(min(unlist(worst_pwrs)))
   }else if(returnType=='all'){
     return(unlist(worst_pwrs))
-  }else{
-    stop('Unknown return type')
   }
 }

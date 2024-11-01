@@ -1,6 +1,6 @@
 exhaustiveSearch = function(N,Nfine=48,wlen,wdensity=1,
-                            freq=1,db_fname=NULL,returnType='optimal'){
-
+                            freq=1,db_fname=NULL,returnType=c('optimal','all')){
+  returnType=match.arg(returnType)
   # Check for correct setup
   if(!file.exists("c_src/necklaces_cmd.c")) stop("The working directory must be set to the PowerCHORD root directory for exhaustiveSearch usage")
   if(!file.exists("c_src/necklaces_cmd")) stop("Exhaustive seach exe not found, see documentation for exhaustiveSearch usage")
@@ -44,7 +44,5 @@ exhaustiveSearch = function(N,Nfine=48,wlen,wdensity=1,
     return(df[best_idx,])
   }else if(returnType=='all'){
     return(df)
-  }else{
-    stop('unknown returnType')
   }
 }

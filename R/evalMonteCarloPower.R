@@ -19,7 +19,9 @@
 #' @return Monte Carlo estimate of power
 #' @author Turner Silverthorne
 #' @export
-evalMonteCarloPower<-function(tvec,param,Nmc,alpha=.05,method='Ftest',Nperm=1e2){
+evalMonteCarloPower<-function(tvec,param,Nmc,alpha=.05,method=c('Ftest','perm'),Nperm=1e2){
+  method = match.arg(method)
+
   Amp  = param$Amp
   freq = param$freq
   acro = param$acro
@@ -41,8 +43,6 @@ evalMonteCarloPower<-function(tvec,param,Nmc,alpha=.05,method='Ftest',Nperm=1e2)
     perm_mat < pmat_true
     R = rowSums(perm_mat<pmat_true)
     pwr =mean((R+1)/(Nperm+1) < alpha)
-  }else{
-    stop('Unknown method')
   }
   return(pwr)
 }
