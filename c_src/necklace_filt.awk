@@ -2,9 +2,11 @@ BEGIN { # read in args and then remove so they are not treated as files
   width   = ARGV[1];
   density = ARGV[2];
   nfine   = ARGV[3];
+  flines  = ARGV[4];
   delete ARGV[1];
   delete ARGV[2];
   delete ARGV[3];
+  delete ARGV[4];
   count=0;
 }
 
@@ -29,7 +31,7 @@ function contains_spec_window(line_in,width,density, csw_flag, ss , ss_init, lin
   if(contains_spec_window($0,width,density) && length($0)==nfine){
     #print $0
     count++;
-    filename = "output_" int((count-1)/1000000) ".txt"
+    filename = "output_" int((count-1)/flines) ".txt"
     print $0 > filename
   }
 }
