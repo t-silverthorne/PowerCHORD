@@ -4,10 +4,10 @@
 #' For a given amplitude, return the lowest value of the power across all
 #' acrophases and range of frequencies.
 #'
-#' @param t vector of measurement times assumed to lie in interval [0,1]
+#' @param t vector of measurement times, same units as \code{param$fmin} and \code{param$fmax}
 #' @param param$Amp amplitude of signal
-#' @param param$fmin minimum frequency under consideration
-#' @param param$fmax maximum frequency under consideration
+#' @param param$fmin minimum frequency under consideration, same units as \code{t}
+#' @param param$fmax maximum frequency under consideration, same units as \code{t}
 #' @param alpha type I error rate, by default \code{alpha=0.05}
 #' @param returnType either \code{'min'} which returns the worst-case power across frequency and acrophase
 #' or \code{'all'} which returns the worst case power of each frequency

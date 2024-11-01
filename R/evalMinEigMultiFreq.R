@@ -4,9 +4,9 @@
 #' Wrapper for the function [evalMinEig()], computes worst eigenvalue of the power
 #' matrix across multiple frequencies.
 #'
-#' @param t vector of measurement times assumed to lie in interval [0,1]
-#' @param param$fmin minium frequency
-#' @param param$fmax maximum frequency
+#' @param t vector of measurement times, same units as \code{freq}
+#' @param param$fmin minium frequency, same units as \code{t}
+#' @param param$fmax maximum frequency, same units as \code{t}
 #' @param param$Nfreq number of points to use for discretising \code{[fmin,fmax]} interval
 #' @param alpha type I error rate, by default \code{alpha=0.05}
 #'
