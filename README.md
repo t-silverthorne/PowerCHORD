@@ -5,13 +5,13 @@ PowerCHORD is an open source package for maximizing the statistical power of bio
 R functions for evaluating the exact power of a cosinor-based hypothesis test. A Monte-Carlo based method is also included for comparison.
 
 * **Differential evolution |**
-MATLAB implementation of differential evolution is useful for constructing an initial estimate of the gain in power due to irregular sampling.
+MATLAB implementation of [differential evolution](https://en.wikipedia.org/wiki/Differential_evolution) is useful for constructing an initial estimate of the gain in power due to irregular sampling.
 
 * **Exhaustive searches |**
-R wrapper for generating databases of all possible experimental designs under various timing constraints. This code relies upon a C library written by [J. Sawada](https://www.socs.uoguelph.ca/~sawada/). Credit should be given appropriately. 
+R wrapper for generating all possible experimental designs under various timing constraints. The underlying C library for this feature was written by [J. Sawada](https://www.socs.uoguelph.ca/~sawada/) and made available through the [Combinatorial Object Server](http://combos.org/index). 
 
 * **Semidefinite programming |**
-MATLAB wrapper for yalmip and MOSEK code that solves a semidefinite programming problem to maximize power.
+MATLAB wrapper for [YALMIP](https://yalmip.github.io) optimization toolbox. Using [MOSEK](https://www.mosek.com) as a backend solver, this method can find globally optimal solutions for multi-frequency rhythm detection problems.
 
 Please cite the manuscript [Silverthorne et al, 2024](https://www.biorxiv.org/content/10.1101/2024.05.19.594858v1.abstract) which contains details concerning the analysis and optimization methods in this package.
 
@@ -39,9 +39,9 @@ See `examples/power_analysis.Rmd` for further power analysis usage.
 
 ## Power optimization using PowerCHORD
 
-### Exhaustive searches using the R wrapper for C and awk code 
+### Exhaustive searches using the R wrapper
 
-The exhaustiveSearch `R` function has the following dependencies. 
+The `exhaustiveSearch` `R` function has the following dependencies. 
 
 |**Dependency**|**Description**|**Version**|
 | --- | --- | --- |
@@ -75,7 +75,7 @@ devtools::test()
 
 More involved examples of power analysis and optimization can be found in the `examples/`  directory.
 
-### MATLAB components of PowerCHORD
+### Differential evolution and semidefinite programming using the MATLAB wrapper 
 
 The differential evolution and semidefinite programming functions in `MATLAB` have the following dependencies. 
 
@@ -86,12 +86,16 @@ The differential evolution and semidefinite programming functions in `MATLAB` ha
 |[MOSEK](https://www.mosek.com)| only required for semidefinite programming |10.2|
 
 Detailed installation instructions can be found at the following sites
-* [yalmip installation instructions](https://yalmip.github.io/tutorial/installation/)
+
+* [MATLAB installation instructions](https://www.mathworks.com/?s_tid=gn_logo)
+* [YALMIP installation instructions](https://yalmip.github.io/tutorial/installation/)
 * [MOSEK installation instrucitons](https://docs.mosek.com/latest/install/installation.html)
 
-Once you have confirmed that `yalmip` and `MOSEK` are installed and that `MATLAB` can interface with both of these solvers, you should consult the `MATLAB/examples` directory to see how they are used in PowerCHORD. 
+Once you have confirmed that `yalmip` and `MOSEK` are installed and `MATLAB` can interface with both of these solvers, you should consult the `MATLAB/examples` directory to see how they are used in PowerCHORD. 
 
 
 ## Citations
-[Ruskey, Frank, and Joe Sawada. "An efficient algorithm for generating necklaces with fixed density." SIAM Journal on Computing 29.2 (1999): 671-684.](https://epubs.siam.org/doi/abs/10.1137/S0097539798344112?casa_token=ko7rRR507vUAAAAA:4UT-zE9qX7b_AWCKkDg6bWwEgTnBCZ_83JEda2rdePbMXZQ_S7EnNl1y0iWfvNO22iBb9qMFg4oG)
+
+* Ruskey, Frank, and Joe Sawada. ["An efficient algorithm for generating necklaces with fixed density."](https://epubs.siam.org/doi/abs/10.1137/S0097539798344112?casa_token=ko7rRR507vUAAAAA:4UT-zE9qX7b_AWCKkDg6bWwEgTnBCZ_83JEda2rdePbMXZQ_S7EnNl1y0iWfvNO22iBb9qMFg4oG) SIAM Journal on Computing 29.2 (1999): 671-684.]
+* J. Lofberg. ["YALMIP : a toolbox for modeling and optimization in MATLAB."](https://ieeexplore.ieee.org/document/1393890) 2004 IEEE International Conference on Robotics and Automation (IEEE Cat. No.04CH37508), Taipei, Taiwan, 2004, pp. 284-289.
 
