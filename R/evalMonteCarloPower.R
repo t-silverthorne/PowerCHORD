@@ -6,9 +6,9 @@
 #' Useful for comparison with the exact expression for statistical power,
 #' see [evalExactPower()].
 #'
-#' @param tvec vector of measurement times
+#' @param tvec vector of measurement times in same units as \code{param$freq}
+#' @param param$freq frequency fo signal in same units as \code{t}
 #' @param param$Amp amplitude of signal
-#' @param param$freq frequency fo signal
 #' @param param$acro phase of signal in radians
 #' @param Nmc number of Monte Carlo samples
 #' @param alpha type I error, default value \code{alpha=.05}

@@ -3,9 +3,9 @@
 #' @description
 #' For a given frequency and amplitude, returns the lowest value of the power across all acrophases.
 #'
-#' @param t vector of measurement times assumed to lie in interval [0,1]
+#' @param t vector of measurement times in same units as \code{param$freq}
+#' @param param$freq frequency of signal in same units as \code{t}
 #' @param param$Amp amplitude of signal
-#' @param param$freq frequency of signal
 #' @param alpha type I error rate, by default \code{alpha=0.05}
 #' @param method by default, \code{method='eig'} uses eigenvalue method for computing the worstcase noncentrality parameter
 #'

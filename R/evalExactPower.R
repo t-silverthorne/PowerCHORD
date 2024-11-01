@@ -5,9 +5,9 @@
 #' using the cosinor model.
 #'
 #'
-#' @param t vector of measurement times assumed to lie in interval [0,1]
+#' @param t vector of measurement times in same units as \code{param$freq}
+#' @param param$freq frequency of signal in same unitsr as \code{t}
 #' @param param$Amp amplitude of signal
-#' @param param$freq frequency of signal
 #' @param param$acro phase of signal in radians
 #' @param alpha type I error, by default \code{alpha=.05}
 #' @param method method for computing non-centrality parameter, by default
