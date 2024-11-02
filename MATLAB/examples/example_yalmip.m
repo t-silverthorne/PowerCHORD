@@ -7,7 +7,7 @@ Nmeas=12;     % sample size
 n    =48;     % grid coarsensss
 
 % get optimal solution as binary vector
-[mu,eta]=run_yalmip(freqs,12,48);
+[mu,eta]=run_yalmip(freqs,Nmeas,n);
 tau = (1:n)/n - 1/n;
 
 % convert to time (units of days)
