@@ -4,8 +4,8 @@
 #' For a given frequency and amplitude, returns the lowest value of the power across all acrophases.
 #'
 #' @param t vector of measurement times in same units as \code{param$freq}
-#' @param param$freq frequency of signal in same units as \code{t}
-#' @param param$Amp amplitude of signal
+#' @param freq frequency of signal in same units as \code{t}
+#' @param Amp amplitude of signal
 #' @param alpha type I error rate, by default \code{alpha=0.05}
 #' @param method by default, \code{method='eig'} uses eigenvalue method for computing the worstcase noncentrality parameter
 #'
@@ -21,9 +21,7 @@
 #' @examples
 #' # Worst-case power for a study with equispaced 24 timepoints
 #' evalWorstPower(mt=1:24,param=list(Amp=1,freq=1/24))
-evalWorstPower=function(mt,param,alpha=.05,method=c('eig','test')){
-  Amp    = param[['Amp']]
-  freq   = param[['freq']]
+evalWorstPower=function(mt,freq,Amp,alpha=.05,method=c('eig','test')){
   N      = length(t)
   method=match.arg(method)
   if (length(freq)>1){
@@ -36,16 +34,14 @@ evalWorstPower=function(mt,param,alpha=.05,method=c('eig','test')){
     b       = matrix(c(sum(cos(2*pi*freq*mt)),sum(sin(2*pi*freq*mt))),ncol=1)
     invB    = D - b%*%t(b)/length(mt)
     ncp     = eigen(invB)$values |> min() |> (\(x){x*Amp^2})()
-    min_pwr = evalExactPower(mt,param,method='ncp',lambda_in=ncp)
+    min_pwr = evalExactPower(mt,freq,Amp,acro=NaN,method='ncp',lambda_in=ncp)
     min_pwr
   }else if(method=='test'){
     Nacro = 2^12
     acro = seq(0,2*pi,length.out=Nacro+1)
     acro = acro[1:Nacro]
     min_pwr= acro |> sapply(function(phi){
-      ploc      = param
-      ploc$acro = phi
-      return(evalExactPower(mt,ploc,alpha))
+      return(evalExactPower(mt,Amp=Amp,freq=freq,acro=phi,alpha))
     }) |> min()
     min_pwr
   }

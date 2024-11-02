@@ -7,9 +7,9 @@
 evalMinEig(t, freq)
 }
 \arguments{
-\item{t}{vector of measurement times assumed to lie in interval [0,1]}
+\item{t}{vector of measurement times in same units as \code{freq}}
 
-\item{freq}{frequency of signal}
+\item{freq}{frequency of signal in same units as \code{t}}
 }
 \value{
 minimum eigenvalue of the power matrix

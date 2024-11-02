@@ -6,14 +6,22 @@
 \usage{
 evalExactPower(
   t,
-  param,
+  freq,
+  acro,
+  Amp,
   alpha = 0.05,
   method = c("schur", "ncp", "equispaced"),
   lambda_in = NULL
 )
 }
 \arguments{
-\item{t}{vector of measurement times assumed to lie in interval [0,1]}
+\item{t}{vector of measurement times in same units as \code{param$freq}}
+
+\item{freq}{frequency of signal in same unitsr as \code{t}}
+
+\item{acro}{phase of signal in radians}
+
+\item{Amp}{amplitude of signal}
 
 \item{alpha}{type I error, by default \code{alpha=.05}}
 
@@ -22,12 +30,6 @@ evalExactPower(
 
 \item{lambda_in}{allows user to specify the noncentrality parameter instead of
 calculating it from parameters of the signal.}
-
-\item{param$Amp}{amplitude of signal}
-
-\item{param$freq}{frequency of signal}
-
-\item{param$acro}{phase of signal in radians}
 }
 \value{
 Statistical power

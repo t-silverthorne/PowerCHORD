@@ -4,18 +4,18 @@
 \alias{evalMinEigMultiFreq}
 \title{Get worst eigenvalue across multiple frequencies}
 \usage{
-evalMinEigMultiFreq(mt, param, alpha = 0.05)
+evalMinEigMultiFreq(mt, fmin, fmax, Nfreq, alpha = 0.05)
 }
 \arguments{
+\item{fmin}{minium frequency, same units as \code{t}}
+
+\item{fmax}{maximum frequency, same units as \code{t}}
+
+\item{Nfreq}{number of points to use for discretising \code{[fmin,fmax]} interval}
+
 \item{alpha}{type I error rate, by default \code{alpha=0.05}}
 
-\item{t}{vector of measurement times assumed to lie in interval [0,1]}
-
-\item{param$fmin}{minium frequency}
-
-\item{param$fmax}{maximum frequency}
-
-\item{param$Nfreq}{number of points to use for discretising \code{[fmin,fmax]} interval}
+\item{t}{vector of measurement times, same units as \code{freq}}
 }
 \value{
 minimum eigenvalue of the power matrix across the interval \code{[fmin,fmax]}

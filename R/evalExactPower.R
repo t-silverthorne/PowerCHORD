@@ -6,9 +6,9 @@
 #'
 #'
 #' @param t vector of measurement times in same units as \code{param$freq}
-#' @param param$freq frequency of signal in same unitsr as \code{t}
-#' @param param$Amp amplitude of signal
-#' @param param$acro phase of signal in radians
+#' @param freq frequency of signal in same unitsr as \code{t}
+#' @param acro phase of signal in radians
+#' @param Amp amplitude of signal
 #' @param alpha type I error, by default \code{alpha=.05}
 #' @param method method for computing non-centrality parameter, by default
 #' \code{method='schur'} uses the Schur complement formula.
@@ -33,16 +33,12 @@
 #' # The power for a 24hr study sampled every hour, testing for p<0.05
 #' evalExactPower(t=1:24,param=list(Amp=1,acro=0,freq=1/24))
 #'
-evalExactPower <- function(t,param,alpha=.05,method=c('schur','ncp','equispaced'),lambda_in=NULL){
+evalExactPower <- function(t,freq,acro,Amp,alpha=.05,method=c('schur','ncp','equispaced'),lambda_in=NULL){
 # return power of one-frequency cosinor model
 
   # Input checks
-  if(!all(sapply(param,length)==1)) stop("All param must be length 1 (one design/condition)")
   method=match.arg(method)
 
-  Amp    = param[['Amp']]
-  freq   = param[['freq']]
-  acro   = param[['acro']]
   N      = length(t)
 
   if (!is.null(lambda_in)&method!='ncp'){

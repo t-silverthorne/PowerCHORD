@@ -4,32 +4,20 @@
 \alias{evalMonteCarloPower}
 \title{Use Monte Carlo method to estimate power}
 \usage{
-evalMonteCarloPower(
-  tvec,
-  param,
-  Nmc,
-  alpha = 0.05,
-  method = c("Ftest", "perm"),
-  Nperm = 100
-)
+evalMonteCarloPower(tvec, freq, acro, Amp, Nmc, alpha = 0.05)
 }
 \arguments{
-\item{tvec}{vector of measurement times}
+\item{tvec}{vector of measurement times in same units as \code{param$freq}}
+
+\item{freq}{frequency fo signal in same units as \code{t}}
+
+\item{acro}{phase of signal in radians}
+
+\item{Amp}{amplitude of signal}
 
 \item{Nmc}{number of Monte Carlo samples}
 
 \item{alpha}{type I error, default value \code{alpha=.05}}
-
-\item{method}{set to \code{method='Ftest'} for F-test or \code{method='perm'} for
-permutation based hypothesis test}
-
-\item{Nperm}{number of permutations to use for permutation based test}
-
-\item{param$Amp}{amplitude of signal}
-
-\item{param$freq}{frequency fo signal}
-
-\item{param$acro}{phase of signal in radians}
 }
 \value{
 Monte Carlo estimate of power

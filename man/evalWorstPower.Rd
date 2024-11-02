@@ -4,18 +4,18 @@
 \alias{evalWorstPower}
 \title{Evaluate worst-case power}
 \usage{
-evalWorstPower(mt, param, alpha = 0.05, method = c("eig", "test"))
+evalWorstPower(mt, freq, Amp, alpha = 0.05, method = c("eig", "test"))
 }
 \arguments{
+\item{freq}{frequency of signal in same units as \code{t}}
+
+\item{Amp}{amplitude of signal}
+
 \item{alpha}{type I error rate, by default \code{alpha=0.05}}
 
 \item{method}{by default, \code{method='eig'} uses eigenvalue method for computing the worstcase noncentrality parameter}
 
-\item{t}{vector of measurement times assumed to lie in interval [0,1]}
-
-\item{param$Amp}{amplitude of signal}
-
-\item{param$freq}{frequency of signal}
+\item{t}{vector of measurement times in same units as \code{param$freq}}
 }
 \value{
 minimum power

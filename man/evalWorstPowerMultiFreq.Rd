@@ -4,21 +4,31 @@
 \alias{evalWorstPowerMultiFreq}
 \title{Evaluate worst-case power across multiple frequencies}
 \usage{
-evalWorstPowerMultiFreq(mt, param, alpha = 0.05, returnType = c("min", "all"))
+evalWorstPowerMultiFreq(
+  mt,
+  Amp,
+  fmin,
+  fmax,
+  Nfreq,
+  alpha = 0.05,
+  returnType = c("min", "all")
+)
 }
 \arguments{
+\item{Amp}{amplitude of signal}
+
+\item{fmin}{minimum frequency under consideration, same units as \code{t}}
+
+\item{fmax}{maximum frequency under consideration, same units as \code{t}}
+
+\item{Nfreq}{number of frequencies to use in discretization}
+
 \item{alpha}{type I error rate, by default \code{alpha=0.05}}
 
 \item{returnType}{either \code{'min'} which returns the worst-case power across frequency and acrophase
 or \code{'all'} which returns the worst case power of each frequency}
 
-\item{t}{vector of measurement times assumed to lie in interval [0,1]}
-
-\item{param$Amp}{amplitude of signal}
-
-\item{param$fmin}{minimum frequency under consideration}
-
-\item{param$fmax}{maximum frequency under consideration}
+\item{t}{vector of measurement times, same units as \code{param$fmin} and \code{param$fmax}}
 }
 \value{
 minimum power across acrophase and frequency range

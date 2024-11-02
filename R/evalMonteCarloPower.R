@@ -7,19 +7,16 @@
 #' see [evalExactPower()].
 #'
 #' @param tvec vector of measurement times in same units as \code{param$freq}
-#' @param param$freq frequency fo signal in same units as \code{t}
-#' @param param$Amp amplitude of signal
-#' @param param$acro phase of signal in radians
+#' @param freq frequency fo signal in same units as \code{t}
+#' @param acro phase of signal in radians
+#' @param Amp amplitude of signal
 #' @param Nmc number of Monte Carlo samples
 #' @param alpha type I error, default value \code{alpha=.05}
 #'
 #' @return Monte Carlo estimate of power
 #' @author Turner Silverthorne
 #' @export
-evalMonteCarloPower<-function(tvec,param,Nmc,alpha=.05){
-  Amp  = param$Amp
-  freq = param$freq
-  acro = param$acro
+evalMonteCarloPower<-function(tvec,freq,acro,Amp,Nmc,alpha=.05){
   Ydat = t(replicate(Nmc,{Amp*cos(2*pi*freq*tvec -acro) + rnorm(length(tvec))}))
   pwr  = mean(matrixTests::row_cosinor(Ydat,tvec,1/freq)$pvalue < alpha)
   return(pwr)
