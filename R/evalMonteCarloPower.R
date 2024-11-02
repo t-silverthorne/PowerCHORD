@@ -17,14 +17,10 @@
 #' @author Turner Silverthorne
 #' @export
 evalMonteCarloPower<-function(tvec,param,Nmc,alpha=.05){
-  method = match.arg(method)
-
   Amp  = param$Amp
   freq = param$freq
   acro = param$acro
   Ydat = t(replicate(Nmc,{Amp*cos(2*pi*freq*tvec -acro) + rnorm(length(tvec))}))
-  if (method=='Ftest'){
-    pwr  = mean(matrixTests::row_cosinor(Ydat,tvec,1/freq)$pvalue < alpha)
-  }
+  pwr  = mean(matrixTests::row_cosinor(Ydat,tvec,1/freq)$pvalue < alpha)
   return(pwr)
 }

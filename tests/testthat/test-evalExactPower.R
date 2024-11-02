@@ -12,6 +12,6 @@ test_that("compare with monte carlo", {
   Nperm   = Npcands[which.min(abs(Npcands-8*sqrt(Nmc)))]
 
   pwr_exact = evalExactPower(mt,param,al_val)
-  pwr_MC1 = evalMonteCarloPower(mt,param,Nmc,al_val,method='Ftest')
+  pwr_MC1 = evalMonteCarloPower(mt,param,Nmc,al_val)
   expect_equal(pwr_exact,pwr_MC1,tolerance = 1e-2)
 })
