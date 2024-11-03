@@ -48,7 +48,7 @@ exhaustiveSearch = function(N,Nfine=48,wlen,wdensity=1,
   if (is.null(db_fname)){
     dbdir=tempdir()
     command = paste("c_src/necklaces_cmd 2", Nfine, "2 NA", N,
-                    "| tr -d \' \' >",
+                    ">",
       paste0(dbdir,"/cNecks_", Nfine, "_", N, ".txt"))
     db_fname = paste0(dbdir,"/cNecks_", Nfine, "_", N, ".txt")
     system(command)
