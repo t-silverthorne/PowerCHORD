@@ -11,8 +11,6 @@
 #' @param wlen length of the low-measurement window
 #' @param wdensity number of measurements allowed in low-measurement window
 #' @param freq frequency of signal
-#' @param db_fname if \code{db_fname=NULL} the C program will be called to generate the exhaustive list of solutions
-#' otherwise \code{db_fname} this variable should specify the path to the exhaustive list.
 #' @param returnType if \code{returnType='optimal'} only the optimal solution is returned,
 #' if \code{returnType='all'} then a dataframe containing one representative of each equivalence class
 #' consistent with the timing constraint will be returned
@@ -31,8 +29,8 @@
 #' @export
 
 exhaustiveSearch = function(N,Nfine=48,wlen,wdensity=1,
-                            freq=1,db_fname=NULL,returnType=c('optimal','all'),
-                            cleanTempDir=F,flines=1e6){
+                            freq=1,returnType=c('optimal','all'),
+                            flines=1e6){
   returnType=match.arg(returnType)
   # Check for correct setup
   if(!file.exists("c_src/necklaces_cmd.c")) stop("The working directory must be set to the PowerCHORD root directory for exhaustiveSearch usage")
@@ -43,20 +41,14 @@ exhaustiveSearch = function(N,Nfine=48,wlen,wdensity=1,
     system('rm output_*.txt')
   }
 
-  # call C function to generate database in R temp directory
-  # TODO: should cleanup tmpdir after?
-  if (is.null(db_fname)){
-    dbdir=tempdir()
-    command = paste("c_src/necklaces_cmd 2", Nfine, "2 NA", N,
-                    ">",
-      paste0(dbdir,"/cNecks_", Nfine, "_", N, ".txt"))
-    db_fname = paste0(dbdir,"/cNecks_", Nfine, "_", N, ".txt")
-    system(command)
-  }
-
-  # filter database
-  filt_cmd = paste('awk -f "c_src/necklace_filt.awk" ',wlen,wdensity,Nfine,flines,db_fname)
-  system(filt_cmd)
+  command = paste("c_src/necklaces_cmd 2", Nfine, "2 NA", N,
+                  " | awk",
+                  "-v",paste0("width=",wlen),
+                  "-v",paste0("density=",wdensity),
+                  "-v",paste0("nfine=",Nfine),
+                  "-v",paste0("flines=",flines),
+                  "-f c_src/neckfilt.awk")
+  system(command)
 
   # read database into memory
   files=list.files(pattern = "output_\\d+\\.txt")
@@ -70,10 +62,6 @@ exhaustiveSearch = function(N,Nfine=48,wlen,wdensity=1,
 
   # based on returnType find optimal design or return all designs
   tau = c(1:Nfine)/Nfine-1/Nfine
-
-  if (cleanTempDir){
-    system(paste('rm',db_fname))
-  }
 
   if (returnType=='optimal'){
     best_idx = df |> apply(1,function(x){

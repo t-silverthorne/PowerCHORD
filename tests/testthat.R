@@ -8,5 +8,5 @@
 library(testthat)
 #library(PowerCHORD)
 getwd()
-test_path()
+#test_path()
 test_check("PowerCHORD")
