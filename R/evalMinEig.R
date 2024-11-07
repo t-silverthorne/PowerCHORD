@@ -17,7 +17,7 @@
 #' @export
 evalMinEig <- function(t,freq,design=c('general','equispaced')){
   design=match.arg(design)
-  if (design=='equispaced' & freq ==length(t)/2){
+  if (design=='equispaced' &(freq %% length(t)/2)==0){
     mineig = 0
   }else{
     Xr     = matrix(c(cos(2*pi*freq*t),sin(2*pi*freq*t)),ncol=2)

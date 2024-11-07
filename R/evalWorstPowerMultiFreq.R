@@ -23,7 +23,7 @@ evalWorstPowerMultiFreq=function(mt,Amp,fmin,fmax,Nfreq,alpha=.05,
   returnType=match.arg(returnType)
 
   worst_pwrs=freqs |> sapply(function(freq){
-    evalWorstPower(mt,Amp=Amp,freq=freq,alpha,'eig',design)
+    evalWorstPower(mt,Amp=Amp,freq=freq,alpha,'eig',design=design)
   })
 
   if (returnType=='min'){
