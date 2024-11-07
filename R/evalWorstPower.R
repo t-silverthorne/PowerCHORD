@@ -41,7 +41,7 @@ evalWorstPower=function(mt,freq,Amp,alpha=.05,method=c('eig','test')){
     acro = seq(0,2*pi,length.out=Nacro+1)
     acro = acro[1:Nacro]
     min_pwr= acro |> sapply(function(phi){
-      return(evalExactPower(mt,Amp=Amp,freq=freq,acro=phi,alpha))
+      return(evalPower(mt,Amp=Amp,freq=freq,acro=phi,alpha))
     }) |> min()
     min_pwr
   }

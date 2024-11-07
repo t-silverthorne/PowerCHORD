@@ -1,4 +1,4 @@
-#' Evaluate exact power of cosinor model.
+#' Evaluate power of cosinor model using a closed-form expression.
 #'
 #' @description
 #' Returns exact power of one-frequency harmonic regression hypothesis test
@@ -33,7 +33,7 @@
 #' # The power for a 24hr study sampled every hour, testing for p<0.05
 #' evalExactPower(t=1:24,param=list(Amp=1,acro=0,freq=1/24))
 #'
-evalExactPower <- function(t,freq,acro,Amp,alpha=.05,method=c('schur','ncp','equispaced'),lambda_in=NULL){
+evalPower <- function(t,freq,acro,Amp,alpha=.05,method=c('schur','ncp','equispaced'),lambda_in=NULL){
 # return power of one-frequency cosinor model
 
   # Input checks
