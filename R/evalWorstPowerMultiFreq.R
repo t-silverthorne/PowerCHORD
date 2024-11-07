@@ -11,17 +11,19 @@
 #' @param Nfreq number of frequencies to use in discretization
 #' @param alpha type I error rate, by default \code{alpha=0.05}
 #' @param returnType either \code{'min'} which returns the worst-case power across frequency and acrophase
+#TODO: explain design
 #' or \code{'all'} which returns the worst case power of each frequency
 #'
 #' @return minimum power across acrophase and frequency range
 #' @author Turner Silverthorne
 #' @export
-evalWorstPowerMultiFreq=function(mt,Amp,fmin,fmax,Nfreq,alpha=.05,returnType=c('min','all')){
+evalWorstPowerMultiFreq=function(mt,Amp,fmin,fmax,Nfreq,alpha=.05,
+                                 returnType=c('min','all'),design=c('general','equispaced')){
   freqs = seq(from=fmin,to=fmax,length.out=Nfreq)
   returnType=match.arg(returnType)
 
   worst_pwrs=freqs |> sapply(function(freq){
-    evalWorstPower(mt,Amp=Amp,freq=freq,alpha,'eig')
+    evalWorstPower(mt,Amp=Amp,freq=freq,alpha,'eig',design)
   })
 
   if (returnType=='min'){

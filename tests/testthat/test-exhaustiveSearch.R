@@ -32,10 +32,11 @@ test_that("correct number of solutions", {
 })
 
 test_that("globally optimal value", {
-  N = sample(c(4:12),1)
-  bv = exhaustiveSearch(N=N,Nfine=24,wlen=1,wdensity = 1,
+  N = sample(c(4,6,8,10),1)
+  Nfine = 2*N
+  bv = exhaustiveSearch(N=N,Nfine=Nfine,wlen=1,wdensity = 1,
                    returnType = 'optimal')
-  tau = c(1:24)/24-1/24
+  tau = c(1:Nfine)/Nfine-1/Nfine
   expect_equal(evalMinEig(tau[bv>0],1),N/2)
 })
 
