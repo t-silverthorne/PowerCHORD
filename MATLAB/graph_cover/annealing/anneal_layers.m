@@ -2,9 +2,9 @@ clear;
 addpath('../')
 nLayer = 3;
 
-nvec = [4 4 48];
-mvec = [3 3 1];
-Tvec = [4 4 24];
+nvec = [4 4 8*7*4*12];
+mvec = [8 8 1];
+Tvec = [8 8*7*4 8*7*4*12];
 nLayer = length(Tvec);
 x = struct();
 
@@ -26,19 +26,19 @@ for ii=1:nLayer
 end
 x.nvec=nvec;x.mvec=mvec;x.Tvec=Tvec;
 
-cFun_wrap = @(x) cFun_layer(x.Pcell,x.Dmats);
-
-x=annealFun_layer(x,.1);
+cFun_wrap = @(x) cFun_layer(x.Pcell,x.Dmats,x.Tvec);
 
 maxiter=1e6;
 tic
-Tnow = 20; % intial temperature
-beta = .99999;
-fX   = cFun_wrap(x);
+Tnow = 100; % intial temperature
+beta = .999;
+fX   = cFun_wrap(x)
+
+Tnow = fX/1e2;
 t    = 1;
 continue_bin = true;
 while t<maxiter && continue_bin
-    y = annealFun_layer(x,.01);
+    y = annealFun_layer(x,.1);
     fY = cFun_wrap(y);
     alpha=min( exp( - (fY - fX )/Tnow) , 1);
     if rand<=alpha
@@ -49,10 +49,13 @@ while t<maxiter && continue_bin
         end
     end
     Tnow=beta*Tnow;
-    if mod(t,1e5)==0
-        Tnow=Tnow*9.9;
+    if mod(t,1e4)==0 | (Tnow < 1e-3 & fX>10)
+        Tnow=max(fX/1e2,Tnow*10);
     end
-    fprintf('%f \n',fX)
+    if mod(t,100)==0
+        fprintf('Cost %f   Temp: %f   Perc: %f \n', ...
+            fX,Tnow,100*t/maxiter)
+    end
     t=t+1;
 end
 toc

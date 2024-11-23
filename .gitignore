@@ -49,3 +49,5 @@ po/*~
 rsconnect/
 
 temp/
+
+**.asv
