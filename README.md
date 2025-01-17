@@ -15,7 +15,7 @@ MATLAB wrapper for [YALMIP](https://yalmip.github.io) optimization toolbox. Usin
 
 Please cite the manuscript [Silverthorne et al, 2024](https://www.biorxiv.org/content/10.1101/2024.05.19.594858v1.abstract) which contains details concerning the analysis and optimization methods in this package.
 
-The code for generating the figures in our manuscript is stored in a separate repository which includes PowerCHORD as a Git submodule. If you are interested in recreating the figures, please consult the [dedicated repository](https://github.com/t-silverthorne/PowerCHORDFigures).
+**Manuscript figures |** The code for generating the figures in our manuscript is stored in a separate repository which includes PowerCHORD as a Git submodule. If you are interested in recreating the figures, please consult the [dedicated repository](https://github.com/t-silverthorne/PowerCHORDFigures).
 
 ## Installation of the PowerCHORD R package for power analysis
 
@@ -29,8 +29,7 @@ Exact power of a design can then be evaluated, e.g. with `evalExactPower`:
 
 ```r
 t=1:24 # Sampling every hour for 24 hours
-param=list(Amp=1,acro=0,freq=1/24) # Oscillation parameters
-evalExactPower(t,param)
+evalPower(t,Amp=1,acro=0,freq=1/24)
 ```
 
 ```
