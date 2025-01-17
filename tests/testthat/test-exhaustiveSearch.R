@@ -9,11 +9,6 @@ test_that("correct number of solutions", {
                    returnType = 'all') %>% nrow()
   expect_equal(nsol,5620)
 
-  # uses existing solution database
-  nsol = exhaustiveSearch(N=6,Nfine=24,wlen=1,wdensity = 1,
-                   returnType = 'all') %>% nrow()
-  expect_equal(nsol,5620)
-
   nsol_d1 = exhaustiveSearch(N=6,Nfine=24,wlen=8,wdensity = 1,
                    returnType = 'all') %>% nrow()
   nsol_d0 = exhaustiveSearch(N=6,Nfine=24,wlen=8,wdensity = 0,

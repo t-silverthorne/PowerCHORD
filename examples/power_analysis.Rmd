@@ -22,9 +22,9 @@ Specify signal parameters and compare exact vs an approximate Monte Carlo power 
 Amp  = 2              # signal amplitude
 freq = 1              # frequency
 acro = pi             # acrophase
-param = list(freq=freq,Amp=Amp,acro=acro)
-evalExactPower(mt,param)
-evalMonteCarloPower(mt,param,1e4)
+Nmc  = 1e5            # number of Monte Carlo samples
+evalPower(mt,freq=freq,Amp=Amp,acro=acro)
+evalMonteCarloPower(mt,freq=freq,Amp=Amp,acro=acro,Nmc=Nmc)
 ```
 
 ## Circadian study with random measurements
@@ -32,23 +32,25 @@ evalMonteCarloPower(mt,param,1e4)
 Same measurement budget as above but now measurements are collected at random time intervals
 ```{r}
 mt_rand = runif(N)
-evalExactPower(mt_rand,param)
+evalPower(mt_rand,freq=freq,Amp=Amp,acro=acro)
 ```
 
 
 ## Worst case power
 Given an experimental design, find the lowest power across all acrophases for signals of a fixed frequency and amplitude.
 ```{r}
-evalWorstPower(mt,param)
+# only requires frequency and amplitude since it is looking for
+#    minimum power across all acrophases
+evalWorstPower(mt,freq=freq,Amp=Amp) 
 ```
 
 As the frequency approaches the Nyquist rate, we should expect worst-case power of an equispaced design to drop to the type I error rate
 ```{r}
 fNyq=4 # Nyquist rate of 8 measurement equispaced
-scales = c(.5,.8,.9,.95,.99,.999)
+scales = c(.5,.8,.9,.95,.99,.999) # frequency scales
 for (scale in scales){
-  param$freq=fNyq*scale
-  wcp=evalWorstPower(mt,param)
+  freq_loc=fNyq*scale
+  wcp=evalWorstPower(mt,freq=freq_loc,Amp=Amp) 
   print(paste0('At ', 100*scale, '% of Nyquist freq, worst-case power = ',round(wcp,3)))
 }
 ```
@@ -62,12 +64,11 @@ thresh      = .8
 N           = 4
 freq        = 1
 Amp         = 1
-param       = list(freq=freq,Amp=Amp)
 low_power   = T
 while (low_power){
   mt        = c(1:N)/N - 1/N
-  wcp       =  evalWorstPower(mt,param)
-  low_power = evalWorstPower(mt,param)<thresh
+  wcp       = evalWorstPower(mt,freq=freq,Amp=Amp)
+  low_power = wcp<thresh
   N         = N+1
 }
 print(paste0('Design with ', N,' measurements achieves ', round(wcp,4) , ' worst-case power.'))
