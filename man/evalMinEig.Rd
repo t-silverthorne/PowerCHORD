@@ -4,12 +4,14 @@
 \alias{evalMinEig}
 \title{Evaluate smallest eigenvalue of power matrix.}
 \usage{
-evalMinEig(t, freq)
+evalMinEig(t, freq, design = c("general", "equispaced"))
 }
 \arguments{
 \item{t}{vector of measurement times in same units as \code{freq}}
 
 \item{freq}{frequency of signal in same units as \code{t}}
+
+\item{design}{either \code{general} or \code{equispaced}}
 }
 \value{
 minimum eigenvalue of the power matrix

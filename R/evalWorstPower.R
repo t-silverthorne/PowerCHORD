@@ -8,8 +8,8 @@
 #' @param Amp amplitude of signal
 #' @param alpha type I error rate, by default \code{alpha=0.05}
 #' @param method by default \code{method='eig'} uses eigenvalue method for computing the worstcase noncentrality parameter
-#TODO: fill this description in
-#' @param design
+#' @param design by default \code{design='general'} uses the general power formula. If you are interested in seeing
+#' the discrepancy between the general formula and equispaced formula, use \code{design='equispaced'}.
 #' @return minimum power
 #'
 #' @note User can change method to \code{method='test'} to instead compute minimum power by discretising

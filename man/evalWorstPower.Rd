@@ -4,7 +4,14 @@
 \alias{evalWorstPower}
 \title{Evaluate worst-case power}
 \usage{
-evalWorstPower(mt, freq, Amp, alpha = 0.05, method = c("eig", "test"))
+evalWorstPower(
+  mt,
+  freq,
+  Amp,
+  alpha = 0.05,
+  method = c("eig", "test"),
+  design = c("general", "equispaced")
+)
 }
 \arguments{
 \item{freq}{frequency of signal in same units as \code{t}}
@@ -13,7 +20,10 @@ evalWorstPower(mt, freq, Amp, alpha = 0.05, method = c("eig", "test"))
 
 \item{alpha}{type I error rate, by default \code{alpha=0.05}}
 
-\item{method}{by default, \code{method='eig'} uses eigenvalue method for computing the worstcase noncentrality parameter}
+\item{method}{by default \code{method='eig'} uses eigenvalue method for computing the worstcase noncentrality parameter}
+
+\item{design}{by default \code{design='general'} uses the general power formula. If you are interested in seeing
+the discrepancy between the general formula and equispaced formula, use \code{design='equispaced'}.}
 
 \item{t}{vector of measurement times in same units as \code{param$freq}}
 }

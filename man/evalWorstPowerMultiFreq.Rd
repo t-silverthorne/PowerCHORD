@@ -11,7 +11,8 @@ evalWorstPowerMultiFreq(
   fmax,
   Nfreq,
   alpha = 0.05,
-  returnType = c("min", "all")
+  returnType = c("min", "all"),
+  design = c("general", "equispaced")
 )
 }
 \arguments{
