@@ -25,7 +25,12 @@ PowerCHORD can be installed in R with devtools:
 devtools::install_github("t-silverthorne/PowerCHORD")
 ```
 
-Exact power of a design can then be evaluated, e.g. with `evalExactPower`:
+Or if you are working inside this repository:
+```{r}
+devtools::install()
+```
+
+Once PowerCHORD is installed, the exact power of a design can then be evaluated, e.g. with `evalPower`:
 
 ```r
 t=1:24 # Sampling every hour for 24 hours
