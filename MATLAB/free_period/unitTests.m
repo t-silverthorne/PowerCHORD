@@ -22,3 +22,6 @@ y      = y + randn(size(y));
 n =5
 Lmat = idxToLehmer(0:(factorial(n)-1),n);
 lehmerToPerm(Lmat)
+
+%% freq window matches singles
+%% paged freq window
