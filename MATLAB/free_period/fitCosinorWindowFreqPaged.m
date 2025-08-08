@@ -17,10 +17,18 @@ switch method
     case 'grid'
         X            = [ones(length(tt),1,Nfreq) cos(2*pi*freqs.*tt) sin(2*pi*freqs.*tt)];
         bhat         = pagemldivide(X,y);
-        rss          = pagenorm(y-pagemtimes(X,bhat),2);
-        [rss_est,mm] = min(rss,3); % take min on freq dim
+        rss          = pagenorm(y-pagemtimes(X,bhat),2).^2;
+        [rss_est,mm] = min(rss,[],3); % take min on freq dim
         FREQS        = freqs.*ones(size(rss));
         freq_est     = FREQS(mm);
-        beta_est     = bhat(mm);
+        [~,~,~,n4,n5] = size(y);
+        m2d = squeeze(mm);
+        m2d = reshape(m2d,[n4,n5]);
+        beta_est = NaN(3,1,1,n4,n5);
+        for ii=1:n4
+            for jj=1:n5
+                beta_est(:,:,:,ii,jj)=bhat(:,:,m2d(ii,jj),ii,jj);
+            end
+        end
 end
 end

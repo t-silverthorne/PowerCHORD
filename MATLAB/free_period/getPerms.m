@@ -1,11 +1,12 @@
-function Lmat = getPerms(Nmeas,Nperm,pdim)
+function Lmat = getPerms(Nmeas,Nperm,pdim,replace)
 %GETPERMS use Lehmer codes for fast permutation generation
 arguments
     Nmeas;
     Nperm;
     pdim  = 2;
+    replace = true;
 end
-inds = randsample(factorial(Nmeas),Nperm);
+inds = randsample(factorial(Nmeas),Nperm,replace);
 Lmat = idxToLehmer(inds,Nmeas);
 Lmat = lehmerToPerm(Lmat);
 if pdim >=3

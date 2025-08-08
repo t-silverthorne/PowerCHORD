@@ -16,7 +16,7 @@ switch method
     case 'grid'
         X        = [ones(length(tt),1,Nfreq) cos(2*pi*freqs.*tt) sin(2*pi*freqs.*tt)];
         bhat     = pagemldivide(X,y);
-        rss      = pagenorm(y-pagemtimes(X,bhat),2);
+        rss      = pagenorm(y-pagemtimes(X,bhat),2).^2;
         [rss_est,mm] = min(rss);
         freq_est = freqs(mm);
         beta_est = bhat(:,:,mm);
