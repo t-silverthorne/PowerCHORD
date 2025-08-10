@@ -104,25 +104,33 @@ pval           = mean(rss_perm<rss_obs,2);
 mean(pval<.05)
 toc
 %% alt test statistic
-Nmeas = 10;
+Nmeas = 20;
 rng('default')
-tt    = rand(Nmeas,1);
-nrep  = 1e2;
+% tt    = linspace(0,1,Nmeas+1);
+% tt    = tt(1:end-1)';
+tt = rand(Nmeas,1)
+nrep  = 5e2;
 pval  = NaN(nrep,1);
 fmin  = 1;
-fmax  = 10;
-Nfreq = 10;
-Nperm = 1e2;
+fmax  = 8;
+Nfreq = 100;
+Nperm = 2e3;
 
-Amp = 5
+meth_loc = 'Amp-L2'
+Amp      = 1;
 tic
 y              = Amp*cos(2*pi*tt)+randn(Nmeas,1,1,nrep,1);
 Yperm          = perm5d(y,Nperm);
-[~,~,rss_obs]  = fitCosinorWindowFreqPaged(tt,y,fmin,fmax,Nfreq,'Amp-L2');
-[~,~,rss_perm] = fitCosinorWindowFreqPaged(tt,Yperm,fmin,fmax,Nfreq,'Amp-L2');
+[~,~,rss_obs]  = fitCosinorWindowFreqPaged(tt,y,fmin,fmax,Nfreq,meth_loc);
+[~,~,rss_perm] = fitCosinorWindowFreqPaged(tt,Yperm,fmin,fmax,Nfreq,meth_loc);
 rss_perm       = squeeze(rss_perm);
 rss_obs        = squeeze(rss_obs);
-pval           = mean(rss_perm>rss_obs,2);
+
+if strcmp(meth_loc,'Amp-L2')
+    pval           = mean(rss_perm>rss_obs,2);
+else
+    pval           = mean(rss_perm<rss_obs,2);
+end
 mean(pval<.05)
 toc
 

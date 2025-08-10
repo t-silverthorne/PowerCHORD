@@ -4,21 +4,22 @@ rng('default')
 % exact power
 n     = 22;
 tt    = rand(n,1);
-Amp   = 1.75;
+Amp   = 1.25;
 alpha = .06;
 acro  = pi/2;
 freq  = 1.5;
 fprintf('Exact:        %d\n',evalFtestPower(tt,freq,acro,Amp,alpha))
 
 % Monte Carlo power
-Nperm = 5e3;
-nrep  = 1e1;
+Nperm = 1e4;
+nrep  = 1e2;
 nloop = 1e2;
 fmin  = freq;
 fmax  = freq;
 Nfreq = 1;
 pval  = [];
 for ll = 1:nloop
+    ll
     y              = Amp*cos(2*pi*freq*tt-acro)+randn(n,1,1,nrep,1);
     Yperm          = perm5d(y,Nperm);
     [~,~,rss_obs]  = fitCosinorWindowFreqPaged(tt,y,fmin,fmax,Nfreq);
