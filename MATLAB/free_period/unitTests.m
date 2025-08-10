@@ -61,34 +61,69 @@ aa
 fmin  = 1;
 fmax  = 1;
 Nfreq = 1;
-Nperm = 5000;
+Nperm = 1e3;
 Nmeas = 10;
 
 tt = rand(Nmeas,1);
 nrep = 1e3;
 pval = NaN(nrep,1);
-
+fmin = 1;
+fmax = 10;
+Nfreq =1e2;
 % not vectorised
-tic
-for ii=1:nrep
-    y = randn(Nmeas,1,1,1,1);
-    Yperm = perm5d(y,Nperm);
-    [~,~,rss_obs]=fitCosinorWindowFreq(tt,y,1,1,1);
-    [~,~,rss_perm]=fitCosinorWindowFreqPaged(tt,Yperm,1,1,1);
-    rss_perm =squeeze(rss_perm);
-    pval(ii) = mean(rss_perm<rss_obs);
-end
-mean(pval<.05)
-toc
+% tic
+% for ii=1:nrep
+%     y = randn(Nmeas,1,1,1,1);
+%     Yperm = perm5d(y,Nperm);
+%     [~,~,rss_obs]=fitCosinorWindowFreq(tt,y,fmin,fmax,Nfreq);
+%     [~,~,rss_perm]=fitCosinorWindowFreqPaged(tt,Yperm,fmin,fmax,Nfreq);
+%     rss_perm =squeeze(rss_perm);
+%     pval(ii) = mean(rss_perm<rss_obs);
+% end
+% mean(pval<.05)
+% toc
 
-% vectorised
+%% vectorised
+Nmeas = 20;
+tt    = rand(Nmeas,1);
+nrep  = 1e2;
+pval  = NaN(nrep,1);
+fmin  = 1;
+fmax  = 10;
+Nfreq = 1e1;
+Nperm = 5e3;
+
 tic
 y              = randn(Nmeas,1,1,nrep,1);
 Yperm          = perm5d(y,Nperm);
-[~,~,rss_obs]  = fitCosinorWindowFreqPaged(tt,y,1,1,1);
-[~,~,rss_perm] = fitCosinorWindowFreqPaged(tt,Yperm,1,1,1);
+[~,~,rss_obs]  = fitCosinorWindowFreqPaged(tt,y,fmin,fmax,Nfreq);
+[~,~,rss_perm] = fitCosinorWindowFreqPaged(tt,Yperm,fmin,fmax,Nfreq);
 rss_perm       = squeeze(rss_perm);
 rss_obs        = squeeze(rss_obs);
 pval           = mean(rss_perm<rss_obs,2);
 mean(pval<.05)
 toc
+%% alt test statistic
+Nmeas = 10;
+rng('default')
+tt    = rand(Nmeas,1);
+nrep  = 1e2;
+pval  = NaN(nrep,1);
+fmin  = 1;
+fmax  = 10;
+Nfreq = 10;
+Nperm = 1e3;
+
+Amp = 5
+tic
+y              = Amp*cos(2*pi*tt)+randn(Nmeas,1,1,nrep,1);
+Yperm          = perm5d(y,Nperm);
+[~,~,rss_obs]  = fitCosinorWindowFreqPaged(tt,y,fmin,fmax,Nfreq,'mean-rss');
+[~,~,rss_perm] = fitCosinorWindowFreqPaged(tt,Yperm,fmin,fmax,Nfreq,'mean-rss');
+rss_perm       = squeeze(rss_perm);
+rss_obs        = squeeze(rss_obs);
+pval           = mean(rss_perm<rss_obs,2);
+mean(pval<.05)
+toc
+hist(pval,30)
+xlim([0,1])

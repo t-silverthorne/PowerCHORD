@@ -30,5 +30,12 @@ switch method
                 beta_est(:,:,:,ii,jj)=bhat(:,:,m2d(ii,jj),ii,jj);
             end
         end
+    case 'mean-rss'
+        X       = [ones(length(tt),1,Nfreq) cos(2*pi*freqs.*tt) sin(2*pi*freqs.*tt)];
+        bhat    = pagemldivide(X,y);
+        rss     = pagenorm(y-pagemtimes(X,bhat),2).^2;
+        rss_est = mean(rss,3); % take min on freq dim
+        beta_est =NaN;
+        freq_est =NaN;
 end
 end
