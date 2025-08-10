@@ -61,6 +61,7 @@ switch method
         M = (a1.*aa1 + A1).*(B1 + b1.*bb1) + ...
                 (a2.*aa2 + A2).*(B2 + b2.*bb2) + ...
                 (a3.*aa3 + A3).*(B3 + b3.*bb3);
+                    ;
     case 'slow'
         M = NaN(n,n,n,n);
         for ii=1:n
