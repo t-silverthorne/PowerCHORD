@@ -4,7 +4,7 @@ function M = getIsserlisTensor(C,mu,method)
 arguments
     C (:,:) double;
     mu (:,1) double;
-    method ='fast';
+    method ='loop';
 end
 
 if size(C,1)~=size(C,2)
@@ -13,7 +13,7 @@ end
 
 n = size(C,1);
 switch method
-    case 'fast'
+    case 'tensor'
         A1 = repmat(C, [1,1,n,n]); % first term
         B1 = reshape(C,[1,1,n,n]);
         B1 = repmat(B1,[n,n,1,1]);
@@ -42,16 +42,16 @@ switch method
             mu1.*mu2.*B1 + mu1.*mu3.*B2 + mu1.*mu4.*B3+ ...
             A1.*mu3.*mu4 + A2.*mu2.*mu4 + A3.*mu2.*mu3+ ...
                mu1.*mu2.*mu3.*mu4;
-    case 'slow'
-        error('Need to fix formula, use fast method for now')
+    case 'loop' % turns out to be faster for reasonably sized C
         M = NaN(n,n,n,n);
         for ii=1:n
             for jj=1:n
                 for kk=1:n
                     for ll=1:n
-                        M(ii,jj,kk,ll) = (mu(ii)*mu(jj) + C(ii,jj))*(mu(kk)*mu(ll) + C(kk,ll))+ ...
-                            (mu(ii)*mu(kk)+C(ii,kk)*(C(jj,ll) + mu(jj)*mu(ll))) + ...
-                            (mu(ii)*mu(ll)+C(ii,ll))*(C(jj,kk)+mu(jj)*mu(kk));
+                        M(ii,jj,kk,ll) =C(ii,jj)*C(kk,ll) +C(ii,kk)*C(jj,ll) + C(ii,ll)*C(jj,kk) + ...
+                            mu(ii)*mu(jj)*C(kk,ll) + mu(ii)*mu(kk)*C(jj,ll) + mu(ii)*mu(ll)*C(jj,kk)+...
+                            C(ii,jj)*mu(kk)*mu(ll) + C(ii,kk)*mu(jj)*mu(ll) + C(ii,ll)*mu(jj)*mu(kk)+...
+                            mu(ii)*mu(jj)*mu(kk)*mu(ll);
                     end
                 end
             end
