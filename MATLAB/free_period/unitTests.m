@@ -112,18 +112,20 @@ pval  = NaN(nrep,1);
 fmin  = 1;
 fmax  = 10;
 Nfreq = 10;
-Nperm = 1e3;
+Nperm = 1e2;
 
 Amp = 5
 tic
 y              = Amp*cos(2*pi*tt)+randn(Nmeas,1,1,nrep,1);
 Yperm          = perm5d(y,Nperm);
-[~,~,rss_obs]  = fitCosinorWindowFreqPaged(tt,y,fmin,fmax,Nfreq,'mean-rss');
-[~,~,rss_perm] = fitCosinorWindowFreqPaged(tt,Yperm,fmin,fmax,Nfreq,'mean-rss');
+[~,~,rss_obs]  = fitCosinorWindowFreqPaged(tt,y,fmin,fmax,Nfreq,'Amp-L2');
+[~,~,rss_perm] = fitCosinorWindowFreqPaged(tt,Yperm,fmin,fmax,Nfreq,'Amp-L2');
 rss_perm       = squeeze(rss_perm);
 rss_obs        = squeeze(rss_obs);
-pval           = mean(rss_perm<rss_obs,2);
+pval           = mean(rss_perm>rss_obs,2);
 mean(pval<.05)
 toc
-hist(pval,30)
+
+clf
+histogram(pval)
 xlim([0,1])

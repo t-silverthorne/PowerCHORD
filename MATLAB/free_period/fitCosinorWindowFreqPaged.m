@@ -37,5 +37,11 @@ switch method
         rss_est = mean(rss,3); % take min on freq dim
         beta_est =NaN;
         freq_est =NaN;
+    case 'Amp-L2'
+        X       = [ones(length(tt),1,Nfreq) cos(2*pi*freqs.*tt) sin(2*pi*freqs.*tt)];
+        bhat    = pagemldivide(X,y);
+        rss_est = mean(bhat(2:3,:,:,:,:).^2,3); % take min on freq dim
+        beta_est =NaN;
+        freq_est =NaN;
 end
 end
