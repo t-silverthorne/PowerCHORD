@@ -17,52 +17,33 @@ switch method
         A1 = repmat(C, [1,1,n,n]); % first term
         B1 = reshape(C,[1,1,n,n]);
         B1 = repmat(B1,[n,n,1,1]);
-        
-        a1  = reshape(mu,[n,1,1,1]);
-        a1  = repmat(a1, [1,n,n,n]);
-        aa1 = reshape(mu,[1,n,1,1]);
-        aa1 = repmat(aa1,[n,1,n,n]);
-
-        b1  = reshape(mu,[1,1,n,1]);
-        b1  = repmat(b1, [n,n,1,n]);
-        bb1 = reshape(mu,[1,1,1,n]);
-        bb1 = repmat(bb1,[n,n,n,1]);
-        
+              
         A2 = reshape(C,[n,1,n,1]); % second term
         A2 = repmat(A2,[1,n,1,n]); 
         B2 = reshape(C,[1,n,1,n]);
         B2 = repmat(B2,[n,1,n,1]);
-
-        a2  = reshape(mu,[n,1,1,1]);
-        a2  = repmat(a2, [1,n,n,n]);
-        aa2 = reshape(mu,[1,1,n,1]);
-        aa2 = repmat(aa2,[n,n,1,n]);
-
-        b2  = reshape(mu,[1,n,1,1]);
-        b2  = repmat(b2, [n,1,n,n]);
-        bb2 = reshape(mu,[1,1,1,n]);
-        bb2 = repmat(bb2,[n,n,n,1]);
         
         A3 = reshape(C,[n,1,1,n]); % third term
         A3 = repmat(A3,[1,n,n,1]);
         B3 = reshape(C,[1,n,n,1]);
         B3 = repmat(B3,[n,1,1,n]);
         
-        a3  = reshape(mu,[n,1,1,1]);
-        a3  = repmat(a3, [1,n,n,n]);
-        aa3 = reshape(mu,[1,1,1,n]);
-        aa3 = repmat(aa3,[n,n,n,1]);
+        mu1 = reshape(mu,[n,1,1,1]);
+        mu2 = reshape(mu,[1,n,1,1]);
+        mu3 = reshape(mu,[1,1,n,1]);
+        mu4 = reshape(mu,[1,1,1,n]);
+        
+        mu1 = repmat(mu1,[1,n,n,n]);
+        mu2 = repmat(mu2,[n,1,n,n]);
+        mu3 = repmat(mu3,[n,n,1,n]);
+        mu4 = repmat(mu4,[1,n,n,1]);
 
-        b3  = reshape(mu,[1,n,1,1]);
-        b3  = repmat(b3, [n,1,n,n]);
-        bb3 = reshape(mu,[1,1,n,1]);
-        bb3 = repmat(bb3,[n,n,1,n]);
-
-        M = (a1.*aa1 + A1).*(B1 + b1.*bb1) + ...
-                (a2.*aa2 + A2).*(B2 + b2.*bb2) + ...
-                (a3.*aa3 + A3).*(B3 + b3.*bb3);
-                    ;
+        M = A1.*B1 + A2.*B2 + A3.*B3 + ...
+            mu1.*mu2.*B1 + mu1.*mu3.*B2 + mu1.*mu4.*B3+ ...
+            A1.*mu3.*mu4 + A2.*mu2.*mu4 + A3.*mu2.*mu3+ ...
+               mu1.*mu2.*mu3.*mu4;
     case 'slow'
+        error('Need to fix formula, use fast method for now')
         M = NaN(n,n,n,n);
         for ii=1:n
             for jj=1:n
