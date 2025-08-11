@@ -2,7 +2,7 @@ function M = getIsserlisTensor(C,mu,method)
 %GETISSERLISTENSOR compute rank 4 tensor corresponding to 4th moments of
 %multivariate normal distribution
 arguments
-    C (:,:) double;
+    C  (:,:) double;
     mu (:,1) double;
     method ='loop';
 end
