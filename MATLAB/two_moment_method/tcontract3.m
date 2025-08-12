@@ -1,7 +1,7 @@
 rng('default')
-%%
-example = 'generic';
-n   = 4;
+% options simple or generic, generic requires Monte Carlo so only use with n<=6
+example = 'simple'; 
+n       = 8;
 switch example
     case 'simple'
         A = eye(n);
@@ -12,7 +12,7 @@ switch example
         A = A*A';
         C  = randn(n,n);
         C  = chol(C*C');
-        C  = C*C';
+        C  = C*C'/sqrt(n);
         mu = 1+randn(n,1);
 end
 
@@ -28,7 +28,7 @@ for ii=1:15
 end
 
 v1 = sum(A.*M.*A34,'all') ;
-%%
+
 tic
 switch example
     case 'simple'

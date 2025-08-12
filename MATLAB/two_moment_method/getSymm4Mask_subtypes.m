@@ -1,6 +1,7 @@
 function T = getSymm4Mask_subtypes(n)
 %GETSYMM4MASKCTRCT compute mask tensor in format suitable for contracting
-%against the Gaussian tensor
+%against the Gaussian tensor (i.e. check not only permutation partition
+%type but also which indices collide within the perm)
 arguments
     n double;
 end
