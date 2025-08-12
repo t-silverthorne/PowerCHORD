@@ -27,18 +27,23 @@ tt2 = trace(Sigma*J)+mu'*J*mu;
 m11 = tt1*trace(L)*w1 + tt2*trace(J*L)*w2;
 
 % compute m21
-vv1=0;
-for ii=1:n
-    for jj=1:n
-        vv1 = vv1+G(ii,ii,jj,jj);
-    end
-end
-J34 = reshape(J,[1,1,n,n]);
-vv2 = sum(J.*G.*J34,'all');
-vv3 = 0;
-for ii=1:n
-    vv3 = sum(J.*G(:,:,ii,ii),'all');
-end
+q2form = @(A,B) sum(A.*G.*reshape(B,[1,1,n,n]),'all');
+vv1 = q2form(eye(n),eye(n));
+vv2 = q2form(J,J);
+vv3 = q2form(eye(n),J);
+
+% vv1=0;
+% for ii=1:n
+%     for jj=1:n
+%         vv1 = vv1+G(ii,ii,jj,jj);
+%     end
+% end
+% J34 = reshape(J,[1,1,n,n]);
+% vv2 = sum(J.*G.*J34,'all');
+% vv3 = 0;
+% for ii=1:n
+%     vv3 = sum(J.*G(:,:,ii,ii),'all');
+% end
 m21 = vv1*(trace(L)*w1)^2 + vv2*(trace(L*J)*w2)^2 + ...
     2*vv3*(w1*w2*trace(L)*trace(L*J));
 
