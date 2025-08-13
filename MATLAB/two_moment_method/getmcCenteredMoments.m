@@ -16,7 +16,7 @@ for ii=1:nsamp
     for jj=1:factorial(n)
         vv(jj) = T(x(pp(jj,:)));
     end
-    E_p_Var_pi =E_p_Var_pi +var(vv);
+    E_p_Var_pi =E_p_Var_pi +mean(vv.^2)-mean(vv).^2;
 end
 E_p_Var_pi = E_p_Var_pi/nsamp;
 

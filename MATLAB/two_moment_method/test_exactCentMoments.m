@@ -7,7 +7,7 @@ Sigma = Sigma*Sigma';
 mu = 10+randn(n,1);
 
 tic
-nsamp=1e6;
+nsamp=1e5;
 [E_p,E_p_E_pi,E_p_Var_pi,Var_p,Var_p_E_pi] = getExactCenteredMoments(L,Sigma,mu);
 [mcE_p,mcE_p_E_pi,mcE_p_Var_pi,mcVar_p,mcVar_p_E_pi] = getmcCenteredMoments(L,Sigma,mu,nsamp);
 fprintf('1: %d\n',abs(E_p-mcE_p)./mcE_p)
