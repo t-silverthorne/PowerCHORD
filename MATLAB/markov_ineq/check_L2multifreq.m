@@ -1,12 +1,12 @@
 clear 
 addpath('../two_moment_method/')
 %rng('default')
-n     = 100;
+n     = 20;
 tt    = linspace(0,1,n+1);
 tt    = tt(1:end-1);
 tt    = rand(1,n);
 x     = 2*cos(2*pi*tt)'+randn(n,1);
-fvals = [1 10];
+fvals = [1 2 3];
 
 
 % quadratic form
