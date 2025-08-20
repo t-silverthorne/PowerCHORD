@@ -43,11 +43,11 @@ bb1&bb2&bb3
 opts = optimoptions(@fmincon,'Algorithm','sqp');
 problem = createOptimProblem('fmincon','objective',...
     myJfun2,'x0',ttr,'Aineq',Acstr,'bineq',-ceps*ones(n-1,1),'lb',zeros(n,1),'ub',ones(n,1),'options',opts);
-ms = MultiStart('UseParallel',false);
+ms = MultiStart('UseParallel',true);
 
-tic;[x,f] = run(ms,problem,1);toc
+tic;[x,f] = run(ms,problem,12);toc
 f=-f
-%%
+
 % gs = GlobalSearch;
 % %%
 % tic;[x,f] = run(gs,problem);toc
