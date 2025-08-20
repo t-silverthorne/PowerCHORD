@@ -1,4 +1,4 @@
-function [Tlin,TlinVECT] = getSymm4Mask_subtypesVect(n,n5,n6)
+function TlinVECT = getSymm4Mask_subtypesVect(n,n5,n6)
 %GETSYMM4MASKCTRCT vectorised version of getSymm4Mask_subTypes
 arguments
     n  double;
@@ -7,7 +7,6 @@ arguments
 end
 [x1,x2,x3,x4]=ndgrid(1:n,1:n,1:n,1:n);
 
-Tlin = false(n^4,15);
 TlinVECT = false(n^4*n5*n6,15);
 
 % construct T alphabet
@@ -17,25 +16,6 @@ Tb = (fibre_comp == 1);
 Tc = (fibre_comp == 2);
 Td = (fibre_comp == 3);
 Te = (fibre_comp == 6);
-
-
-% construct Tlin
-Tlin(:,1)  = Ta(:);
-Tlin(:,2)  = Tb(:) & (x1(:)==x2(:));
-Tlin(:,3)  = Tb(:) & (x2(:)==x3(:));
-Tlin(:,4)  = Tb(:) & (x3(:)==x4(:));
-Tlin(:,5)  = Tb(:) & (x1(:)==x3(:));
-Tlin(:,6)  = Tb(:) & (x1(:)==x4(:));
-Tlin(:,7)  = Tb(:) & (x2(:)==x4(:));
-Tlin(:,8)  = Tc(:) & (x1(:)==x2(:));
-Tlin(:,9)  = Tc(:) & (x1(:)==x3(:));
-Tlin(:,10) = Tc(:) & (x1(:)==x4(:));
-Tlin(:,11) = Td(:) & (x1(:)==x2(:))&(x2(:)==x3(:));
-Tlin(:,12) = Td(:) & (x1(:)==x2(:))&(x2(:)==x4(:));
-Tlin(:,13) = Td(:) & (x1(:)==x3(:))&(x3(:)==x4(:));
-Tlin(:,14) = Td(:) & (x2(:)==x3(:))&(x3(:)==x4(:));
-Tlin(:,15) = Te(:);
-
 
 % construct TlinVECT
 Tav=repmat(Ta,[1,1,1,1,n5,n6]);
@@ -65,12 +45,7 @@ TlinVECT(:,13) = Tdv(:) & (x1v(:)==x3v(:))&(x3v(:)==x4v(:));
 TlinVECT(:,14) = Tdv(:) & (x2v(:)==x3v(:))&(x3v(:)==x4v(:));
 TlinVECT(:,15) = Tev(:);
 
-
-
-Tlin     = sparse(Tlin);
 TlinVECT = sparse(TlinVECT);
-
-
 end
 
 
