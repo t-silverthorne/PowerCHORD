@@ -10,8 +10,16 @@ arguments
     L     (:,:) double;
     Sigma (:,:) double;
     mu    (:,1) double;
-    T     (:,:,:,:,:) logical;
+    T     logical;
 end
+if length(size(T))==5
+    Tmeth = 'tensor';
+elseif length(size(T)) ==2 && size(T,2)==15
+    Tmeth = 'linear';
+else
+    error('permutation tensor T of wrong shape')
+end
+
 
 n = size(L,1);
 G = getIsserlisTensor(Sigma,mu); 
@@ -42,9 +50,17 @@ m20 = sum(L.*G.*L34,'all');
 % compute m12
 M = zeros(n,n,n,n);
 w = getSymm4Weights_subtypes(n);
-for ii=1:15
-    M(T(:,:,:,:,ii)) = sum(G(T(:,:,:,:,ii)))*w(ii);
+switch Tmeth
+    case 'tensor'
+        for ii=1:15
+            M(T(:,:,:,:,ii)) = sum(G(T(:,:,:,:,ii)))*w(ii);
+        end
+    case 'linear'
+        for ii=1:15
+            M(T(:,ii)) = sum(G(T(:,ii)))*w(ii);
+        end        
 end
+
 
 m12 = sum(L.*M.*L34,'all') ;
 end

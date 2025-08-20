@@ -11,8 +11,8 @@ Sigma = eye(n);
 th    = rand*2*pi;
 alpha = .05;
 
-T = getSymm4Mask_subtypes(n);
-
+[T,Tlin] = getSymm4Mask_subtypes(n);
+%%
 thvals = linspace(0,2*pi,2^7+1);
 thvals = thvals(1:end-1);
 
