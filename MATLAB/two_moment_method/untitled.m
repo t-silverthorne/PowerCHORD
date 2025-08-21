@@ -40,14 +40,34 @@ bb1 = min(ttr)>=0;
 bb2 = max(ttr)<=1;
 bb3 =all(Acstr*ttr < -ceps);
 bb1&bb2&bb3
-opts = optimoptions(@fmincon,'Algorithm','sqp');
-problem = createOptimProblem('fmincon','objective',...
-    myJfun2,'x0',ttr,'Aineq',Acstr,'bineq',-ceps*ones(n-1,1),'lb',zeros(n,1),'ub',ones(n,1),'options',opts);
+opts = optimoptions(@fmincon,'Algorithm','sqp','MaxFunctionEvaluations',100);
+
+constraints='active';
+switch constraints
+    case 'active'
+        problem = createOptimProblem('fmincon','objective',...
+            myJfun2,'x0',ttr, ...
+            'Aineq',Acstr, ...
+            'bineq',-ceps*ones(n-1,1), ...
+            'lb',zeros(n,1),'ub',ones(n,1),'options',opts);
+    case 'inactive'
+        problem = createOptimProblem('fmincon','objective',...
+            myJfun2,'x0',ttr, ...
+            'lb',zeros(n,1),'ub',ones(n,1),'options',opts);
+end
 ms = MultiStart('UseParallel',true);
 
-tic;[x,f] = run(ms,problem,12);toc
+npts = 24;
+ptmatrix=NaN(npts,n);
+for ii=1:npts
+    ptmatrix(ii,:)=randInitDesign(n,ceps)';
+end
+tic;[x,f] = run(ms,problem,CustomStartPointSet(ptmatrix));toc
 f=-f
 
+%%
+plot(x,1,'.k')
+%%
 % gs = GlobalSearch;
 % %%
 % tic;[x,f] = run(gs,problem);toc

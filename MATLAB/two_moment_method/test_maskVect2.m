@@ -1,5 +1,5 @@
 clear
-n  = 5;
+n  = 10;
 n5 = 10;
 n6 = 10;
 
@@ -32,7 +32,7 @@ for kk=1:n5
 end
 toc
 
-% vect comput
+% likely the fastest way
 muVECT = zeros(n,1,1,1,n5,n6);
 CVECT  = zeros(n,n,1,1,n5,n6);
 for ii=1:n5
@@ -42,41 +42,31 @@ for ii=1:n5
     end
 end
 [A1,A2,A3,B1,B2,B3] = getIsserlisTensor_Sigma_Vect(CVECT);
-
 Gv = getIsserlisTensor_mu_Vect(muVECT,A1,A2,A3,B1,B2,B3);
-
-Tv = getSymm4Mask_subtypesVect(n,n5,n6);
-Mv = zeros(n,n,n,n,n5,n6);
-sz = [n,n,n,n,n5,n6];
-tic
-for ii = 1:15
-    for jj = 1:n5
-        for kk = 1:n6
-            Gblock            = Gv(:,:,:,:,jj,kk);
-            Mblock            = Mv(:,:,:,:,jj,kk);
-            Mblock(T(:,ii))   = sum(Gblock(T(:,ii)))*w(ii);
-            Mv(:,:,:,:,jj,kk) = Mblock;
-        end
+Mcell2 = cell(n5,n6);
+tic;
+for kk=1:n5
+    for ll=1:n6
+        G = Gv(:,:,:,:,kk,ll); 
+        M = zeros(n,n,n,n);
+        for ii=1:15
+            M(T(:,ii)) = sum(G(T(:,ii)))*w(ii);
+        end        
+        Mcell2{kk,ll} = M;
     end
 end
 toc
 
-OMATs = cell(15);
-for ii=1:15
-    OMATs{ii} = kron(sparse(eye(n5*n6)), ...
-        sparse(ones(nnz(T(:,ii)),nnz(T(:,ii)))));
-end
-Mv=zeros(n,n,n,n,n5,n6);
-tic
-for ii=1:15
-    Mv(Tv(:,ii)) = OMATs{ii}*Gv(Tv(:,ii))*w(ii);
-end
-toc
+
+
+Tv = getSymm4Mask_subtypesVect(n,n5,n6);
+Mv = zeros(n,n,n,n,n5,n6);
+sz = [n,n,n,n,n5,n6];
 
 bb=true;
 for ii=1:n5
     for jj=1:n6
-        bb = bb&all(abs(Mv(:,:,:,:,ii,jj)-Mcell{ii,jj})./abs(Mcell{ii,jj})<1,'all');
+        bb = bb&all(abs(Mcell2{ii,jj}-Mcell{ii,jj})./abs(Mcell{ii,jj})<1e-10,'all');
     end
 end
 bb
