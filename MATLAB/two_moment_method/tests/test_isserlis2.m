@@ -1,3 +1,4 @@
+addpath('../')
 n = 4;
 C = full(sprandsym(n,1));
 C = C*C';

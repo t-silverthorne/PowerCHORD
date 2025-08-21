@@ -1,3 +1,4 @@
+addpath('../')
 % fast vs slow without mean
 n = 4;
 C = full(sprandsym(n,.4));

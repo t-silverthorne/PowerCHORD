@@ -1,3 +1,4 @@
+addpath('../')
 % check that vectorised moment calculation matches serial
 clear
 n     = 8;

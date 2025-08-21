@@ -1,3 +1,4 @@
+addpath('../')
 % compare vect vs non vect versions of Isserlis computation
 clear
 n = 5;

@@ -1,3 +1,4 @@
+addpath('../')
 rng('default')
 n = 4;
 L = randn(n,n)/5;

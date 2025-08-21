@@ -1,3 +1,4 @@
+addpath('../')
 clear
 n = 30;
 L = randn(n,n);

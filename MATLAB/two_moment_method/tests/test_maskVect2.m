@@ -1,3 +1,4 @@
+addpath('../')
 clear
 n  = 10;
 n5 = 10;
