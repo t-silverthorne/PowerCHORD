@@ -1,5 +1,5 @@
 clear
-n  = 20;
+n  = 5;
 n5 = 10;
 n6 = 10;
 
@@ -52,27 +52,26 @@ tic
 for ii = 1:15
     for jj = 1:n5
         for kk = 1:n6
-            Gblock = Gv(:,:,:,:,jj,kk);
-            Mblock = Mv(:,:,:,:,jj,kk);
-            Mblock(T(:,ii)) = sum(Gblock(T(:,ii)))*w(ii);
+            Gblock            = Gv(:,:,:,:,jj,kk);
+            Mblock            = Mv(:,:,:,:,jj,kk);
+            Mblock(T(:,ii))   = sum(Gblock(T(:,ii)))*w(ii);
             Mv(:,:,:,:,jj,kk) = Mblock;
         end
     end
 end
 toc
 
-% for ii=1:15
-%     for jj=1:n5
-%         for kk=1:n6
-%             lmin = sub2ind(sz,1,1,1,1,jj,kk);
-%             lmax = sub2ind(sz,n,n,n,n,jj,kk);
-%             if (lmax-lmin) ~= n^4-1
-%                 error('help')
-%             end
-%             Mv(Tv(lmin:lmax,ii)) = sum(Gv(Tv(lmin:lmax,ii)))*w(ii);
-%         end
-%     end
-% end
+OMATs = cell(15);
+for ii=1:15
+    OMATs{ii} = kron(sparse(eye(n5*n6)),T(:,ii)*sparse(ones(1,n^4)));
+end
+
+Mv=zeros(n,n,n,n,n5,n6);
+tic
+for ii=1:15
+    Mv(:) = Mv(:) + OMATs{ii}*(Gv(:).*Tv(:,ii))*w(ii);
+end
+toc
 
 bb=true;
 for ii=1:n5
