@@ -1,7 +1,7 @@
 % check if desgin converges to equispaced for 1 freq
 clear; clf;
 % setup
-n     = 24;
+n     = 48;
 H     = [0 1 0; 0 0 1];
 alpha = .05;
 Amp   = 100;
@@ -30,6 +30,7 @@ if plot_init
     % L     = L'*L;
     % min(arrayfun(@(th) get2mBound(L,Sigma,X*[0 Amp*cos(th) Amp*sin(th)]',alpha,Tlin),thvals))
 end
+
 % optimise
 rng default % For reproducibility
 myJfun2 = @(tt) -1*myJfun(tt,Sigma,Tlin,Amp,thvals,alpha);
@@ -55,9 +56,9 @@ switch constraints
             myJfun2,'x0',ttr, ...
             'lb',zeros(n,1),'ub',ones(n,1),'options',opts);
 end
-ms = MultiStart('UseParallel',true);
+ms = MultiStart('UseParallel',false);
 
-npts = 24;
+npts = 1;
 ptmatrix=NaN(npts,n);
 for ii=1:npts
     ptmatrix(ii,:)=randInitDesign(n,ceps)';
@@ -67,6 +68,22 @@ f=-f
 
 %%
 plot(x,1,'.k')
+%%
+addpath('../free_period/') 
+evalFtestPower(x,1,0,1)
+tt=linspace(0,1,n+1);
+tt=tt(1:end-1)
+evalFtestPower(tt,1,0,1)
+%%
+x=rand(n,1);
+%%
+X     = [ones(n,1) cos(2*pi*x) sin(2*pi*x)];
+L     = H*((X'*X)\(X'));
+L     = L'*L;
+thvals = linspace(0,1,2^6+1);
+thvals = thvals(1:end-1);
+pwrs  = arrayfun(@(th) get2mBound(L,Sigma,X*[0 Amp*cos(th) Amp*sin(th)]',alpha,Tlin),thvals)
+min(pwrs)
 %%
 % gs = GlobalSearch;
 % %%

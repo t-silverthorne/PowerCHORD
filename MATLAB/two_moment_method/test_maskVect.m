@@ -43,7 +43,9 @@ for ii=1:n5
 end
 [A1,A2,A3,B1,B2,B3] = getIsserlisTensor_Sigma_Vect(CVECT);
 
+tic
 Gv = getIsserlisTensor_mu_Vect(muVECT,A1,A2,A3,B1,B2,B3);
+toc
 
 Tv = getSymm4Mask_subtypesVect(n,n5,n6);
 Mv = zeros(n,n,n,n,n5,n6);
