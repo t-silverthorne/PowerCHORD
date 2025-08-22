@@ -32,7 +32,7 @@ Sigma = eye(n);
 
 Amp   = 10;
 sd    = .01;
-ftrue = 1;
+ftrue = 25;
 ii=1
 pwr_ineq  = NaN(length(acros),1);
 for acro=acros

@@ -11,9 +11,9 @@ addpath('../perm_test_utils/')
 n     = 25;
 nsamp = 1e2;
 Nperm = 1e3;
-freq  = 3;
+freq  = 1;
+tt    = .25*rand(n,1);
 
-tt    = rand(n,1);
 Lcent = getSpecPaged(tt,freq);
 
 H        = [0 1 0; 0 0 1];
@@ -33,10 +33,10 @@ Sigma    = eye(n);
 ii = 1;
 pwr_ineq  = NaN(length(acros),1);
 pwr_ineq2 = NaN(length(acros),1);
-Amp       = 5;
-sd        = 1;
+Amp       = 590;
+sd        = .1;
 for acro=acros
-    mu = Amp*cos(2*pi*freq*1.15*tt-acro);
+    mu = Amp*cos(2*pi*freq*tt-acro);
     pwr_ineq(ii)  = get2mBoundCent(Lcent,sd^2*Sigma,mu,alpha,Tlin)
     pwr_ineq2(ii) = get2mBound(Lcent,sd^2*Sigma,mu,alpha,Tlin)
     ii=ii+1;
@@ -52,7 +52,7 @@ end
 pwr_mc    = NaN(length(acros),1);
 ii=1;
 for acro=acros
-    mu = Amp*cos(2*pi*freq*1.15*tt-acro);
+    mu = Amp*cos(2*pi*freq*tt-acro);
     y  = mu+sd*randn(n,nsamp);
 
     % MC estimate
