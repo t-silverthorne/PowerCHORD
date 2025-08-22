@@ -1,5 +1,5 @@
-% n     = 8;
 clear
+addpath('../')
 n     = 35;
 n5    = 3;
 n6    = 3;
@@ -38,6 +38,7 @@ end
 tic
 bvect = getExactMomentsVect(L,Sigma,muVECT,T,A1,A2,A3,B1,B2,B3);
 toc
+
 bb=true;
 for ii=1:n5
     for jj=1:n6
