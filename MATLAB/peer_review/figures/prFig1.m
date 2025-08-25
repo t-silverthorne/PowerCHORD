@@ -7,20 +7,19 @@ data = readtable('diffEvolveOutput.csv');
 
 Nmeas = 32;
 fmin  = 1;
-fmax  = 18;
+fmax  = 16;
 mt = data(data.Nmeas==Nmeas & data.fmin==fmin & data.fmax == fmax,:);
 tt = mt{:,9:(9+Nmeas-1)}';
 if length(tt)~=Nmeas
     error('check table')
 end
 
-% eval WCP power
-[~,em_fv]=getMinEigMulti(tt,8,18,1e3);
+%[~,em_fv]=getMinEigMulti(tt,8,18,1e3);
 
 
 % estimate free period power
-Amp   = 10;
-Nfreq = 8;
+Amp   = 100;
+Nfreq = 16;
 Nacro = 16;
 Nperm = 1e2;
 Nsamp = 1e2;
@@ -32,7 +31,7 @@ acros = reshape(acros,1,1,1,1,1,1,[]);
 mu    = Amp*cos(2*pi*freqs.*tt -acros);
 sz    = size(mu);
 x     = mu + randn([sz(1:4),Nsamp,sz(6:end)]);
-fqf   = linspace(fmin,fmax,1e3);
+fqf   = linspace(fmin,.9*fmax,1e1);
 fqf   = reshape(fqf,1,1,[]);
 Q     = getQuadForm(tt,fqf);
 alpha = .05;

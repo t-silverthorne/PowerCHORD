@@ -34,9 +34,9 @@ acros = reshape(acros,1,1,1,1,1,1,[]);
 mu    = Amp*cos(2*pi*freqs.*tt -acros);
 sz    = size(mu);
 x     = mu + randn([sz(1:4),Nsamp,sz(6:end)]);
-fqf   = linspace(fmin,.9*fmax,1e3);
+fqf   = linspace(fmin,.99*fmax,1e1);
 fqf   = reshape(fqf,1,1,[]);
-[~,Q] = getQuadForm(tt,reshape(freqs,1,1,[]));
+[~,Q] = getQuadForm(tt,fqf);
 alpha = .05;
 pwrMC = squeeze(fastMCTinfpower(Q,x,Nperm,alpha));
 
@@ -53,8 +53,9 @@ tu      = linspace(0,1,Nmeas+1);
 tu      = tu(1:end-1)';
 mu_unif = Amp*cos(2*pi*freqs.*tu -acros);
 xu      = mu_unif + randn([sz(1:4),Nsamp,sz(6:end)]);
-[~,Qu]  = getQuadForm(tu,reshape(freqs,1,1,[]));
+[~,Qu]  = getQuadForm(tu,fqf);
 pwrMCu  = squeeze(fastMCTinfpower(Qu,xu,Nperm,alpha));
-pwrFu   = squeeze(arrayfun(@(freq) ncfcdf(f0,2,Nmeas-3,getMinEig(tu,freq),'upper'),freqs));
 plot(squeeze(freqs),min(pwrMCu,[],2),'-k')
+
+pwrFu   = squeeze(arrayfun(@(freq) ncfcdf(f0,2,Nmeas-3,getMinEig(tu,freq),'upper'),freqs));
 plot(squeeze(freqs),pwrFu,'--k')
