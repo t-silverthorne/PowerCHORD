@@ -1,6 +1,6 @@
 % check how Tinf statistic behaves on randomly generated design
 clear;clf;
-Nmeas = 16;
+Nmeas = 32;
 Nfreq = 16;
 Nacro = 16;
 Nperm = 1e2;
