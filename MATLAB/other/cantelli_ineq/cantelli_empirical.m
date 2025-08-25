@@ -4,7 +4,7 @@ addpath('../markov_ineq/')
 addpath('../free_period_results/')
 addpath('../two_moment_method')
 rng('default')
-example='broad';
+example='tight';
 switch example
     case 'tight'
         n     = 48;
