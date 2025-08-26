@@ -1,14 +1,13 @@
-%rng('default')
 n = 4;
-A = full(sprandsym(n,.5)); % quad form 
-A = A*A';
+%A = full(sprandsym(n,.5)); % quad form 
+%A = A*A';
 A = eye(n);
 A34  = reshape(A,[1,1,n,n]);
 
 mu = 0*randn(n,1); % mean and cov mat
-C  = randn(n,n);
-C  = chol(C*C');
-C  = C*C';
+% C  = randn(n,n);
+% C  = chol(C*C');
+% C  = C*C';
 C  = eye(n);
 
 G    = getIsserlisTensor(C,mu); % matrix of 4th moments
