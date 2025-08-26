@@ -18,7 +18,6 @@ for jj=1:factorial(n)
 end
 ss
 
-%%
 n  = 5;
 A  = 1*randn(n,n);
 tt = rand(n,1);

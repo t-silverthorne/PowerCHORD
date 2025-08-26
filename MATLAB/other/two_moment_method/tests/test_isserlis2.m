@@ -1,10 +1,11 @@
+addpath('../')
 n = 4;
 C = full(sprandsym(n,1));
 C = C*C';
 %C = eye(n);
-mu = randn(n,1);
+mu = 0+randn(n,1);
 G  = getIsserlisTensor(C,mu,'tensor');
-nsamp = 1e6;
+nsamp = 1e7;
 X=mvnrnd(mu,C,nsamp);
 G_approx = NaN(n,n,n,n);
 for i1=1:n
