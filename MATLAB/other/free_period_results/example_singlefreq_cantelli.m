@@ -10,7 +10,7 @@ addpath('../two_moment_method/')
 addpath('../cantelli_ineq/')
 addpath('../perm_test_utils/')
 n     = 25;
-nsamp = 1e3;
+nsamp = 1e2;
 Nperm = 1e3;
 freq  = 1;
 tt    = .25*rand(n,1);

@@ -4,7 +4,7 @@ addpath('../markov_ineq/')
 addpath('../free_period_results/')
 addpath('../two_moment_method')
 rng('default')
-example='tight';
+example='broad';
 switch example
     case 'tight'
         n     = 48;
@@ -23,10 +23,10 @@ switch example
         ftrue = fmin;
     case 'broad'
         n     = 40;
-        Amp   = 3.25;
-        tt    = linspace(0,1,n+1);
-        tt    = tt(1:end-1)';
-        %tt    = rand(n,1);
+        Amp   = 20;
+        %tt    = linspace(0,1,n+1);
+        %tt    = tt(1:end-1)';
+        tt    = rand(n,1);
         acro  = pi/2;
         alpha = .05;
         fmin  = 1;
