@@ -1,3 +1,6 @@
+% compare wcp optimal vs equispaced for freq window [1,N/2] for various
+% values of N, use bandlimit for equispaced to avoid numerical instability
+
 clear;clf;
 addpath('../../preprint/utils/')
 addpath('../utils')
@@ -7,14 +10,16 @@ addpath('../../other/perm_test_utils/')
 data = readtable('diffEvolveOutput.csv');
 
 Nmvals = [16,24,32,40,48];
-Nsamp  = 1e1;
+Nsamp  = 5e2;
 Nperm  = 1e3;
 cfact  = .95;
+Amp    = 2;
 
 out_pwr  = struct(); 
 out_pwru = struct();
 out_PWR  = struct();
 out_PWRU = struct();
+ts = string(datetime('now','Format','yyyyMMdd_HHmmss'));
 
 for Nmeas=Nmvals
     fprintf('Running Nmeas = %d\n', Nmeas);
@@ -26,15 +31,15 @@ for Nmeas=Nmvals
     if length(tt)~=Nmeas
         error('check table')
     end    
-    [pwr,PWR]   = estimateFreePeriodPower(tt,Nsamp,fmin,fmax,Nperm,1);
+    [pwr,PWR]   = estimateFreePeriodPower(tt,Nsamp,fmin,fmax,Nperm,1,Amp);
     
     tu = linspace(0,1,Nmeas+1);
     tu = tu(1:end-1)';
-    [pwru,PWRU] = estimateFreePeriodPower(tu,Nsamp,fmin,fmax,Nperm,.95);
+    [pwru,PWRU] = estimateFreePeriodPower(tu,Nsamp,fmin,fmax,Nperm,.95,Amp);
 
-    ts = string(datetime('now','Format','yyyyMMdd_HHmmss'));
     
-    param_str = sprintf('Nsamp%d_Nperm%d_c%.2f', Nsamp, Nperm, cfact);
+    param_str = sprintf('prFig1data_Nsamp%d_Nperm%d_c%d_Amp%d', Nsamp, Nperm, ...
+                            round(cfact*100), Amp);
     out_dir   = fullfile(pwd, sprintf('results_%s_%s', param_str, ts));
     if ~exist(out_dir, 'dir')
         mkdir(out_dir);
@@ -50,48 +55,15 @@ for Nmeas=Nmvals
     PWR_tbl  = struct2table(out_PWR,  'AsArray', true);
     PWRU_tbl = struct2table(out_PWRU, 'AsArray', true);
     
-    pwr_file  = fullfile(out_dir,  sprintf('pwr_%s.csv', ts));
-    pwru_file = fullfile(out_dir,  sprintf('pwru_%s.csv', ts));
-    PWR_file  = fullfile(out_dir,  sprintf('PWR_%s.csv', ts));
-    PWRU_file = fullfile(out_dir,  sprintf('PWRU_%s.csv', ts));
-
+    pwr_file  = fullfile(out_dir,  'pwr.csv');
+    pwru_file = fullfile(out_dir,  'pwru.csv');
+    PWR_file  = fullfile(out_dir,  'PWR.csv');
+    PWRU_file = fullfile(out_dir,  'PWRU.csv');
+    
     writetable(pwr_tbl,  pwr_file);
     writetable(pwru_tbl, pwru_file);
     writetable(PWR_tbl,  PWR_file);
     writetable(PWRU_tbl, PWRU_file);
 end
-
-function [pwr,pwrGrid] = estimateFreePeriodPower(tt,Nsamp,fmin,fmax,Nperm,censor_factor, ...
-                                                 Amp,Nfreq,Nacro,Nfq)
-arguments
-    tt    (:,1) double;
-    Nsamp       double
-    fmin        double;
-    fmax        double;
-    Nperm = 1e3;
-    censor_factor = 1;
-    Amp   = 2;
-    Nfreq = 16;
-    Nacro = 16;
-    Nfq   = 100;
-
-end
-freqs = linspace(fmin,fmax,Nfreq); % freq and acro grids
-acros = linspace(0,2*pi,Nacro+1);
-acros = acros(1:end-1);
-freqs = reshape(freqs,1,1,1,1,1,[]);
-acros = reshape(acros,1,1,1,1,1,1,[]);
-mu    = Amp*cos(2*pi*freqs.*tt -acros); % simulated signal
-sz    = size(mu);
-x     = mu + randn([sz(1:4),Nsamp,sz(6:end)]);
-
-fqf     = linspace(fmin,fmax*censor_factor,Nfq);
-fqf     = reshape(fqf,1,1,[]);
-[~,Q]   = getQuadForm(tt,fqf);
-alpha   = .05;
-pwrGrid = squeeze(fastMCTinfpower(Q,x,Nperm,alpha));
-pwr     = min(pwrGrid,[],2);
-end
-
 
 % curve comparison
