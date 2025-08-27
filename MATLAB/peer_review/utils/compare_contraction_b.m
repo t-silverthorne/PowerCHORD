@@ -1,4 +1,4 @@
-n = 5;
+n = 4;
 T = getSymm4Mask_subtypes(n);
 w = getSymm4Weights_subtypes(n);
 Q = randn(n,n);
@@ -10,7 +10,7 @@ tt = 0;
 kd = @(a,b) (a==b)
 kd(1,1)
 
-for mm=1:1
+for mm=2:7
     for i=1:n
         for k=1:n
             for alpha=1:n
@@ -36,15 +36,18 @@ for mm=1:1
     end
 end
 ss
-tt
 J  = ones(n,n)-eye(n);
 hQ = J.*Q;
 X  = x*x';
 hX = J.*X;
+dX = diag(x);
+dQ = diag(diag(Q));
 uu = ones(n,1);
-% lin alg expression for 
-tA = @(M,hM) trace(J*hM*J*hM) + trace(J*M.^2) -2*uu'*hM*hM*uu
 
-w(mm)*tA(X,hX)*tA(Q,hQ)
+tB = @(Q,hQ,dQ) 2*trace(J*dQ*J*hQ) + 3*trace(J*hQ.*hQ) + uu'*hQ*hQ*uu;
+
+w(mm)*tB(Q,hQ,dQ)*tB(X,hX,dX)
+
+
 
 
