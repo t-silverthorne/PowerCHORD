@@ -21,10 +21,9 @@ for mm=2:7
                                 for rho=1:n
                                     ss = ss + w(mm)*T(i,k,alpha,gamma,mm)*T(j,l,beta,rho,mm)*...
                                         Q(i,k)*Q(alpha,gamma)*x(j)*x(l)*x(beta)*x(rho);
-                                    tt = tt+ w(mm)*(1-kd(i,k))*(1-kd(k,alpha))*(1-kd(alpha,gamma))*(1-kd(gamma,i)).*...
-                                             (1-kd(j,l))*(1-kd(l,beta))*(1-kd(beta,rho))*(1-kd(rho,j)).*...
-                                             (1-kd(j,beta))*(1-kd(l,rho))*(1-kd(i,alpha))*(1-kd(k,gamma)).*...
-                                             Q(i,k)*Q(alpha,gamma)*x(j)*x(l)*x(beta)*x(rho);
+                                    % tt = tt+ w(mm)*kd(i,k)*J(k,alpha)*J(k,gamma)*J(alpha,gamma)*...
+                                    % Q(i,k)*Q(alpha,gamma)*x(j)*x(l)*x(beta)*x(rho)*...
+                                    % kd(j,l)*J(l,beta)*J(beta,rho)*J(l,rho);
 
                                 end
                             end
@@ -35,18 +34,21 @@ for mm=2:7
         end
     end
 end
-ss
+
+% tt
 J  = ones(n,n)-eye(n);
 hQ = J.*Q;
 X  = x*x';
 hX = J.*X;
-dX = diag(x);
+dX = diag(diag(x*x'));
 dQ = diag(diag(Q));
 uu = ones(n,1);
 
-tB = @(Q,hQ,dQ) 2*trace(J*dQ*J*hQ) + 3*trace(J*hQ.*hQ) + uu'*hQ*hQ*uu;
+tB1 = @(Q,hQ,dQ) trace(J*dQ*J*hQ);% + uu'*hQ*hQ*uu;
+tB2 = @(Q,hQ,dQ) trace(J*hQ*hQ) ;% + uu'*hQ*hQ*uu;
+w(mm)*(2*tB1(Q,hQ,dQ)*tB1(X,hX,dX)+4*tB2(Q,hQ,dQ)*tB2(X,hX,dX)) %+tB5(hQ)*tB5(hX))
+ss
 
-w(mm)*tB(Q,hQ,dQ)*tB(X,hX,dX)
 
 
 
