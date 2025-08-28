@@ -1,7 +1,7 @@
-function [pwrbnd,sgn] = evalChebPowerbnd(Q,x,Tq,alpha)
+function [pwrbnd,sgn] = evalChebPowerbnd(Q,x,alpha)
 %EVALCHEBPOWERBND Summary of this function goes here
 %   Detailed explanation goes here
-pbnd   = evalChebPbnd(Q,x,Tq);
+pbnd   = evalChebPbnd(Q,x);
 mp     = mean(pbnd,5);
 vp     = mean(pbnd.^2,5)-mp.^2;
 sgn    = mp<alpha;

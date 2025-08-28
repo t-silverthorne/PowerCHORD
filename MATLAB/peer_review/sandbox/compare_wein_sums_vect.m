@@ -1,9 +1,10 @@
 addpath('../utils')
-nsamp = 1e2;
-n = 5;
+nsamp = 1e3;
+n = 10;
 Q = rand(n,n);
 Q = Q*Q';
 x = rand(n,1,1,1,nsamp);
 [~,T] = getSymm4Mask_subtypes(n);
-a1=weinSumFastVect(Q,x);
-a2=getExactPermMoment2(Q,x,T);
+tic;a1=weinSumFastVect(Q,x);toc
+tic;a2=getExactPermMoment2(Q,x,T);toc
+%max(abs(squeeze(a1-a2)))

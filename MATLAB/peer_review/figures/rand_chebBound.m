@@ -1,17 +1,18 @@
 % check how Tinf statistic behaves on randomly generated design
 clear;clf;
 tic;
-Nmeas = 18;
+rng(1)
+Nmeas = 32;
 Nfreq = 16;
-Nacro = 8;
+Nacro = 128;
 Nsamp = 1e2;
 addpath('../utils')
 
 fmin = 1;
-fmax = 2.5;
-Amp  = 5;
+fmax = Nmeas/3;
+Amp  = 10;
 
-for ii=1:2
+for ii=1:10
     if ii==1
         tt   = linspace(0,1,Nmeas+1);
         tt   = tt(1:end-1)';
@@ -20,7 +21,12 @@ for ii=1:2
     end
     
     % construct test statistic
-    fqf_2    = reshape(linspace(fmin,fmax,1e3),1,1,[]);
+    if ii==1
+        fqf_2    = reshape(linspace(fmin,0.95*fmax,1e3),1,1,[]);
+    else
+        fqf_2    = reshape(linspace(fmin,fmax,1e3),1,1,[]);
+    end
+    
     Q2       = getQuadForm(tt,fqf_2);
     
     % simulate signal
@@ -33,12 +39,9 @@ for ii=1:2
     mu    = Amp*cos(2*pi*freqs.*tt -acros);
     sz    = size(mu);
     x     = mu + randn([sz(1:4),Nsamp,sz(6:end)]);
-    
-    [~,Tq] = getSymm4Mask_subtypes(Nmeas);
    
     % estimate power
-
-    [pwr2,sgn] = evalChebPowerbnd(Q2,x,Tq,0.05);
+    [pwr2,sgn] = evalChebPowerbnd(Q2,x,0.05);
     pwr2 = pwr2.*((-1).^(~sgn));
     pwr2 = squeeze(pwr2);
    
