@@ -26,14 +26,14 @@ test_that('eval matches expand.grid ordering (cycle freq before acro)',{
 })
 
 test_that('eval matches matlab',{
-  n     = 20
+  n     = 10
   tt    = (0:n)/n
   tt    = tt[1:n]
-  freqs = c(1.25,1.26)
-  acros = c(0)
-  x     = makeCosinorArray(tt,1e3,freqs,acros)
+  freqs = seq(0.1,1,length.out=1)
+  acros =seq(0,2*pi,length.out=10)
+  x     = makeCosinorArray(tt,1e2,freqs,acros)
   Q     = getQuadForm(tt,freqs) |>  (\(x) x$Qf)()
-  Nperm = 1e2
+  Nperm = 1e3
   system.time({
     pwr = fastMCTinfpower(Q,x,Nperm,alpha)}
   )

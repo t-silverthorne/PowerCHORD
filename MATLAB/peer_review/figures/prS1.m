@@ -1,4 +1,4 @@
-% compare wcp objective to the free period powe
+% compare wcp objective to the free period power
 clear;
 tic;
 addpath('../utils')
