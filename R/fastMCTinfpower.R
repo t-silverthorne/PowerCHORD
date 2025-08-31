@@ -1,13 +1,12 @@
-fastMCTinfpower = function(Q, x, Nperm, alpha) {
+fastMCTinfpower = function(Q, x, Nperm, alpha=0.05) {
   # Q: n × n × n3_Q
   # x: n × n2 × n3 × n4
   # Nperm: number of permutations
   # alpha: significance level
-
-  sz = dim(x)
-  n = sz[1]
+  sz        = dim(x)
+  n         = sz[1]
   nTrailing = prod(sz[-1])
-  n3_Q = dim(Q)[3]
+  n3_Q      = dim(Q)[3]
 
   # flatten trailing dims for fast BLAS
   x_flat = matrix(x, nrow = n, ncol = nTrailing)
@@ -38,6 +37,8 @@ fastMCTinfpower = function(Q, x, Nperm, alpha) {
     count = count + (Tperm > Tobs)
   }
   count   = count/Nperm
-  pwr_est = apply(count,dim(count)[-1],mean)
-  return(pwr_est)
+  pwr_est = apply(count,seq_along(dim(count))[-1],mean)
+  pwr_vec = pwr_est |> as.vector()
+  #pwr_vec = aperm(pwr_est,rev(seq_along(dim(pwr_est)))) |> as.vector()
+  return(list(pwr_est=pwr_est,pwr_vec=pwr_vec))
 }
