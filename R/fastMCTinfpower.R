@@ -24,9 +24,9 @@ fastMCTinfpower = function(Q, x, Nperm, alpha=0.05) {
   for (pp in seq_len(Nperm)) {
     # permute rows independently for each trailing column
     perms = replicate(nTrailing, sample.int(n), simplify = TRUE)
-    idx = perms + rep((0:(nTrailing-1))*n, each = n)
-    xfp = x_flat[idx]
-    xfp = matrix(xfp, nrow = n, ncol = nTrailing)
+    idx   = perms + rep((0:(nTrailing-1))*n, each = n)
+    xfp   = x_flat[idx]
+    xfp   = matrix(xfp, nrow = n, ncol = nTrailing)
 
     Tperm_vec = rep(-Inf, nTrailing)
     for (k in seq_len(n3_Q)) {
@@ -37,8 +37,10 @@ fastMCTinfpower = function(Q, x, Nperm, alpha=0.05) {
     count = count + (Tperm > Tobs)
   }
   count   = count/Nperm
+  count   = count < alpha
   pwr_est = apply(count,seq_along(dim(count))[-1],mean)
   pwr_vec = pwr_est |> as.vector()
   #pwr_vec = aperm(pwr_est,rev(seq_along(dim(pwr_est)))) |> as.vector()
   return(list(pwr_est=pwr_est,pwr_vec=pwr_vec))
 }
+c

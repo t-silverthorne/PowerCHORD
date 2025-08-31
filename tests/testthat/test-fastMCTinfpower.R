@@ -9,7 +9,7 @@ test_that("reshaping works as expected", {
   expect_equal(colSums(x),x2)
 })
 
-test_that('eval matches expand.grid',{
+test_that('eval matches expand.grid ordering (cycle freq before acro)',{
   set.seed(1)
   n     = 12
   tt    = runif(n)
@@ -22,5 +22,20 @@ test_that('eval matches expand.grid',{
   alpha=0.05
   set.seed(1)
   pwr1=fastMCTinfpower(Qf,x,Nperm,alpha)
-  expect_equal(pwr1$pwr_est[,1],pwr1$pwr_vec[1:length(acros)])
+  expect_equal(pwr1$pwr_est[,1],pwr1$pwr_vec[1:length(freqs)])
+})
+
+test_that('eval matches matlab',{
+  n     = 20
+  tt    = (0:n)/n
+  tt    = tt[1:n]
+  freqs = c(1.25,1.26)
+  acros = c(0)
+  x     = makeCosinorArray(tt,1e3,freqs,acros)
+  Q     = getQuadForm(tt,freqs) |>  (\(x) x$Qf)()
+  Nperm = 1e2
+  system.time({
+    pwr = fastMCTinfpower(Q,x,Nperm,alpha)}
+  )
+  pwr
 })
