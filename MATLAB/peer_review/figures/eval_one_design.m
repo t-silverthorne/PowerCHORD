@@ -1,6 +1,6 @@
 clear
 addpath('../utils')
-n  = 24;
+n  = 12;
 tt = linspace(0,1,n+1);
 tt = tt(1:end-1)';
 
@@ -27,11 +27,11 @@ switch parset
         Amp  = 2;  % amp=1 too low, amp=2        
         cf   = .95;
     case 2.5
-        fmax  = n/2;
-        Amp   = 2;  % amp=1 too low, amp=2        
+        fmax  = n/4;
+        Amp   = 2.5;  % amp=1 too low, amp=2        
         cf    = .95;
-        Nfreq = 64;
-        Nacro = 32;
+        Nfreq = 16;
+        Nacro = 64;
         Nfq   = 400;
 end
 
