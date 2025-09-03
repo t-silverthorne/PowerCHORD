@@ -32,10 +32,10 @@ for Nmeas=Nmvals
             if length(tt)~=Nmeas
                 error('check table')
             end    
-            pwr  = estimateFreePeriodPower(tt,Nsamp,fmin,fmax,Nperm,1,Amp,16,32,500);
+            pwr  = estimateFreePeriodPower(tt,Nsamp,fmin,fmax,Nperm,1,Amp,16,16,100);
             tu   = linspace(0,1,Nmeas+1);
             tu   = tu(1:end-1)';
-            pwru = estimateFreePeriodPower(tu,Nsamp,fmin,fmax,Nperm,cfact,Amp,16,32,500);
+            pwru = estimateFreePeriodPower(tu,Nsamp,fmin,fmax,Nperm,cfact,Amp,16,16,100);
 
             % Store in structs with a unique field for this combination
             idx = sprintf('N%d_Amp%d_fmax%d', Nmeas, Amp, round(fmax));
