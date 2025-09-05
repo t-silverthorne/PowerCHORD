@@ -2,14 +2,14 @@
 clear;clf;
 tic;
 rng('default')
-Nmeas = 16;
-Nfreq = 16;
-Nacro = 8;
+Nmeas = 32;
+Nfreq = 64;
+Nacro = 16;
 Nsamp = 1e2;
 addpath('../utils')
 
-fmin = .75*Nmeas/2;
-fmax = Nmeas/2;
+fmin = 1;
+fmax = Nmeas/4;
 Amp  = 1000;
 
 for ii=1:2
@@ -35,11 +35,9 @@ for ii=1:2
     sz    = size(mu);
     x     = mu + randn([sz(1:4),Nsamp,sz(6:end)]);
     
-    [~,Tq] = getSymm4Mask_subtypes(Nmeas);
-   
     % estimate power
 
-    [pwr2,sgn] = evalChebPowerbnd(Q2,x,Tq,0.05);
+    [pwr2,sgn] = evalChebPowerbnd(Q2,x,0.05);
     pwr2 = pwr2.*((-1).^(~sgn));
     pwr2 = squeeze(pwr2);
    

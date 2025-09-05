@@ -4,7 +4,7 @@ tic;
 rng(1)
 Nmeas = 32;
 Nfreq = 16;
-Nacro = 128;
+Nacro = 16;
 Nsamp = 1e2;
 addpath('../utils')
 
