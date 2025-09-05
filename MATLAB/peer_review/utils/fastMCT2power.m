@@ -20,6 +20,7 @@ for pp=1:Nperm
     Tperm = pagemtimes(pagetranspose(xp),pagemtimes(Q,xp));
     count   = count + (Tperm>Tobs);
 end
+count = count/Nperm;
 p_est = mean(count<alpha,5); % only average over sample dim
 end
 
