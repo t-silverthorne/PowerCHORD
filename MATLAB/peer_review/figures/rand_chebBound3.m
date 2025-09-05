@@ -4,9 +4,9 @@ tic;
 rng('default')
 addpath('../utils')
 Nmeas = 32;
-Nfreq = 32;
+Nfreq = 64;
 Nacro = 16;
-Nsamp = 2e2;
+Nsamp = 1e2;
 fmin  = 1;
 fmax  = Nmeas/4;
 Amp   = 10;
@@ -37,7 +37,7 @@ for jj=1:nrep
     acro  = acros(randsample(1:length(acros),1));
     mu    = Amp*cos(2*pi*freq*tt -acro);
     x     = mu + randn([sz(1:4),Nsamp]);
-    Nperm = 5e3;
+    Nperm = 1e3;
     pwr   = fastMCT2power(Q2,x,Nperm,.05);
     plot(freq,pwr,'.r')
     drawnow
