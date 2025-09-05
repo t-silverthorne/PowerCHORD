@@ -1,4 +1,4 @@
-function p_est = fastMCT2power(Q,x,Nperm,alpha)
+function pwr_est = fastMCT2power(Q,x,Nperm,alpha)
 %FASTMCT2PVAL fast Monte Carlo estimate of the 
 % T2 test statistic permutation p-value
 Tobs = pagemtimes(pagetranspose(x),pagemtimes(Q,x));
@@ -18,9 +18,9 @@ for pp=1:Nperm
     end
     xp    = reshape(xfp, sz);
     Tperm = pagemtimes(pagetranspose(xp),pagemtimes(Q,xp));
-    count   = count + (Tperm>Tobs);
+    count = count + (Tperm>Tobs);
 end
-count = count/Nperm;
-p_est = mean(count<alpha,5); % only average over sample dim
+count   = count/Nperm;
+pwr_est = mean(count<alpha,5); % only average over sample dim
 end
 
