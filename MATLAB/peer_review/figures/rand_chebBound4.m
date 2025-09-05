@@ -4,7 +4,7 @@ rng('default');
 addpath('../utils')
 Nmeas = 48;
 Nfreq = 64;
-Nacro = 64;
+Nacro = 32;
 Nsamp = 1e2;
 fmin  = 1;
 fmax  = Nmeas/4;
