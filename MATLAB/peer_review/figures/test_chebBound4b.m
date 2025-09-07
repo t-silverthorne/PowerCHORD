@@ -1,6 +1,8 @@
 % Setup simulated annealing
 clear;clf;
-runSA(4,8,100)% N/4 harmonic
+runSA(4,5,100)% N/4 harmonic
+runSA(4,2,100)
+runSA(4,1,100) 
 
 function [fval,fbench]=runSA(harm,Amp,MaxIter)
 	rng(1)
@@ -17,11 +19,11 @@ function [fval,fbench]=runSA(harm,Amp,MaxIter)
 	freqs = reshape(freqs,1,1,1,1,1,[]);
 	acros = reshape(acros,1,1,1,1,1,1,[]);
 	fqf_2 = reshape(linspace(fmin,fmax,1e3),1,1,[]);
+	
 
-
-	% estimate score for equispaced
 	tt    = linspace(0,1,Nmeas+1);
 	tt    = tt(1:Nmeas);
+	
 	Jwrap = @(tt) - Jfun(tt,freqs,acros,fqf_2,Amp,Nsamp);
 	fprintf('Equispaced estimate %d\n',Jwrap(tt));
 

@@ -93,7 +93,7 @@ function [fval,fbench]=runSA(harm,Amp,MaxIter)
 	sz    = size(mu);
 
 	x     = mu + randn([sz(1:4),Nsamp,sz(6:end)]);
-	[pwr2,sgn] = evalChebPowerbnd(Q2,x,0.05);
+	[pwr2,sgn] = evalChebPowerbnd(Q2,x,0.05,'rig');
 	pwr2 = pwr2.*((-1).^(~sgn));
 	pwr2 = squeeze(pwr2);
 	%plot(squeeze(freqs),squeeze(min(pwr2,[],2)),'--k','LineWidth',1)
@@ -106,7 +106,7 @@ function [fval,fbench]=runSA(harm,Amp,MaxIter)
 		mu    = Amp*cos(2*pi*freqs.*tt -acros);
 		sz    = size(mu);
 		x     = mu + randn([sz(1:4),Nsamp,sz(6:end)]);
-		[pwr2,sgn] = evalChebPowerbnd(Q2,x,0.05);
+		[pwr2,sgn] = evalChebPowerbnd(Q2,x,0.05,'rig');
 		pwr2 = pwr2.*((-1).^(~sgn));
 		Jval   =min(pwr2,[],'all');
 	end
