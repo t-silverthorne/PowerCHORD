@@ -7,8 +7,8 @@ function [fval,fbench]=runSA(harm,Amp,MaxIter)
 	addpath('../utils')
 	Nmeas = 48;
 	Nfreq = 64;
-	Nacro = 32;
-	Nsamp = 2e1;
+	Nacro = 64;
+	Nsamp = 6e1;
 	fmin  = 1;
 	fmax  = Nmeas/harm;
 

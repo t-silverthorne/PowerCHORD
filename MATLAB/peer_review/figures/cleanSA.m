@@ -10,33 +10,33 @@ fmin    = 1;         % min freq in window
 fmax    = Nmeas/4;   % max freq in window
 tt      = linspace(0,1,Nmeas+1);
 tt      = tt(1:end-1)';
-mode = 'test';
+mode = 'real';
 switch mode
     case 'test'
         % cheb params
-        Nfreq_ch = 16; % num freqs for Cheb bound
-        Nacro_ch = 16; % num acros for Cheb bound
+        Nfreq_ch = 16;  % num freqs for Cheb bound
+        Nacro_ch = 2;  % num acros for Cheb bound
         Nsamp_ch = 1e1; % for Cheb bound
-        Nfq_Tinf = 4; % num freqs for constructing test statistic
+        Nfq_Tinf = 4;   % num freqs for constructing test statistic
         Nfq_T2   = 1e1; % num freqs for constructing test statistic
         
         % Monte Carlo params
         Nsamp_mc = 1e1; 
         Nfreq_mc = 4;
         Nacro_mc = 4;
-        Nperm_mc = 1e1; % Nperm for Monte Carlo
+        Nperm_mc = 1e1; 
 
     case 'real'
         % cheb params
-        Nfreq_ch = 32; % num freqs for Cheb bound
-        Nacro_ch = 32; % num acros for Cheb bound
-        Nsamp_ch = 1e1; % for Cheb bound
-        Nfq_Tinf = 16; % num freqs for constructing test statistic
+        Nfreq_ch = 64;  % num freqs for Cheb bound
+        Nacro_ch = 32;  % num acros for Cheb bound
+        Nsamp_ch = 5e1; % for Cheb bound
+        Nfq_Tinf = 64;  % num freqs for constructing test statistic
         Nfq_T2   = 1e3; % num freqs for constructing test statistic
         
         % Monte Carlo params
-        Nsamp_mc = 1e2; 
-        Nfreq_mc = 32;
+        Nsamp_mc = 1e3; 
+        Nfreq_mc = 64;
         Nacro_mc = 32;
         Nperm_mc = 1e3; % Nperm for Monte Carlo
 
@@ -47,6 +47,18 @@ tiledlayout(2,2);
 [pwr2_mc,pwrinf_mc,pwr2_ch,fmc,fch]=benchmarkDesign(tt,fmin,fmax,Amp,...
                 Nfreq_ch,Nacro_ch,Nsamp_ch,Nfq_Tinf,Nfq_T2, ...
                 Nfreq_mc,Nacro_mc,Nsamp_mc,Nperm_mc);
+fprintf('Equispaced power Tinf     MC:   %d\n',min(pwrinf_mc))
+fprintf('Equispaced power T2       MC:   %d\n',min(pwr2_mc))
+fprintf('Equispaced power T2       CH:   %d\n',min(pwr2_ch))
+nexttile(1)
+plot(tt,1,'.k')
+nexttile(3)
+fprintf("----\n")
+% plot equispaced
+plot(fmc,pwrinf_mc,'-k')
+hold on
+plot(fmc,pwr2_mc,'-b')
+plot(fch,pwr2_ch,'--b')
 
 % ---------- optimization --------------------
 freqs_ch = linspace(fmin,fmax,Nfreq_ch);
@@ -70,19 +82,10 @@ options = optimoptions('simulannealbnd', ...
 [tt_opt,fval,exitflag,output] = simulannealbnd(Jwrap,tt0,lb,ub,options)
 
 % ---------- post optimization ---------------
-nexttile(1)
-plot(tt,1,'.k')
-nexttile(3)
+
 fprintf('Equispaced power Tinf     MC:   %d\n',min(pwrinf_mc))
 fprintf('Equispaced power T2       MC:   %d\n',min(pwr2_mc))
 fprintf('Equispaced power T2       CH:   %d\n',min(pwr2_ch))
-fprintf("----\n")
-% plot equispaced
-plot(fmc,pwrinf_mc,'-k')
-hold on
-plot(fmc,pwr2_mc,'-b')
-plot(fch,pwr2_ch,'--b')
-
 nexttile(2)
 tt = tt_opt;
 plot(tt,1,'.k')
