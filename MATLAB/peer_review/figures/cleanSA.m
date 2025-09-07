@@ -3,19 +3,19 @@
 clear;rng('default');
 clf;
 addpath('../utils')
-Nmeas   = 48; % number of measurements
-Amp     = 5;
+Nmeas   = 32; % number of measurements
+Amp     = 10;
 MaxIter = 1e2;
 fmin    = 1;         % min freq in window
-fmax    = Nmeas/4;   % max freq in window
+fmax    = Nmeas/2;   % max freq in window
 tt      = linspace(0,1,Nmeas+1);
 tt      = tt(1:end-1)';
-mode = 'real';
+mode = 'moderate';
 switch mode
     case 'test'
         % cheb params
         Nfreq_ch = 16;  % num freqs for Cheb bound
-        Nacro_ch = 2;  % num acros for Cheb bound
+        Nacro_ch = 2;   % num acros for Cheb bound
         Nsamp_ch = 1e1; % for Cheb bound
         Nfq_Tinf = 4;   % num freqs for constructing test statistic
         Nfq_T2   = 1e1; % num freqs for constructing test statistic
@@ -26,7 +26,21 @@ switch mode
         Nacro_mc = 4;
         Nperm_mc = 1e1; 
 
-    case 'real'
+    case 'moderate'
+        % cheb params
+        Nfreq_ch = 32;  % num freqs for Cheb bound
+        Nacro_ch = 16;  % num acros for Cheb bound
+        Nsamp_ch = 2e1; % for Cheb bound
+        Nfq_Tinf = 32;  % num freqs for constructing test statistic
+        Nfq_T2   = 1e3; % num freqs for constructing test statistic
+        
+        % Monte Carlo params
+        Nsamp_mc = 1e2; 
+        Nfreq_mc = 16;
+        Nacro_mc = 16;
+        Nperm_mc = 1e2;
+
+	case 'real'
         % cheb params
         Nfreq_ch = 64;  % num freqs for Cheb bound
         Nacro_ch = 32;  % num acros for Cheb bound
@@ -35,10 +49,10 @@ switch mode
         Nfq_T2   = 1e3; % num freqs for constructing test statistic
         
         % Monte Carlo params
-        Nsamp_mc = 1e3; 
-        Nfreq_mc = 64;
-        Nacro_mc = 32;
-        Nperm_mc = 1e3; % Nperm for Monte Carlo
+        Nsamp_mc = 1e2; 
+        Nfreq_mc = 16;
+        Nacro_mc = 16;
+        Nperm_mc = 1e2; 
 
 end
 % ---------- pre optimization ----------------
