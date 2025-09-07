@@ -8,12 +8,12 @@ fqf_2     = reshape(linspace(fmin,fmax,Nfq_T2),1,1,[]);
 [Q2,~] = getQuadForm(tt,fqf_2);
 
 % get MC estimates of T2 and Tinf power
-freqs_mc     = linspace(fmin,fmax,Nfreq_mc);
-acros     = linspace(0,2*pi,Nacro_mc+1);
-acros     = acros(1:end-1);
-freqs_mc     = reshape(freqs_mc,1,1,1,1,1,[]);
-acros     = reshape(acros,1,1,1,1,1,1,[]);
-mu        = Amp*cos(2*pi*freqs_mc.*tt -acros);
+freqs_mc  = linspace(fmin,fmax,Nfreq_mc);
+acros_mc  = linspace(0,2*pi,Nacro_mc+1);
+acros_mc  = acros_mc(1:end-1);
+freqs_mc  = reshape(freqs_mc,1,1,1,1,1,[]);
+acros_mc  = reshape(acros_mc,1,1,1,1,1,1,[]);
+mu        = Amp*cos(2*pi*freqs_mc.*tt -acros_mc);
 sz        = size(mu);
 x         = mu + randn([sz(1:4),Nsamp_mc,sz(6:end)]);
 pwr2_mc   = min(squeeze(fastMCT2power(Q2,x,Nperm_mc,0.05)),[],2);
@@ -21,10 +21,10 @@ pwrinf_mc = min(squeeze(fastMCTinfpower(Qinf,x,Nperm_mc,0.05)),[],2);
 
 % get Chebyshev bound on T2 power
 freqs_ch      = linspace(fmin,fmax,Nfreq_ch);
-acros         = rand(Nacro_ch,1)*2*pi;
+acros_ch      = rand(Nacro_ch,1)*2*pi;
 freqs_ch      = reshape(freqs_ch,1,1,1,1,1,[]);
-acros         = reshape(acros,1,1,1,1,1,1,[]);
-mu            = Amp*cos(2*pi*freqs_ch.*tt -acros);
+acros_ch      = reshape(acros_ch,1,1,1,1,1,1,[]);
+mu            = Amp*cos(2*pi*freqs_ch.*tt -acros_ch);
 sz            = size(mu);
 x             = mu + randn([sz(1:4),Nsamp_ch,sz(6:end)]);
 [pwr2_ch,sgn] = evalChebPowerbnd(Q2,x,0.05,'rig');
