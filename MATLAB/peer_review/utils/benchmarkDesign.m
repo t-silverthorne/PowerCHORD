@@ -1,9 +1,10 @@
 function [pwr2_mc,pwrinf_mc,pwr2_ch,freqs_mc,freqs_ch]=benchmarkDesign(...
                          tt,fmin,fmax,Amp,...
                          Nfreq_ch,Nacro_ch,Nsamp_ch,Nfq_Tinf,Nfq_T2, ...
-                         Nfreq_mc,Nacro_mc,Nsamp_mc,Nperm_mc)
-fqf_inf   = reshape(linspace(fmin,fmax,Nfq_Tinf),1,1,[]);
-fqf_2     = reshape(linspace(fmin,fmax,Nfq_T2),1,1,[]);
+                         Nfreq_mc,Nacro_mc,Nsamp_mc,Nperm_mc,
+						fmin_Q,fmax_Q)
+fqf_inf   = reshape(linspace(fmin_Q,fmax_Q,Nfq_Tinf),1,1,[]);
+fqf_2     = reshape(linspace(fmin_Q,fmax_Q,Nfq_T2),1,1,[]);
 [~,Qinf] = getQuadForm(tt,fqf_inf);
 [Q2,~] = getQuadForm(tt,fqf_2);
 

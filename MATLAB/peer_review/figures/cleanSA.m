@@ -10,7 +10,7 @@ fmin    = 1;         % min freq in window
 fmax    = Nmeas/2;   % max freq in window
 tt      = linspace(0,1,Nmeas+1);
 tt      = tt(1:end-1)';
-mode = 'moderate';
+mode    = 'moderate';
 switch mode
     case 'test'
         % cheb params
@@ -60,7 +60,7 @@ tiledlayout(2,2);
 
 [pwr2_mc,pwrinf_mc,pwr2_ch,fmc,fch]=benchmarkDesign(tt,fmin,fmax,Amp,...
                 Nfreq_ch,Nacro_ch,Nsamp_ch,Nfq_Tinf,Nfq_T2, ...
-                Nfreq_mc,Nacro_mc,Nsamp_mc,Nperm_mc);
+                Nfreq_mc,Nacro_mc,Nsamp_mc,Nperm_mc,fmin,fmax*.99);
 fprintf('Equispaced power Tinf     MC:   %d\n',min(pwrinf_mc))
 fprintf('Equispaced power T2       MC:   %d\n',min(pwr2_mc))
 fprintf('Equispaced power T2       CH:   %d\n',min(pwr2_ch))
@@ -106,7 +106,7 @@ plot(tt,1,'.k')
 nexttile(4)
 [pwr2_mc,pwrinf_mc,pwr2_ch,fmc,fch]=benchmarkDesign(tt,fmin,fmax,Amp,...
                 Nfreq_ch,Nacro_ch,Nsamp_ch,Nfq_Tinf,Nfq_T2, ...
-                Nfreq_mc,Nacro_mc,Nsamp_mc,Nperm_mc);
+                Nfreq_mc,Nacro_mc,Nsamp_mc,Nperm_mc,fmin,fmax);
 fprintf('Optimal design power Tinf MC:   %d\n',min(pwrinf_mc))
 fprintf('Optimal design power T2   MC:   %d\n',min(pwr2_mc))
 fprintf('Optimal design power T2   CH:   %d\n',min(pwr2_ch))
