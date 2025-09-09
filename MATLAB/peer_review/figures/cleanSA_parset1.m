@@ -4,7 +4,7 @@ tic;
 clear;rng('default');
 clf;
 addpath('../utils')
-Nmeas   = 48; % number of measurements
+Nmeas   = 24; % number of measurements
 Amp     = 10;
 MaxIter = 100;
 fmin    = 1;         % min freq in window
@@ -57,18 +57,18 @@ switch mode % 24 5 test shows repetition in measurement pattern
 
 	case 'real'
         % cheb params
-        Nfreq_ch = 64;  % num freqs for Cheb bound
-        Nacro_ch = 64;  % num acros for Cheb bound
+        Nfreq_ch = 32;  % num freqs for Cheb bound
+        Nacro_ch = 32;  % num acros for Cheb bound
         Nsamp_ch = 5e1; % for Cheb bound
-        
-		Nfq_Tinf = 64;  % num freqs for constructing test statistic
+        Nfq_Tinf = 32;  % num freqs for constructing test statistic
         Nfq_T2   = 1e3; % num freqs for constructing test statistic
         
         % Monte Carlo params
         Nsamp_mc = 2e2; 
-        Nfreq_mc = 64;
-        Nacro_mc = 64;
+        Nfreq_mc = 32;
+        Nacro_mc = 32;
         Nperm_mc = 2e2; 
+
 end
 % ---------- pre optimization ----------------
 tiledlayout(2,2);
