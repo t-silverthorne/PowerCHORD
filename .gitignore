@@ -53,3 +53,4 @@ temp/
 MATLAB/peer_review/figures/output/*
 *.RDS
 **.asv
+*.csv
