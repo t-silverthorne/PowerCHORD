@@ -1,5 +1,4 @@
-function [pwr,pwrGrid] = estimateFreePeriodPower(tt,Nsamp,fmin,fmax,Nperm,censor_factor, ...
-                                                 Amp,Nfreq,Nacro,Nfq)
+function [pwr,pwrGrid] = estimateFreePeriodPower(tt,Nsamp,fmin,fmax,Nperm,censor_factor,Amp,Nfreq,Nacro,Nfq,nrep)
 % wrapper for estimating power of free period model, calls fastMCTinfpower
 % for actual power evaluation
 arguments
@@ -13,7 +12,7 @@ arguments
     Nfreq = 16;
     Nacro = 16;
     Nfq   = 100;
-
+    nrep  = 1;
 end
 freqs   = linspace(fmin,fmax,Nfreq); % freq and acro grids
 acros   = linspace(0,2*pi,Nacro+1);
@@ -28,7 +27,12 @@ fqf     = linspace(fmin,fmax*censor_factor,Nfq);
 fqf     = reshape(fqf,1,1,[]);
 [~,Q]   = getQuadForm(tt,fqf);
 alpha   = .05;
-pwrGrid = squeeze(fastMCTinfpower(Q,x,Nperm,alpha));
-pwr     = min(pwrGrid,[],2);
+count   = [];
+for rep=1:nrep % number of pvals will be 
+    [~,cloc]= fastMCTinfpower(Q,x,Nperm,alpha,false);
+    count   = cat(5,count,cloc);
+end
+pwrGrid  = squeeze(mean(count<alpha,5));
+pwr      = min(pwrGrid,[],2);
 end
 

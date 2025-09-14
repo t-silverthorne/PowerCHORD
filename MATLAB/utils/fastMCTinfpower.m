@@ -1,6 +1,8 @@
-function power_est = fastMCTinfpower(Qf,x,Nperm,alpha)
-%FASTMCT2PVAL fast Monte Carlo estimate of the 
-% T2 test statistic permutation p-value
+function [power_est,perm_pvals] = fastMCTinfpower(Qf,x,Nperm,alpha,compute_power)
+%FASTMCTINFPVAL fast Monte Carlo estimate of the Tinf test statistic permutation p-value
+if nargin<5
+    compute_power=true;
+end
 Tobs = max(pagemtimes(pagetranspose(x),pagemtimes(Qf,x)),[],3);
 sz   = size(x);
 n    = sz(1);
@@ -20,7 +22,10 @@ for pp=1:Nperm
     Tperm = max(pagemtimes(pagetranspose(xp),pagemtimes(Qf,xp)),[],3);
     count = count + (Tperm>Tobs);
 end
-count    = count/Nperm;
-power_est = mean(count<alpha,5); % only average over sample dim
+perm_pvals = count/Nperm;
+if compute_power
+    power_est = mean(perm_pvals<alpha,5); % average over sample dim
+else
+    power_est = NaN;
 end
 
