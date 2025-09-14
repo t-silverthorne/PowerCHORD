@@ -29,6 +29,7 @@ fqf     = reshape(fqf,1,1,[]);
 alpha   = .05;
 count   = [];
 for rep=1:nrep % number of pvals will be 
+	fprintf('On rep %d of %d\n',rep,nrep)
     [~,cloc]= fastMCTinfpower(Q,x,Nperm,alpha,false);
     count   = cat(5,count,cloc);
 end

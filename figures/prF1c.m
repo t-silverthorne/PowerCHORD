@@ -1,10 +1,11 @@
 % compare wcp optimal vs equispaced for freq window [1,N/2] for various
 % values of N, bandlimit the equispaced design to avoid numerical instability
 clear;clf;
-mode  = 'test';
-Nmeas = 16;
+tic;
+mode  = 'real';
+Nmeas = 48;
 cfact = .95;
-Amp   = 2;
+Amp   = 5;
 fmin  = 1;
 fmax  = Nmeas/2;
 
@@ -22,11 +23,19 @@ switch mode
 		Nfq    = 500;
         nrep   = 10; 
 	case 'real'
-		Nsamp  = 1e3;
-		Nperm  = 1e3;
-		Nfreq  = 16;
-		Nacro  = 2;
+		Nsamp  = 1e2;
+		Nperm  = 1e2;
+		Nfreq  = 32;
+		Nacro  = 16;
 		Nfq    = 500;
+        nrep   = 10; 
+	case 'real-hd'
+		Nsamp  = 1e2;
+		Nperm  = 1e3;
+		Nfreq  = 32;
+		Nacro  = 16;
+		Nfq    = 500;
+        nrep   = 100; 
 end
 
 % estimate free period power for WCP optimal design
@@ -46,10 +55,10 @@ freqs = linspace(fmin,fmax,Nfreq);
 pwr  = reshape(pwr,[],1);
 pwru = reshape(pwru,[],1);
 %% write data to file
-outFile = sprintf('prF1c_n%d.csv', n);
+outFile = sprintf('prF1c_n%d_Amp%d_mode%s.csv', Nmeas,Amp,mode);
 writematrix([pwru pwr], outFile);
 fprintf('Saved results to %s\n', outFile);
-
+toc
 % plot(squeeze(freqs),squeeze(pwr),'-k')
 % hold on
 % plot(squeeze(freqs),squeeze(pwru),'-b')
