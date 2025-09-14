@@ -62,16 +62,15 @@ df  = read.csv('MATLAB/peer_review/figures/real_Nover2_results_prFig1data_Nsamp1
                header=T)
 dfu = read.csv('MATLAB/peer_review/figures/real_Nover2_results_prFig1data_Nsamp1000_Nperm1000_c95_Amp2_20250831_162552/pwru.csv',
                header=T)
-acro = seq(0,2*pi,length.out = 16+1)
-acro = acro[1:16]
+freq = seq(1,8,length.out=16)
 pwr=as.numeric(df[1,])
 pwru=as.numeric(dfu[1,])
 
-dfo = data.frame(acro=acro,power=pwr,type='WCP optimal')
-dfu = data.frame(acro=acro,power=pwru,type='equispaced')
+dfo = data.frame(freq=freq,power=pwr,type='WCP optimal')
+dfu = data.frame(freq=freq,power=pwru,type='equispaced')
 df  = rbind(dfo,dfu)
-p_c = df |> ggplot(aes(x=acro,y=power,group=type,color=type))+geom_point()+geom_line()+
-  clean_theme()+labs(color=NULL,x='acrophase')
+p_c = df |> ggplot(aes(x=freq,y=power,group=type,color=type))+geom_point()+geom_line()+
+  clean_theme()+labs(color=NULL,x='frequency')
 
 Fig = ((p_a/p_b)|p_c) + plot_annotation(tag_levels='A')+
   plot_layout(widths=c(2,1),guides='collect')&theme(legend.position='bottom')
