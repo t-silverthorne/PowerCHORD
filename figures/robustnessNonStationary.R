@@ -11,7 +11,7 @@ tt   = tt[1:n]
 Nsamp = 1e4
 
 Amin = 1
-Amax = 2
+Amax = 3
 racro = function(){runif(1,0,2*pi)}
 rAmp  = function(){runif(1,Amin,Amax)}
 sim_noise             = function(tt){rnorm(length(tt))}
@@ -20,12 +20,18 @@ sim_cosinor           = function(tt){rAmp()*cos(2*pi*tt - racro())+rnorm(length(
 sim_cosinor_osc_amp   = function(tt){(  (1+runif(1,0,.95)*cos(2*pi*tt-racro()))*rAmp()  )*cos(2*pi*tt - racro())+rnorm(length(tt))}
 sim_cosinor_osc_phase = function(tt){rAmp()*cos(2*pi*tt - racro()*(1+runif(1,0,pi)*(cos(2*pi*tt-racro()))))+rnorm(length(tt))}
 sim_cosinor_osc_noise = function(tt){rAmp()*cos(2*pi*tt - racro())+rnorm(length(tt))*(1+rAmp()*cos(2*pi*tt - racro()))}
+sim_square_wave       = function(tt){rAmp()*ifelse((tt-racro())%%1<.5,1,0)+rnorm(length(tt))}
+sim_sqr_burst         = function(tt){rAmp()*ifelse((tt-racro())%%1<.25,1,0)+rnorm(length(tt))}
 
+signal = sim_sqr_burst(tt_hd)
+data.frame(time=tt_hd,signal=signal) |> ggplot(aes(x=time,y=signal))+geom_line()
 methods = list(
-  sim_cosinor         = sim_cosinor,
-  sim_cosinor_osc_amp = sim_cosinor_osc_amp,
+  sim_cosinor           = sim_cosinor,
+  sim_cosinor_osc_amp   = sim_cosinor_osc_amp,
   sim_cosinor_osc_phase = sim_cosinor_osc_phase,
-  sim_cosinor_osc_noise = sim_cosinor_osc_noise
+  sim_cosinor_osc_noise = sim_cosinor_osc_noise,
+  sim_square_wave       = sim_square_wave,
+  sim_sqr_burst         = sim_sqr_burst
 )
 
 pars = expand.grid(
@@ -62,9 +68,9 @@ df = lapply(seq_len(nrow(pars)), function(ii) {
 }) |> rbindlist() |> data.frame()
 df |> head()
 df$sampling <- factor(df$sampling, levels = c("random", "equispaced"))
+df |> ggplot(aes(x=fpr,y=tpr,group=idx,color=sampling))+geom_line()+facet_wrap(~method)
 
-dfa =df
-saveRDS(dfa,'df_robustA.RDS')
-#pa = df |> ggplot(aes(x=fpr,y=tpr,group=idx,color=sampling))+geom_line()+facet_wrap(~method)
+#dfa =df
+#saveRDS(dfa,'df_robustA.RDS')
 
 

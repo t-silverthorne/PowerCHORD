@@ -13,15 +13,16 @@ tt    = linspace(0,1,n+1);
 tt    = tt(1:end-1)';
 
 
-Amin  = 3 + 2/7;
+Amin  = 4;
 Amax  = 10;
-dA    = 2/7;
+dA    = 1;
 Amps  = Amin:dA:Amax;
 
 fmin  = 1;
 fmaxs = [n/2];
 data_all = [];
 for Amp=Amps
+    fprintf('On Amp %d \n',Amp);
 	for fmax=fmaxs
 		if fmax==n/2
 			cf=.95;
