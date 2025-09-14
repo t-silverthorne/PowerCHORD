@@ -12,6 +12,7 @@ n     = 12;
 tt    = linspace(0,1,n+1);
 tt    = tt(1:end-1)';
 
+
 Amin  = 3 + 2/7;
 Amax  = 10;
 dA    = 2/7;
