@@ -25,6 +25,7 @@ p_a= df |> ggplot(aes(x=pfixed,y=pfree,color=freq))+geom_point(size=.3)+
                         name   = "frequency",  # legend title
                         )+clean_theme()+labs(x='free period power',y='fixed period power')
 p_a
+
 # --------
 # Panel B
 # --------
@@ -57,9 +58,9 @@ p_b
 # --------
 # Panel C
 # --------
-df  = read.csv('figures/data/prF1c_n16_test.csv',
+df  = read.csv('figures/data/prF1c_n48_Amp1_modereal.csv',
                header=F)
-freqs = seq(1,8,length.out=24)
+freqs = seq(1,24,length.out=32)
 df1 = data.frame(power  = df[,1],
            freq   = freqs,
            design = 'WCP')
@@ -70,6 +71,7 @@ df2 = data.frame(power  = df[,2],
 df = rbind(df1,df2)
 p_c = df |> ggplot(aes(x=freq,y=power,group=design,color=design))+geom_point()+geom_line()+
   clean_theme()+labs(color=NULL,x='frequency')
+p_c
 
 Fig = ((p_a/p_b)|p_c) + plot_annotation(tag_levels='A')+
   plot_layout(widths=c(2,1),guides='collect')&theme(legend.position='bottom')
