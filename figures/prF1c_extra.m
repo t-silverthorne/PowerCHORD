@@ -64,9 +64,9 @@ end
 tic;
 
 % estimate free period power for equispaced design
-pwr  = estimateFreePeriodPower(tt,Nsamp,fmin,fmax,Nperm,1,Amp,Nfreq,Nacro,Nfq,nrep);
-freqs = linspace(fmin,fmax,Nfreq);
-pwr  = reshape(pwr,[],1);
+pwr     = estimateFreePeriodPower(tt,Nsamp,fmin,fmax,Nperm,1,Amp,Nfreq,Nacro,Nfq,nrep);
+freqs   = linspace(fmin,fmax,Nfreq);
+pwr     = reshape(pwr,[],1);
 outFile = sprintf('prF1c_extra_n%d_Amp%d_mode%s.csv', Nmeas,Amp,mode);
 writematrix(pwr, outFile);
 fprintf('Saved results to %s\n', outFile);
