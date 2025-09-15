@@ -1,5 +1,4 @@
 # for creating a multi-panel figure summarizing our analysis of the free period model
-
 # --------
 # Panel A
 # --------
@@ -58,7 +57,7 @@ p_b
 # --------
 # Panel C
 # --------
-df  = read.csv('figures/prF1c_n16_test.csv',
+df  = read.csv('figures/data/prF1c_n16_test.csv',
                header=F)
 freqs = seq(1,8,length.out=24)
 df1 = data.frame(power  = df[,1],

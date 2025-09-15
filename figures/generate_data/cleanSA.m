@@ -3,7 +3,7 @@
 tic;
 clear;rng('default');
 clf;
-addpath('../MATLAB/utils')
+addpath('../../MATLAB/utils')
 Nmeas   = 48; % number of measurements
 Amp     = 1;
 MaxIter = 10000;

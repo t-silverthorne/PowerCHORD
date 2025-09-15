@@ -3,7 +3,7 @@
 % pars are randomised and which pars are stepped over discrete values
 
 clear
-addpath('../MATLAB/utils')
+addpath('../../MATLAB/utils')
 Nsamp = 5e2;
 Nperm = 1e3;
 nrep  = 5e1;
