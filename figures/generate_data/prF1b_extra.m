@@ -19,7 +19,7 @@ dA    = 1;
 Amps  = Amin:dA:Amax;
 
 fmin  = 1;
-fmaxs = [n/2];
+fmaxs = [n/2,n/3,n/4];
 data_all = [];
 for Amp=Amps
     fprintf('On Amp %d \n',Amp);
@@ -40,10 +40,10 @@ for Amp=Amps
 				data(rep,:) = vv;
 			end
 			data_all = [data_all;data];
-			writematrix(data_all, sprintf('data/results_prF1b_equi_extra.csv'));
 		end
 	end
 end
+writematrix(data_all, sprintf('data/results_prF1b_equi_extra.csv'));
 
 function [pwr,pwrGrid] = estFPPloc(tt,Nsamp,freq,acro,Amp,Nperm,fqf)
 % wrapper for estimating power of free period model, calls fastMCTinfpower
