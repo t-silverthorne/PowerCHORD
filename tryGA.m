@@ -7,8 +7,8 @@ addpath('MATLAB/utils')
 
 Nmeas   = 48; % number of measurements
 ceps    = 1/Nmeas/48;
-Amp     = 2;
-MaxIter = 50;
+Amp     = 1;
+MaxIter = 100;
 fmin    = 1;         % min freq in window
 fmax    = Nmeas/2;   % max freq in window
 mode    = 'test';
@@ -17,8 +17,8 @@ switch mode % 24 5 test shows repetition in measurement pattern
         % cheb params
         Nfreq_ch = 48;   % num freqs for Cheb bound
         Nacro_ch = 16;   % num acros for Cheb bound
-        Nsamp_ch = 1e2; % for Cheb bound
-        Nfq_T2   = 1e3; % num freqs for constructing test statistic
+        Nsamp_ch = 3e1; % for Cheb bound
+        Nfq_T2   = 5e2; % num freqs for constructing test statistic
         
         % Monte Carlo params
         Nfq_Tinf = Nmeas;   % num freqs for constructing test statistic
@@ -41,25 +41,25 @@ switch mode % 24 5 test shows repetition in measurement pattern
         Nacro_mc = 64;
         Nperm_mc = 2e2; 
 end
-% %% ---------- pre optimization ----------------
-% tiledlayout(2,2);
-% 
-% tt = (0:Nmeas-1)'/Nmeas;
-% [pwr2_mc,pwrinf_mc,pwr2_ch,fmc,fch]=benchmarkDesign(tt,fmin,fmax,Amp,...
-%                 Nfreq_ch,Nacro_ch,Nsamp_ch,Nfq_Tinf,Nfq_T2, ...
-%                 Nfreq_mc,Nacro_mc,Nsamp_mc,Nperm_mc,fmin,fmax*.95);
-% fprintf('Equispaced power Tinf     MC:   %d\n',min(pwrinf_mc))
-% fprintf('Equispaced power T2       MC:   %d\n',min(pwr2_mc))
-% fprintf('Equispaced power T2       CH:   %d\n',min(pwr2_ch))
-% nexttile(1)
-% plot(tt,1,'.k')
-% nexttile(3)
-% fprintf("----\n")
-% % plot equispaced
-% plot(fmc,pwrinf_mc,'-k')
-% hold on
-% plot(fmc,pwr2_mc,'-b')
-% plot(fch,pwr2_ch,'--b')
+% % ---------- pre optimization ----------------
+%tiledlayout(2,2);
+%
+%tt = (0:Nmeas-1)'/Nmeas;
+%[pwr2_mc,pwrinf_mc,pwr2_ch,fmc,fch]=benchmarkDesign(tt,fmin,fmax,Amp,...
+%                Nfreq_ch,Nacro_ch,Nsamp_ch,Nfq_Tinf,Nfq_T2, ...
+%                Nfreq_mc,Nacro_mc,Nsamp_mc,Nperm_mc,fmin,fmax*.95);
+%fprintf('Equispaced power Tinf     MC:   %d\n',min(pwrinf_mc))
+%fprintf('Equispaced power T2       MC:   %d\n',min(pwr2_mc))
+%fprintf('Equispaced power T2       CH:   %d\n',min(pwr2_ch))
+%nexttile(1)
+%plot(tt,1,'.k')
+%nexttile(3)
+%fprintf("----\n")
+%% plot equispaced
+%plot(fmc,pwrinf_mc,'-k')
+%hold on
+%plot(fmc,pwr2_mc,'-b')
+%plot(fch,pwr2_ch,'--b')
 
 % ---------- optimization --------------------
 freqs_ch = linspace(fmin,fmax,Nfreq_ch);
@@ -82,9 +82,9 @@ options = optimoptions('ga', ...
     'Display','iter', ...
     'MaxGenerations',MaxIter, ...
     'MaxStallGenerations',50, ...
-    'PopulationSize',100, ...     
+    'PopulationSize',200, ...     
     'FunctionTolerance',1e-6, ...
-    'UseParallel',false);
+    'UseParallel',true);
 
 % Run GA: need number of variables = length(tt0)
 nvars = numel(tt0);
