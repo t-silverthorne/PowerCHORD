@@ -56,3 +56,4 @@ MATLAB/peer_review/figures/output/*
 *.csv
 *.fig
 *.mat
+*.png

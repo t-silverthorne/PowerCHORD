@@ -15,9 +15,9 @@ mode    = 'tiny';
 switch mode % 24 5 test shows repetition in measurement pattern
     case 'tiny'
         % cheb params
-        Nfreq_ch = 8;   % num freqs for Cheb bound
+        Nfreq_ch = 16;   % num freqs for Cheb bound
         Nacro_ch = 8;   % num acros for Cheb bound
-        Nsamp_ch = 2e1; % for Cheb bound
+        Nsamp_ch = 1e1; % for Cheb bound
         Nfq_T2   = 1e3; % num freqs for constructing test statistic
         
         % Monte Carlo params
