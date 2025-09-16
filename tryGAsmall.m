@@ -4,28 +4,16 @@ tic;
 clear;rng('default');
 clf;
 addpath('MATLAB/utils')
-PopSize = 50;
+
 Nmeas   = 48; % number of measurements
-ceps    = 1/Nmeas/Nmeas/2;
+ceps    = 1/Nmeas/24;
 Amp     = 1;
 MaxIter = 50;
+PopSize = 10;
 fmin    = 1;         % min freq in window
 fmax    = Nmeas/2;   % max freq in window
-mode    = 'tiny';
-switch mode % 24 5 test shows repetition in measurement pattern
-    case 'tiny'
-        % cheb params
-        Nfreq_ch = 8;   % num freqs for Cheb bound
-        Nacro_ch = 8;   % num acros for Cheb bound
-        Nsamp_ch = 2e1; % for Cheb bound
-        Nfq_T2   = 1e3; % num freqs for constructing test statistic
-        
-        % Monte Carlo params
-        Nfq_Tinf = Nmeas;   % num freqs for constructing test statistic
-        Nsamp_mc = 1e2; 
-        Nfreq_mc = 48;
-        Nacro_mc = 8;
-        Nperm_mc = 20; 
+mode    = 'test';
+switch mode 
     case 'test'
         % cheb params
         Nfreq_ch = 48;   % num freqs for Cheb bound
@@ -37,8 +25,8 @@ switch mode % 24 5 test shows repetition in measurement pattern
         Nfq_Tinf = Nmeas;   % num freqs for constructing test statistic
         Nsamp_mc = 1e2; 
         Nfreq_mc = 48;
-        Nacro_mc = 8;
-        Nperm_mc = 20; 
+        Nacro_mc = 16*2;
+        Nperm_mc = 5e2; 
 	case 'real'
         % cheb params
         Nfreq_ch = 64;  % num freqs for Cheb bound
@@ -50,11 +38,11 @@ switch mode % 24 5 test shows repetition in measurement pattern
         
         % Monte Carlo params
         Nsamp_mc = 2e2; 
-        Nfreq_mc = 64;       
+        Nfreq_mc = 64;
         Nacro_mc = 64;
         Nperm_mc = 2e2; 
 end
-% % %% ---------- pre optimization ----------------
+% %% ---------- pre optimization ----------------
 % tiledlayout(2,2);
 % 
 % tt = (0:Nmeas-1)'/Nmeas;
@@ -73,29 +61,20 @@ end
 % hold on
 % plot(fmc,pwr2_mc,'-b')
 % plot(fch,pwr2_ch,'--b')
-% drawnow
+
 % ---------- optimization --------------------
-delete(gcp('nocreate'))
-parpool('local',4);   
-%%
-freqs_ch = fmin + rand(Nfreq_ch,1)*(fmax-fmin);%linspace(fmin,fmax,Nfreq_ch);
-% acros_ch = linspace(0,2*pi,Nacro_ch+1);
-% acros_ch = acros_ch(1:end-1);
+freqs_ch = linspace(fmin,fmax,Nfreq_ch);
 acros_ch = rand(Nacro_ch,1)*2*pi;
 freqs_ch = reshape(freqs_ch,1,1,1,1,1,[]);
 acros_ch = reshape(acros_ch,1,1,1,1,1,1,[]);
 fqf_2    = reshape(linspace(fmin,fmax,Nfq_T2),1,1,[]);
 
 
-initPop = NaN(PopSize,Nmeas);
-for jj =1:PopSize   
-    initPop(jj,:) = reshape(randInitDesign(Nmeas,ceps),1,[]);
-end
-
+tt0 = randInitDesign(Nmeas,ceps)';
 Acstr = orderConstraintMat(Nmeas);
 bsctr = -ceps*ones(Nmeas-1,1);
-lb = zeros(Nmeas,1);
-ub = ones(Nmeas,1);
+lb = zeros(size(tt0));
+ub = ones(size(tt0));
 
 Jwrap = @(tt) - Jfun(tt,freqs_ch,acros_ch,fqf_2,Amp,Nsamp_ch);
 
@@ -106,11 +85,10 @@ options = optimoptions('ga', ...
     'MaxStallGenerations',50, ...
     'PopulationSize',PopSize, ...     
     'FunctionTolerance',1e-6, ...
-    'UseParallel',true);
-% 'InitialPopulationMatrix', initPop,...
+    'UseParallel',false);
 
 % Run GA: need number of variables = length(tt0)
-nvars = Nmeas;
+nvars = numel(tt0);
 tt_opt = ga(Jwrap,Nmeas,Acstr,bsctr,[],[],lb,ub,[],options)
 
 % ---------- post optimization ---------------

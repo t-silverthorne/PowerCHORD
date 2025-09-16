@@ -23,7 +23,7 @@ df$fmax = factor(df$fmax, levels = c(3,4,6),
 p_a= df |> ggplot(aes(x=pfixed,y=pfree,color=freq))+geom_point(size=.3)+
   facet_wrap(~fmax,labeller=label_parsed)+  scale_color_viridis_c(limits=c(1,6),
                         name   = "frequency",  # legend title
-                        )+clean_theme()+labs(x='free period power',y='fixed period power')
+                        )+clean_theme()+labs(x='fixed period power',y='free period power')
 p_a
 
 # --------
@@ -63,10 +63,10 @@ df  = read.csv('figures/data/prF1c_n48_Amp1_modereal.csv',
 freqs = seq(1,24,length.out=32)
 df1 = data.frame(power  = df[,1],
            freq   = freqs,
-           design = 'WCP')
+           design = 'equispaced')
 df2 = data.frame(power  = df[,2],
            freq   = freqs,
-           design = 'equispaced')
+           design = 'WCP')
 
 df = rbind(df1,df2)
 p_c = df |> ggplot(aes(x=freq,y=power,group=design,color=design))+geom_point()+geom_line()+
@@ -75,9 +75,9 @@ p_c
 
 Fig = ((p_a/p_b)|p_c) + plot_annotation(tag_levels='A')+
   plot_layout(widths=c(2,1),guides='collect')&theme(legend.position='bottom')
-#ggsave('MATLAB/peer_review/figures/output/pr_fig_approx.png',
-#       Fig,
-#       width=6,height=4,
-#       device='png',
-#       dpi=600)
 Fig
+ggsave('figures/pr_fig_approx.png',
+       Fig,
+       width=6,height=4,
+       device='png',
+       dpi=600)
