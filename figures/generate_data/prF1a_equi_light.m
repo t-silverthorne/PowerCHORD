@@ -1,18 +1,23 @@
 % comparison of free period and F-test for equispaced designs, choose one freq
 % prior simulate signals of different freq and amplitude
 clear
-mode  = 'real';
+mode  = 'real-light';
 n     = 12;
 fmin  = 1;
 fmax  = n/3;
 
-addpath('../MATLAB/utils')
+addpath('../../MATLAB/utils')
 switch mode
 	case 'test'
 		Nsamp = 5;
 		Nperm = 10;
 		nrep  = 10;
 		Nfqf  = 10;
+	case 'real-light'
+		Nsamp = 1e2;
+		Nperm = 5e2;
+		nrep  = 100;
+		Nfqf  = 5e2;
 	case 'real'
 		Nsamp = 5e2;
 		Nperm = 1e3;
@@ -37,7 +42,10 @@ fqf  = linspace(1,cf*fmax,Nfqf);
 data = [];
 tic;
 for freq = freqs
+	fprintf('-----------------\n',freq)
+	fprintf('  Running freq %d\n',freq)
 	for Amp = Amps
+	fprintf('    Running Amp %d\n',Amp)
 		data_loc = NaN(nrep,5); 
 		parfor rep=1:nrep
 			acro            = 2*pi*rand;
@@ -50,7 +58,7 @@ for freq = freqs
 end
 toc
 % write data to file
-outFile = sprintf('mres_freePeriodSweep_n%d.csv', n);
+outFile = sprintf('mres_freePeriodSweep_light_n%d.csv', n);
 writematrix(data, outFile);
 fprintf('Saved results to %s\n', outFile);
 

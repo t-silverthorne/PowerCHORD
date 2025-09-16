@@ -1,6 +1,6 @@
-# clean version of the free period multi-panel figure
+# version of power comparison figure where we split in the way Matt suggested
 require(ggplot2)
-df = read.csv('figures/mres_freePeriodSweep_light_n12.csv',F)
+df = read.csv('figures/data/mres_freePeriodSweep_light_n12.csv',F)
 names(df) <- c('Amp','freq','acro','pwrFtest','pwrFree')
 
 df |> ggplot(aes(x=pwrFtest,y=pwrFree,color=acro))+geom_point(size=.5)+

@@ -13,8 +13,15 @@ fmax  = Nmeas/2;
 data  = readtable('diffEvolveOutput.csv');
 mt    = data(data.Nmeas==Nmeas & data.fmin==fmin & data.fmax == fmax,:);
 
-addpath('../MATLAB/utils')
+addpath('../../MATLAB/utils')
 switch mode
+    case 'nothing'
+        Nsamp  = 2;
+		Nperm  = 2;
+		Nfreq  = 2;
+		Nacro  = 3;
+		Nfq    = 5;
+        nrep   = 3; 
 	case 'test' % number of pvals = nrep*Nsamp 
 		Nsamp  = 1e2;
 		Nperm  = 1e2;
@@ -38,25 +45,30 @@ switch mode
         nrep   = 100; 
 end
 
-% estimate free period power for WCP optimal design
-tt   = mt{:,9:(9+Nmeas-1)}';
+% estimate free period power for permutation optimised design
+fig  = openfig('optim_results/test_Nmeas48_Amp10_MaxIter100_fmin1_fmax24_Nfreqch64_Nacroch64_Nsampch100_NfqTinf64_NfqT25000_Nsampmc500_Nfreqmc64_Nacromc64_Npermmc1000.fig', ...
+               'invisible');
+ax   = findall(fig,'type','axes');
+ax_sorted = flipud(ax);
+top_ax = ax_sorted(3);        % top panel
+dots = findobj(top_ax,'Type','Line','Marker','.');
+x    = get(dots,'XData');
+y    = get(dots,'YData');
+x    = x(:);
+tt   = cell2mat(x(:));
+tt   = reshape(tt,[],1);
+
 if length(tt)~=Nmeas
 	error('check table')
 end    
-
 tic;
-% estimate free period power for equispaced design
-pwr  = estimateFreePeriodPower(tt,Nsamp,fmin,fmax,Nperm,1,Amp,Nfreq,Nacro,Nfq,nrep);
-tu   = linspace(0,1,Nmeas+1);
-tu   = tu(1:end-1)';
-pwru = estimateFreePeriodPower(tu,Nsamp,fmin,fmax,Nperm,cfact,Amp,Nfreq,Nacro,Nfq,nrep);
-freqs = linspace(fmin,fmax,Nfreq);
 
-pwr  = reshape(pwr,[],1);
-pwru = reshape(pwru,[],1);
-%% write data to file
-outFile = sprintf('prF1c_n%d_Amp%d_mode%s.csv', Nmeas,Amp,mode);
-writematrix([pwru pwr], outFile);
+% estimate free period power for equispaced design
+pwr     = estimateFreePeriodPower(tt,Nsamp,fmin,fmax,Nperm,1,Amp,Nfreq,Nacro,Nfq,nrep);
+freqs   = linspace(fmin,fmax,Nfreq);
+pwr     = reshape(pwr,[],1);
+outFile = sprintf('prF1c_extra_n%d_Amp%d_mode%s.csv', Nmeas,Amp,mode);
+writematrix(pwr, outFile);
 fprintf('Saved results to %s\n', outFile);
 toc
 % plot(squeeze(freqs),squeeze(pwr),'-k')

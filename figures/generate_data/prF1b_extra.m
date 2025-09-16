@@ -3,7 +3,7 @@
 % pars are randomised and which pars are stepped over discrete values
 
 clear
-addpath('../utils')
+addpath('../../MATLAB/utils')
 Nsamp = 5e2;
 Nperm = 1e3;
 nrep  = 5e1;
@@ -12,15 +12,17 @@ n     = 12;
 tt    = linspace(0,1,n+1);
 tt    = tt(1:end-1)';
 
-Namp  = 8;
-Amin  = 1;
-Amax  = 3;
-Amps  = linspace(Amin,Amax,Namp);
+
+Amin  = 4;
+Amax  = 10;
+dA    = 1;
+Amps  = Amin:dA:Amax;
 
 fmin  = 1;
 fmaxs = [n/2,n/3,n/4];
 data_all = [];
 for Amp=Amps
+    fprintf('On Amp %d \n',Amp);
 	for fmax=fmaxs
 		if fmax==n/2
 			cf=.95;
@@ -38,10 +40,10 @@ for Amp=Amps
 				data(rep,:) = vv;
 			end
 			data_all = [data_all;data];
-			writematrix(data_all, sprintf('data/results_prF1b_equi.csv'));
 		end
 	end
 end
+writematrix(data_all, sprintf('data/results_prF1b_equi_extra.csv'));
 
 function [pwr,pwrGrid] = estFPPloc(tt,Nsamp,freq,acro,Amp,Nperm,fqf)
 % wrapper for estimating power of free period model, calls fastMCTinfpower

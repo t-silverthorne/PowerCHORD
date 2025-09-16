@@ -1,5 +1,4 @@
 # for creating a multi-panel figure summarizing our analysis of the free period model
-
 # --------
 # Panel A
 # --------
@@ -24,8 +23,9 @@ df$fmax = factor(df$fmax, levels = c(3,4,6),
 p_a= df |> ggplot(aes(x=pfixed,y=pfree,color=freq))+geom_point(size=.3)+
   facet_wrap(~fmax,labeller=label_parsed)+  scale_color_viridis_c(limits=c(1,6),
                         name   = "frequency",  # legend title
-                        )+clean_theme()+labs(x='free period power',y='fixed period power')
+                        )+clean_theme()+labs(x='fixed period power',y='free period power')
 p_a
+
 # --------
 # Panel B
 # --------
@@ -55,28 +55,12 @@ p_b = dfb_summary |>
                         name   = "frequency",  # legend title
                         )+clean_theme()+labs(x='amplitude',y='power difference')
 p_b
-# --------
-# Panel C
-# --------
-df  = read.csv('figures/prF1c_n16_test.csv',
-               header=F)
-freqs = seq(1,8,length.out=24)
-df1 = data.frame(power  = df[,1],
-           freq   = freqs,
-           design = 'WCP')
-df2 = data.frame(power  = df[,2],
-           freq   = freqs,
-           design = 'equispaced')
 
-df = rbind(df1,df2)
-p_c = df |> ggplot(aes(x=freq,y=power,group=design,color=design))+geom_point()+geom_line()+
-  clean_theme()+labs(color=NULL,x='frequency')
-
-Fig = ((p_a/p_b)|p_c) + plot_annotation(tag_levels='A')+
+Fig = (p_a/p_b) + plot_annotation(tag_levels='A')+
   plot_layout(widths=c(2,1),guides='collect')&theme(legend.position='bottom')
-#ggsave('MATLAB/peer_review/figures/output/pr_fig_approx.png',
-#       Fig,
-#       width=6,height=4,
-#       device='png',
-#       dpi=600)
 Fig
+ggsave('figures/pr_fig_approx.png',
+       Fig,
+       width=6,height=3.5,
+       device='png',
+       dpi=600)
