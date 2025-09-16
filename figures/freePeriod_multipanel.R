@@ -55,29 +55,12 @@ p_b = dfb_summary |>
                         name   = "frequency",  # legend title
                         )+clean_theme()+labs(x='amplitude',y='power difference')
 p_b
-# --------
-# Panel C
-# --------
-df  = read.csv('figures/data/prF1c_n48_Amp1_modereal.csv',
-               header=F)
-freqs = seq(1,24,length.out=32)
-df1 = data.frame(power  = df[,1],
-           freq   = freqs,
-           design = 'equispaced')
-df2 = data.frame(power  = df[,2],
-           freq   = freqs,
-           design = 'WCP')
 
-df = rbind(df1,df2)
-p_c = df |> ggplot(aes(x=freq,y=power,group=design,color=design))+geom_point()+geom_line()+
-  clean_theme()+labs(color=NULL,x='frequency')
-p_c
-
-Fig = ((p_a/p_b)|p_c) + plot_annotation(tag_levels='A')+
+Fig = (p_a/p_b) + plot_annotation(tag_levels='A')+
   plot_layout(widths=c(2,1),guides='collect')&theme(legend.position='bottom')
 Fig
 ggsave('figures/pr_fig_approx.png',
        Fig,
-       width=6,height=4,
+       width=6,height=3.5,
        device='png',
        dpi=600)

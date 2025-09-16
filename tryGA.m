@@ -1,27 +1,31 @@
 %% ---------- parameters ---------------
 % use genetic algorithm to enforce linear constraints
+% delete(gcp('nocreate')) % don't need to run every time
+% parpool('local',6);  
+
 tic;
 clear;rng('default');
 clf;
 addpath('MATLAB/utils')
-PopSize = 50;
+PopSize = 100;
+dx      = .1;
 Nmeas   = 48; % number of measurements
-ceps    = 1/Nmeas/Nmeas/2;
-Amp     = 1;
-MaxIter = 50;
+ceps    = .02/Nmeas;
+Amp     = 5;
+MaxIter = 4;
 fmin    = 1;         % min freq in window
 fmax    = Nmeas/2;   % max freq in window
 mode    = 'tiny';
 switch mode % 24 5 test shows repetition in measurement pattern
     case 'tiny'
         % cheb params
-        Nfreq_ch = 8;   % num freqs for Cheb bound
+        Nfreq_ch = 48;   % num freqs for Cheb bound
         Nacro_ch = 8;   % num acros for Cheb bound
-        Nsamp_ch = 2e1; % for Cheb bound
+        Nsamp_ch = 1e1; % for Cheb bound
         Nfq_T2   = 1e3; % num freqs for constructing test statistic
         
         % Monte Carlo params
-        Nfq_Tinf = Nmeas;   % num freqs for constructing test statistic
+        Nfq_Tinf = 48;   % num freqs for constructing test statistic
         Nsamp_mc = 1e2; 
         Nfreq_mc = 48;
         Nacro_mc = 8;
@@ -38,7 +42,7 @@ switch mode % 24 5 test shows repetition in measurement pattern
         Nsamp_mc = 1e2; 
         Nfreq_mc = 48;
         Nacro_mc = 8;
-        Nperm_mc = 20; 
+        Nperm_mc = 50; 
 	case 'real'
         % cheb params
         Nfreq_ch = 64;  % num freqs for Cheb bound
@@ -74,11 +78,8 @@ end
 % plot(fmc,pwr2_mc,'-b')
 % plot(fch,pwr2_ch,'--b')
 % drawnow
-% ---------- optimization --------------------
-delete(gcp('nocreate'))
-parpool('local',4);   
-%%
-freqs_ch = fmin + rand(Nfreq_ch,1)*(fmax-fmin);%linspace(fmin,fmax,Nfreq_ch);
+% ---------- optimization -------------------- 
+freqs_ch = linspace(fmin,fmax,Nfreq_ch);
 % acros_ch = linspace(0,2*pi,Nacro_ch+1);
 % acros_ch = acros_ch(1:end-1);
 acros_ch = rand(Nacro_ch,1)*2*pi;
@@ -92,11 +93,29 @@ for jj =1:PopSize
     initPop(jj,:) = reshape(randInitDesign(Nmeas,ceps),1,[]);
 end
 
+% Acstr = orderConstraintMat(Nmeas);
+% A3    = [zeros(1,Nmeas-1) -1];
+% Acstr  = [Acstr;-Acstr;A3]
+% bsctr = -ceps*ones(Nmeas-1,1);
+% bsctr = [bsctr;2*dx*ones(Nmeas-1,1);dx-1]
+% Aeq = [1 zeros(1,Nmeas-1)];
+% beq = 0;
+
 Acstr = orderConstraintMat(Nmeas);
 bsctr = -ceps*ones(Nmeas-1,1);
+
+Aeq = [1 zeros(1,Nmeas-1); zeros(1,Nmeas/2) 1 zeros(1,Nmeas/2-1)];
+beq = [0;.5];
+% Aeq = zeros(4,Nmeas);
+% idxs = Nmeas/4 * (0:3) + 1;   % positions: 1, Nmeas/4+1, Nmeas/2+1, 3Nmeas/4+1
+% for k = 1:4
+%     Aeq(k,idxs(k)) = 1;
+% end
+% Aeq
+% beq = [0;.25;.5;.75];
+
 lb = zeros(Nmeas,1);
 ub = ones(Nmeas,1);
-
 Jwrap = @(tt) - Jfun(tt,freqs_ch,acros_ch,fqf_2,Amp,Nsamp_ch);
 
 % GA options
@@ -106,12 +125,12 @@ options = optimoptions('ga', ...
     'MaxStallGenerations',50, ...
     'PopulationSize',PopSize, ...     
     'FunctionTolerance',1e-6, ...
-    'UseParallel',true);
+    'UseParallel',false);
 % 'InitialPopulationMatrix', initPop,...
 
 % Run GA: need number of variables = length(tt0)
 nvars = Nmeas;
-tt_opt = ga(Jwrap,Nmeas,Acstr,bsctr,[],[],lb,ub,[],options)
+tt_opt = ga(Jwrap,Nmeas,Acstr,bsctr,Aeq,beq,lb,ub,[],options)
 
 % ---------- post optimization ---------------
 
@@ -122,8 +141,7 @@ tt_opt = ga(Jwrap,Nmeas,Acstr,bsctr,[],[],lb,ub,[],options)
 nexttile(2)
 tt = tt_opt';
 plot(tt,1,'.k')
-
-cla
+xlim([0,1])
 nexttile(4)
 [pwr2_mc,pwrinf_mc,pwr2_ch,fmc,fch]=benchmarkDesign(tt,fmin,fmax,Amp,...
                 Nfreq_ch,Nacro_ch,Nsamp_ch,Nfq_Tinf,Nfq_T2, ...
@@ -143,6 +161,7 @@ for jj=1:4
 	ylim([0,1.1]);
 end
 toc
+
 %fname = sprintf('test_Nmeas%d_Amp%d_MaxIter%d_fmin%d_fmax%d_Nfreqch%d_Nacroch%d_Nsampch%d_NfqTinf%d_NfqT2%d_Nsampmc%d_Nfreqmc%d_Nacromc%d_Npermmc%d.fig', ...
 %    Nmeas, Amp, MaxIter, fmin, fmax, ...
 %    Nfreq_ch, Nacro_ch, Nsamp_ch, Nfq_Tinf, Nfq_T2, ...
