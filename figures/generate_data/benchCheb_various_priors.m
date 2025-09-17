@@ -5,9 +5,9 @@ addpath('../../MATLAB/utils')
 mode  = 'test';
 Nmeas = 48;
 
-Amps  = [1 2];
+Amps  = [1 3];
 fmaxs = [Nmeas/4,Nmeas/3,Nmeas/2];
-tt =reshape(tt_opt,[],1)
+tt    = reshape(tt_opt,[],1);
 
 switch mode
     case 'tiny' % number of pvals = nrep*Nsamp 

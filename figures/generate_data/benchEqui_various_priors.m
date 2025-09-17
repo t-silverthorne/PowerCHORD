@@ -5,7 +5,7 @@ addpath('../../MATLAB/utils')
 mode  = 'test';
 Nmeas = 48;
 
-Amps  = [1 2];
+Amps  = [1 3];
 fmaxs = [Nmeas/4,Nmeas/3,Nmeas/2];
 tu  = linspace(0,1,Nmeas+1);
 tu  = tu(1:end-1)';
