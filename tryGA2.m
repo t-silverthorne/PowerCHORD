@@ -1,18 +1,18 @@
 %% ---------- parameters ---------------
 % use genetic algorithm to enforce linear constraints
 % delete(gcp('nocreate')) % don't need to run every time
-% parpool('local',2);  
+% parpool('local',6);  
 
 tic;
 clear;rng('default');
 clf;
 addpath('MATLAB/utils')
-PopSize = 50;
+PopSize = 100;
 dx      = .1;
 Nmeas   = 48; % number of measurements
-ceps    = .02/Nmeas;
-Amp     = 3;
-MaxIter = 200;
+ceps    = .05/Nmeas;
+Amp     = 2;
+MaxIter = 10;
 fmin    = 1;         % min freq in window
 fmax    = Nmeas/2;   % max freq in window
 mode    = 'tiny';
@@ -20,7 +20,7 @@ switch mode % 24 5 test shows repetition in measurement pattern
     case 'tiny'
         % cheb params
         Nfreq_ch = 48;   % num freqs for Cheb bound
-        Nacro_ch = 16;   % num acros for Cheb bound
+        Nacro_ch = 8;   % num acros for Cheb bound
         Nsamp_ch = 1e1; % for Cheb bound
         Nfq_T2   = 1e3; % num freqs for constructing test statistic
         
@@ -58,32 +58,13 @@ switch mode % 24 5 test shows repetition in measurement pattern
         Nacro_mc = 64;
         Nperm_mc = 2e2; 
 end
-% % %% ---------- pre optimization ----------------
-% tiledlayout(2,2);
-% 
-% tt = (0:Nmeas-1)'/Nmeas;
-% [pwr2_mc,pwrinf_mc,pwr2_ch,fmc,fch]=benchmarkDesign(tt,fmin,fmax,Amp,...
-%                 Nfreq_ch,Nacro_ch,Nsamp_ch,Nfq_Tinf,Nfq_T2, ...
-%                 Nfreq_mc,Nacro_mc,Nsamp_mc,Nperm_mc,fmin,fmax*.95);
-% fprintf('Equispaced power Tinf     MC:   %d\n',min(pwrinf_mc))
-% fprintf('Equispaced power T2       MC:   %d\n',min(pwr2_mc))
-% fprintf('Equispaced power T2       CH:   %d\n',min(pwr2_ch))
-% nexttile(1)
-% plot(tt,1,'.k')
-% nexttile(3)
-% fprintf("----\n")c
-% % plot equispaced
-% plot(fmc,pwrinf_mc,'-k')
-% hold on
-% plot(fmc,pwr2_mc,'-b')
-% plot(fch,pwr2_ch,'--b')
-% drawnow
-% ---------- optimization -------------------- 
+
 freqs_ch = linspace(fmin,fmax,Nfreq_ch);
 acros_ch = rand(Nacro_ch,1)*2*pi;
 freqs_ch = reshape(freqs_ch,1,1,1,1,1,[]);
 acros_ch = reshape(acros_ch,1,1,1,1,1,1,[]);
 fqf_2    = reshape(linspace(fmin,fmax,Nfq_T2),1,1,[]);
+
 
 initPop = NaN(PopSize,Nmeas);
 for jj =1:PopSize   
@@ -95,6 +76,13 @@ bsctr = -ceps*ones(Nmeas-1,1);
 
 Aeq = [1 zeros(1,Nmeas-1); zeros(1,Nmeas/2) 1 zeros(1,Nmeas/2-1)];
 beq = [0;.5];
+% Aeq = zeros(4,Nmeas);
+% idxs = Nmeas/4 * (0:3) + 1;   % positions: 1, Nmeas/4+1, Nmeas/2+1, 3Nmeas/4+1
+% for k = 1:4
+%     Aeq(k,idxs(k)) = 1;
+% end
+% Aeq
+% beq = [0;.25;.5;.75];
 
 lb = zeros(Nmeas,1);
 ub = ones(Nmeas,1);
@@ -108,47 +96,42 @@ options = optimoptions('ga', ...
     'PopulationSize',PopSize, ...     
     'FunctionTolerance',1e-6, ...
     'UseParallel',false);
+% 'InitialPopulationMatrix', initPop,...
 
 % Run GA: need number of variables = length(tt0)
 nvars = Nmeas;
-tt_opt = ga(Jwrap,Nmeas,Acstr,bsctr,Aeq,beq,lb,ub,[],options);
-%%
-save('tt_opt.mat','tt_opt')
+tt_opt = ga(Jwrap,Nmeas,Acstr,bsctr,Aeq,beq,lb,ub,[],options)
 
-% % ---------- post optimization ---------------
-% 
-% % fprintf('Equispaced power Tinf     MC:   %d\n',min(pwrinf_mc))
-% % fprintf('Equispaced power T2       MC:   %d\n',min(pwr2_mc))
-% % fprintf('Equispaced power T2       CH:   %d\n',min(pwr2_ch))
-% 
-% nexttile(2)
-% tt = tt_opt';
-% plot(tt,1,'.k')
-% xlim([0,1])
-% nexttile(4)
-% [pwr2_mc,pwrinf_mc,pwr2_ch,fmc,fch]=benchmarkDesign(tt,fmin,fmax,Amp,...
-%                 Nfreq_ch,Nacro_ch,Nsamp_ch,Nfq_Tinf,Nfq_T2, ...
-%                 Nfreq_mc,Nacro_mc,Nsamp_mc,Nperm_mc,fmin,fmax);
-% fprintf('Optimal design power Tinf MC:   %d\n',min(pwrinf_mc))
-% fprintf('Optimal design power T2   MC:   %d\n',min(pwr2_mc))
-% fprintf('Optimal design power T2   CH:   %d\n',min(pwr2_ch))
-% 
-% plot(fmc,pwrinf_mc,'-k')
-% hold on
-% plot(fmc,pwr2_mc,'-b')
-% plot(fch,pwr2_ch,'--b')
-% 
-% for jj=1:4
-% 	nexttile(jj)
-% 	%xlim([0,1]);
-% 	ylim([0,1.1]);
-% end
-% toc
-%fname = sprintf('test_Nmeas%d_Amp%d_MaxIter%d_fmin%d_fmax%d_Nfreqch%d_Nacroch%d_Nsampch%d_NfqTinf%d_NfqT2%d_Nsampmc%d_Nfreqmc%d_Nacromc%d_Npermmc%d.fig', ...
-%    Nmeas, Amp, MaxIter, fmin, fmax, ...
-%    Nfreq_ch, Nacro_ch, Nsamp_ch, Nfq_Tinf, Nfq_T2, ...
-%    Nsamp_mc, Nfreq_mc, Nacro_mc, Nperm_mc);
-%savefig(fname);
+% ---------- post optimization ---------------
+
+% fprintf('Equispaced power Tinf     MC:   %d\n',min(pwrinf_mc))
+% fprintf('Equispaced power T2       MC:   %d\n',min(pwr2_mc))
+% fprintf('Equispaced power T2       CH:   %d\n',min(pwr2_ch))
+
+nexttile(2)
+tt = tt_opt';
+plot(tt,1,'.k')
+xlim([0,1])
+nexttile(4)
+[pwr2_mc,pwrinf_mc,pwr2_ch,fmc,fch]=benchmarkDesign(tt,fmin,fmax,Amp,...
+                Nfreq_ch,Nacro_ch,Nsamp_ch,Nfq_Tinf,Nfq_T2, ...
+                Nfreq_mc,Nacro_mc,Nsamp_mc,Nperm_mc,fmin,fmax);
+fprintf('Optimal design power Tinf MC:   %d\n',min(pwrinf_mc))
+fprintf('Optimal design power T2   MC:   %d\n',min(pwr2_mc))
+fprintf('Optimal design power T2   CH:   %d\n',min(pwr2_ch))
+
+plot(fmc,pwrinf_mc,'-k')
+hold on
+plot(fmc,pwr2_mc,'-b')
+plot(fch,pwr2_ch,'--b')
+
+for jj=1:4
+	nexttile(jj)
+
+	ylim([0,1.1]);
+end
+toc
+
 function Jval = Jfun(tt,freqs,acros,fqf_2,Amp,Nsamp)
 	tt    = reshape(tt,[],1);
 	Q2    = getQuadForm(tt,fqf_2);

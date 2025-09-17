@@ -2,13 +2,12 @@
 % design obtained from optimizing the bound
 addpath('../../MATLAB/utils')
 
-mode  = 'real';
+mode  = 'test';
 Nmeas = 48;
 
 Amps  = [1 2];
 fmaxs = [Nmeas/4,Nmeas/3,Nmeas/2];
-tu  = linspace(0,1,Nmeas+1);
-tu  = tu(1:end-1)';
+tt =reshape(tt_opt,[],1)
 
 switch mode
     case 'tiny' % number of pvals = nrep*Nsamp 
@@ -27,28 +26,24 @@ switch mode
         nrep   = 1; 
 	case 'real'
 		Nsamp  = 1e2;
-		Nperm  = 5e2;
+		Nperm  = 1e2;
 		Nfreq  = 32;
 		Nacro  = 32;
 		Nfq    = 500;
         nrep   = 10; 
 end
-
+cf=1;
 fmin = 1;
 data_all=[];
 for Amp=Amps
     for fmax=fmaxs
-        if fmax==Nmeas/2
-            cf = .99;
-        else
-            cf = 1;
-        end
-        pwr      = estimateFreePeriodPower(tu,Nsamp,fmin,fmax,Nperm,cf,Amp,Nfreq,Nacro,Nfq,nrep);
+        pwr      = estimateFreePeriodPower(tt,Nsamp,fmin,fmax,Nperm,cf,Amp,Nfreq,Nacro,Nfq,nrep);
         pwr      = reshape(pwr,[],1);
         data     = [Amp*ones(length(pwr),1) fmax*ones(length(pwr),1) linspace(fmin,fmax,Nfreq)' pwr];
         data_all = [data_all;data];
     end
 end
-outFile = sprintf('../data/prF1c_n%d_mode%s.csv', Nmeas,mode);
+
+outFile = sprintf('../data/prF1c_cheb_n%d_mode%s.csv', Nmeas,mode);
 writematrix(data_all, outFile);
 fprintf('Saved results to %s\n', outFile);
