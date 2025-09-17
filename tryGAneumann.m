@@ -4,8 +4,8 @@ tic;
 clear;rng('default');
 clf;
 addpath('MATLAB/utils')
-PopSize = 50;
-Nmeas   = 48; % number of measurements
+PopSize = 100; 
+Nmeas   = 48*2; % number of measurements
 ceps    = 1/Nmeas/Nmeas/2;
 Amp     = 1;
 MaxIter = 50;
@@ -54,43 +54,36 @@ switch mode % 24 5 test shows repetition in measurement pattern
         Nacro_mc = 64;
         Nperm_mc = 2e2; 
 end
-% % %% ---------- pre optimization ----------------
-% tiledlayout(2,2);
-% 
-% tt = (0:Nmeas-1)'/Nmeas;
-% [pwr2_mc,pwrinf_mc,pwr2_ch,fmc,fch]=benchmarkDesign(tt,fmin,fmax,Amp,...
-%                 Nfreq_ch,Nacro_ch,Nsamp_ch,Nfq_Tinf,Nfq_T2, ...
-%                 Nfreq_mc,Nacro_mc,Nsamp_mc,Nperm_mc,fmin,fmax*.95);
-% fprintf('Equispaced power Tinf     MC:   %d\n',min(pwrinf_mc))
-% fprintf('Equispaced power T2       MC:   %d\n',min(pwr2_mc))
-% fprintf('Equispaced power T2       CH:   %d\n',min(pwr2_ch))
-% nexttile(1)
-% plot(tt,1,'.k')
-% nexttile(3)
-% fprintf("----\n")
-% % plot equispaced
-% plot(fmc,pwrinf_mc,'-k')
-% hold on
-% plot(fmc,pwr2_mc,'-b')
-% plot(fch,pwr2_ch,'--b')
-% drawnow
+% ---------- pre optimization ----------------
+tiledlayout(2,2);
+
+tt = (0:Nmeas-1)'/Nmeas;
+[pwr2_mc,pwrinf_mc,pwr2_ch,fmc,fch]=benchmarkDesign(tt,fmin,fmax,Amp,...
+                Nfreq_ch,Nacro_ch,Nsamp_ch,Nfq_Tinf,Nfq_T2, ...
+                Nfreq_mc,Nacro_mc,Nsamp_mc,Nperm_mc,fmin,fmax*.95);
+fprintf('Equispaced power Tinf     MC:   %d\n',min(pwrinf_mc))
+fprintf('Equispaced power T2       MC:   %d\n',min(pwr2_mc))
+fprintf('Equispaced power T2       CH:   %d\n',min(pwr2_ch))
+nexttile(1)
+plot(tt,1,'.k')
+nexttile(3)
+fprintf("----\n")
+% plot equispaced
+plot(fmc,pwrinf_mc,'-k')
+hold on
+plot(fmc,pwr2_mc,'-b')
+plot(fch,pwr2_ch,'--b')
+drawnow
 % ---------- optimization --------------------
-delete(gcp('nocreate'))
-parpool('local',4);   
+%delete(gcp('nocreate'))
+%parpool('local',10);   
 %%
 freqs_ch = fmin + rand(Nfreq_ch,1)*(fmax-fmin);%linspace(fmin,fmax,Nfreq_ch);
-% acros_ch = linspace(0,2*pi,Nacro_ch+1);
-% acros_ch = acros_ch(1:end-1);
 acros_ch = rand(Nacro_ch,1)*2*pi;
 freqs_ch = reshape(freqs_ch,1,1,1,1,1,[]);
 acros_ch = reshape(acros_ch,1,1,1,1,1,1,[]);
 fqf_2    = reshape(linspace(fmin,fmax,Nfq_T2),1,1,[]);
 
-
-initPop = NaN(PopSize,Nmeas);
-for jj =1:PopSize   
-    initPop(jj,:) = reshape(randInitDesign(Nmeas,ceps),1,[]);
-end
 
 Acstr = orderConstraintMat(Nmeas);
 bsctr = -ceps*ones(Nmeas-1,1);
@@ -107,18 +100,12 @@ options = optimoptions('ga', ...
     'PopulationSize',PopSize, ...     
     'FunctionTolerance',1e-6, ...
     'UseParallel',true);
-% 'InitialPopulationMatrix', initPop,...
 
 % Run GA: need number of variables = length(tt0)
 nvars = Nmeas;
 tt_opt = ga(Jwrap,Nmeas,Acstr,bsctr,[],[],lb,ub,[],options)
 
 % ---------- post optimization ---------------
-
-% fprintf('Equispaced power Tinf     MC:   %d\n',min(pwrinf_mc))
-% fprintf('Equispaced power T2       MC:   %d\n',min(pwr2_mc))
-% fprintf('Equispaced power T2       CH:   %d\n',min(pwr2_ch))
-
 nexttile(2)
 tt = tt_opt';
 plot(tt,1,'.k')

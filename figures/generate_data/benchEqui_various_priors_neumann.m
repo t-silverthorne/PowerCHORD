@@ -5,7 +5,7 @@ addpath('../../MATLAB/utils')
 mode  = 'real';
 Nmeas = 48;
 
-Amps  = [1 3];
+Amps  = [1 2];
 fmaxs = [Nmeas/4,Nmeas/3,Nmeas/2];
 tu  = linspace(0,1,Nmeas+1);
 tu  = tu(1:end-1)';
@@ -39,16 +39,17 @@ data_all=[];
 for Amp=Amps
     for fmax=fmaxs
         if fmax==Nmeas/2
-            cf = .99;
+            cf = .95;
         else
             cf = 1;
         end
         pwr      = estimateFreePeriodPower(tu,Nsamp,fmin,fmax,Nperm,cf,Amp,Nfreq,Nacro,Nfq,nrep);
         pwr      = reshape(pwr,[],1);
-        data     = [Amp*ones(length(pwr),1) fmax*ones(length(pwr),1) linspace(fmin,fmax,Nfreq)' pwr];
+        data     = [Amp*ones(length(pwr),1) fmax*ones(length(pwr),1) pwr];
         data_all = [data_all;data];
     end
 end
+
 outFile = sprintf('../data/prF1c_n%d_mode%s.csv', Nmeas,mode);
-writematrix(data_all, outFile);
+writematrix(data, outFile);
 fprintf('Saved results to %s\n', outFile);
