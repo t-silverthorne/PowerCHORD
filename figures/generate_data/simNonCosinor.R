@@ -2,6 +2,7 @@
 require(devtools)
 require(ggplot2)
 require(data.table)
+source('clean_theme.R')
 load_all()
 
 n    = 12
@@ -89,6 +90,14 @@ df = lapply(seq_len(nrow(pars)), function(ii) {
 df |> head()
 df$sampling <- factor(df$sampling, levels = c("random", "equispaced"))
 
+method_levels <- c(
+  "sim_cosinor",
+  "sim_cosinor_osc_amp",
+  "sim_cosinor_osc_noise",
+  "sim_square_wave",
+  "sim_sqr_burst"
+)
+
 dfA$method <- factor(dfA$method, levels = method_levels)
 df$method  <- factor(df$method,  levels = method_levels)
 
@@ -124,7 +133,7 @@ Fig = (pA/pB)+plot_annotation(tag_levels='A')&theme(legend.position = 'bottom')
 show_temp_plt(Fig,6,4)
 ggsave('figures/pr_fig_robust.png',
        Fig,
-       width=6,height=4,
+       width=6,height=3.5,
        device='png',
        dpi=600)
 #dfa =df

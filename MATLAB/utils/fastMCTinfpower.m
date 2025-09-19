@@ -3,6 +3,11 @@ function [power_est,perm_pvals] = fastMCTinfpower(Qf,x,Nperm,alpha,compute_power
 if nargin<5
     compute_power=true;
 end
+
+if size(Qf,3) <=1
+	warning('expect quad form to have size(Q,3) > 1 for Tinfty test statistic')
+end
+
 Tobs = max(pagemtimes(pagetranspose(x),pagemtimes(Qf,x)),[],3);
 sz   = size(x);
 n    = sz(1);
