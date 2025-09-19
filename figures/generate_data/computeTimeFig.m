@@ -40,7 +40,7 @@ for n=flip(nvals)
     dat = [dat;datloc];
 end
 
-writematrix(dat,sprintf('../data/compTimes_method%s_Ns%d,Np%d.csv',tmeth,Nsamp,Nperm));
+writematrix(dat,sprintf('../data/compTimes_method%s_Ns%d_Np%d.csv',tmeth,Nsamp,Nperm));
 
 function Jval = Jfun(tt,freq,acro,Qform,Amp,Nsamp)
 	tt    = reshape(tt,[],1);
