@@ -89,6 +89,9 @@ df = lapply(seq_len(nrow(pars)), function(ii) {
 df |> head()
 df$sampling <- factor(df$sampling, levels = c("random", "equispaced"))
 
+dfA$method <- factor(dfA$method, levels = method_levels)
+df$method  <- factor(df$method,  levels = method_levels)
+
 
 pA = dfA |> ggplot(aes(x=time,y=signal))+geom_line()+facet_wrap(~method,scales='free',nrow=1)
 pB = df |> ggplot(aes(x=fpr,y=tpr,group=idx,color=sampling))+geom_line()+facet_wrap(~method,nrow=1)

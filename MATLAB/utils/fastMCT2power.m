@@ -5,6 +5,10 @@ Tobs = pagemtimes(pagetranspose(x),pagemtimes(Q,x));
 sz   = size(x);
 n    = sz(1);
 
+if ~ismatrix(Q)
+    error('Q must be a matrix.');
+end
+
 nTrailing = prod(sz(2:end));
 x_flat    = reshape(x, n, nTrailing);
 xfp       = zeros(size(x_flat));
