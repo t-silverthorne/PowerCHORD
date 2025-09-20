@@ -16,7 +16,7 @@ for n=flip(nvals)
 
     Nsamp = 1e3;
     Nperm = 1e3;
-    fqf   = reshape(linspace(1,2,100),1,1,[]);
+    fqf   = reshape(linspace(1,2,1e3),1,1,[]);
     [Q2,Qinf] = getQuadForm(tt,fqf);
     wrap_Tinf = @(tt,freq,acro,Amp) estTinfloc(tt,Nsamp,freq,acro,Amp,Nperm,Qinf);
     wrap_T2   = @(tt,freq,acro,Amp) estT2loc(tt,Nsamp,freq,acro,Amp,Nperm,Q2);
