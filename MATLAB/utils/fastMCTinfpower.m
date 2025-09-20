@@ -4,8 +4,8 @@ if nargin<5
     compute_power=true;
 end
 
-if size(Qf,3) <=1
-	warning('expect quad form to have size(Q,3) > 1 for Tinfty test statistic')
+if size(Qf,3) <= 1
+    warning('The input matrix Qf should have a third dimension greater than 1 for the Tinfinity test statistic. Please ensure that Qf is a valid quadratic form.');
 end
 
 Tobs = max(pagemtimes(pagetranspose(x),pagemtimes(Qf,x)),[],3);
