@@ -6,7 +6,7 @@
 tic;
 clear;rng('default');
 clf;
-addpath('MATLAB/utils')
+addpath('../MATLAB/utils')
 PopSize = 100;
 dx      = .1;
 Nmeas   = 48; % number of measurements

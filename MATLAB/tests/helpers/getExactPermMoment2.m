@@ -1,7 +1,5 @@
 function m2 = getExactPermMoment2(Q,x,Tq)
-%GETPERMMOMENT2 Summary of this function goes here
-%   Detailed explanation goes here
-arguments
+%GETPERMMOMENT2 depracated and replaced by weinSumFastVect 
     Q (:,:)       double;
     x  double;
     Tq (:,:)      logical;

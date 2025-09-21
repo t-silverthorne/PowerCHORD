@@ -1,6 +1,13 @@
 function ws = weinSumFastVect(Q,x)
 %FASTWEINSUM Summary of this function goes here
 %   Detailed explanation goes here
+if ~ismatrix(Q)
+    error('Input Q must be a matrix. Vectorization is wrt paged x not Q.');
+end
+if ndims(x) > 1 && ndims(x) < 5
+    error('Input x must have 1, 5 or more dimensions.');
+end
+
 n   = size(x,1);
 w   = getSymm4Weights_subtypes(n);
 J   = ones(n,n)-eye(n);
