@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# helper script for verifying that all utils files are used in at least one
+# other part of the project, any files that don't pass this test should likely
+# be moved to the tests/helpers directory
+
 # Directories
 UTIL_DIR="utils"
 FIG_DIR="../figures"
