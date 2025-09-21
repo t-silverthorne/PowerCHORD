@@ -2,11 +2,12 @@
 % design obtained from optimizing the bound
 addpath('../../MATLAB/utils')
 
-mode  = 'test';
+mode  = 'realhd';
 Nmeas = 48;
 
-Amps  = [1 3];
+Amps  = [1 1.5];
 fmaxs = [Nmeas/4,Nmeas/3,Nmeas/2];
+load('tt_opt.mat');
 tt    = reshape(tt_opt,[],1);
 
 switch mode
@@ -25,18 +26,27 @@ switch mode
 		Nfq    = 48;
         nrep   = 1; 
 	case 'real'
-		Nsamp  = 1e2;
+		Nsamp  = 10;
 		Nperm  = 1e2;
 		Nfreq  = 32;
 		Nacro  = 32;
 		Nfq    = 500;
-        nrep   = 10; 
+        nrep   = 100; 
+	case 'realhd'
+		Nsamp  = 10;
+		Nperm  = 5e2;
+		Nfreq  = 32;
+		Nacro  = 16;
+		Nfq    = 500;
+        nrep   = 100; 
 end
 cf=1;
 fmin = 1;
 data_all=[];
 for Amp=Amps
+	fprintf('|On Amp %d\n',Amp)
     for fmax=fmaxs
+		fprintf('||On fmax %d\n',fmax)
         pwr      = estimateFreePeriodPower(tt,Nsamp,fmin,fmax,Nperm,cf,Amp,Nfreq,Nacro,Nfq,nrep);
         pwr      = reshape(pwr,[],1);
         data     = [Amp*ones(length(pwr),1) fmax*ones(length(pwr),1) linspace(fmin,fmax,Nfreq)' pwr];
