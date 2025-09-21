@@ -7,8 +7,6 @@ Nmeas = 48;
 
 Amps  = [1 1.5];
 fmaxs = [Nmeas/4,Nmeas/3,Nmeas/2];
-tu  = linspace(0,1,Nmeas+1);
-tu  = tu(1:end-1)';
 
 switch mode
     case 'tiny' % number of pvals = nrep*Nsamp 
@@ -42,22 +40,31 @@ switch mode
 end
 
 fmin = 1;
+DIFFEV = readtable('../data/diffEvolveOutput.csv');
 data_all=[];
 for Amp=Amps
 	fprintf('|On Amp %d\n',Amp)
     for fmax=fmaxs
 		fprintf('||On fmax %d\n',fmax)
-        if fmax==Nmeas/2
+		
+		% load diffEv design
+		mt    = DIFFEV(DIFFEV.Nmeas==Nmeas & DIFFEV.fmin==fmin & DIFFEV.fmax == fmax,:);
+		tt   = mt{:,9:(9+Nmeas-1)}';
+		if length(tt)~=Nmeas
+			error('check table')
+		end    
+        
+		if fmax==Nmeas/2
             cf = .99;
         else
             cf = 1;
         end
-        pwr      = estimateFreePeriodPower(tu,Nsamp,fmin,fmax,Nperm,cf,Amp,Nfreq,Nacro,Nfq,nrep);
+        pwr      = estimateFreePeriodPower(tt,Nsamp,fmin,fmax,Nperm,cf,Amp,Nfreq,Nacro,Nfq,nrep);
         pwr      = reshape(pwr,[],1);
         data     = [Amp*ones(length(pwr),1) fmax*ones(length(pwr),1) linspace(fmin,fmax,Nfreq)' pwr];
         data_all = [data_all;data];
     end
 end
-outFile = sprintf('../data/prF1c_n%d_mode%s.csv', Nmeas,mode);
+outFile = sprintf('../data/prF1c_diffEv_n%d_mode%s.csv', Nmeas,mode);
 writematrix(data_all, outFile);
 fprintf('Saved results to %s\n', outFile);
