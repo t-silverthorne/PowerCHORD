@@ -2,16 +2,20 @@
 PowerCHORD is an open source package for maximizing the statistical power of biological rhythm detection studies. The main features of the package are summarized below.
 
 * **Exact power analysis |**
-R functions for evaluating the exact power of a cosinor-based hypothesis test. A Monte-Carlo based method is also included for comparison.
-
-* **Differential evolution |**
-MATLAB implementation of [differential evolution](https://en.wikipedia.org/wiki/Differential_evolution) is useful for constructing an initial estimate of the gain in power due to irregular sampling.
+R functions for evaluating the exact power of cosinor-based hypothesis tests, including worst-case power analysis across unknown acrophases. Monte-Carlo methods are included for validation and comparison.
 
 * **Exhaustive searches |**
 R wrapper for generating all possible experimental designs under various timing constraints. The underlying C library for this feature was written by [J. Sawada](https://www.socs.uoguelph.ca/~sawada/) and made available through the [Combinatorial Object Server](http://combos.org/index). 
 
 * **Semidefinite programming |**
 MATLAB wrapper for [YALMIP](https://yalmip.github.io) optimization toolbox. Using [MOSEK](https://www.mosek.com) as a backend solver, this method can find globally optimal solutions for multi-frequency rhythm detection problems.
+
+* **Differential evolution |**
+MATLAB implementation of [differential evolution](https://en.wikipedia.org/wiki/Differential_evolution) is useful for constructing an initial estimate of the gain in power due to irregular sampling.
+
+* **Permutation power estimation |**
+MATLAB functions for estimating permutation test power in the free-period cosinor model.
+
 
 Please cite the manuscript [Silverthorne et al, 2024](https://www.biorxiv.org/content/10.1101/2024.05.19.594858v1.abstract) which contains details concerning the analysis and optimization methods in this package.
 
