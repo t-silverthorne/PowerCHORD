@@ -1,6 +1,5 @@
 function ptr = pagetrace(A)
-%PAGETRACE Summary of this function goes here
-%   Detailed explanation goes here
+% PAGETRACE computes the trace along the first two dimensions for each page of a multidimensional array A.
 sz  = size(A);
 if numel(sz)<3
     ptr = trace(A);

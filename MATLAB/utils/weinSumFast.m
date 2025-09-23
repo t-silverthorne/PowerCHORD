@@ -1,6 +1,6 @@
 function ws = weinSumFast(Q,x)
-%FASTWEINSUM Summary of this function goes here
-%   Detailed explanation goes here
+% FASTWEINSUM fast implementation of Weingarten formula for a quadratic form.
+%   intended for cases where Q is fixed and x is paged array of vectors.
 n   = length(x);
 w   = getSymm4Weights_subtypes(n);
 J   = ones(n,n)-eye(n);
