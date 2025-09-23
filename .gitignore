@@ -57,3 +57,4 @@ MATLAB/peer_review/figures/output/*
 *.fig
 *.mat
 *.png
+.lintr

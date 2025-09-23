@@ -19,7 +19,6 @@ sim_noise             = function(tt){rnorm(length(tt))}
 sim_osc_noise         = function(tt){rnorm(length(tt))*(1+rAmp()*cos(2*pi*tt - racro()))}
 sim_cosinor           = function(tt,noise=T){rAmp()*cos(2*pi*tt - racro())+noise*rnorm(length(tt))}
 sim_cosinor_osc_amp   = function(tt,noise=T){(  (1+runif(1,0,.95)*cos(2*pi*tt-racro()))*rAmp()  )*cos(2*pi*tt - racro())+noise*rnorm(length(tt))}
-#sim_cosinor_osc_phase = function(tt,noise=T){rAmp()*cos(2*pi*tt - racro()*(1+runif(1,0,pi/2)*(cos(2*pi*tt-racro()))))+noise*rnorm(length(tt))}
 sim_cosinor_osc_noise = function(tt,noise=T){rAmp()*cos(2*pi*tt - racro())+noise*rnorm(length(tt))*(1+rAmp()*cos(2*pi*tt - racro()))}
 sim_square_wave       = function(tt,noise=T){rAmp()*ifelse((tt-racro())%%1<.5,1,0)+noise*rnorm(length(tt))}
 sim_sqr_burst         = function(tt,noise=T){rAmp()*ifelse((tt-racro())%%1<.25,1,0)+noise*rnorm(length(tt))}

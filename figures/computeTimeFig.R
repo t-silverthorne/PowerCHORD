@@ -3,7 +3,7 @@ require(ggplot2)
 require(patchwork)
 require(scales)
 require(latex2exp)
-df = read.csv('figures/data/compTimes_methodtimeit_Ns1000,Np1000.csv',header=F)
+df = read.csv('figures/data/compTimes_varyPermmethodtictoc.csv',header=F)
 names(df)=c('Nmeas','time','q1','q3','idx')
 
 legend_labels <- c(
@@ -29,9 +29,10 @@ Fig = df |>
     trans = 'log10',
     breaks = 10^(-3:2),
     labels = label_log())+
-  labs(x = 'sample size', y = 'time (seconds)', color = 'power method') +
+  labs(x = 'permutations', y = 'time (seconds)', color = 'power method') +
   scale_color_viridis_d(option = 'H',labels=legend_labels)+
   clean_theme()
+Fig
 ggsave('figures/prCompTime.png',
        Fig,
        width=6,height=2.5,

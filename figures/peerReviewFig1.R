@@ -19,7 +19,7 @@ df$Amp  = factor(df$Amp, levels = c(1, 3),
 
 Fig = df |> ggplot(aes(x=freq,y=power,color=type,group=type))+
   facet_grid(Amp~fmax, scales='free_x',labeller=label_parsed)+
-  geom_line()+geom_point()+
+  geom_line()+geom_point()+labels(x='frequency')+
   coord_cartesian(xlim = c(1, NA))+clean_theme()+
   labs(color = NULL)+
   scale_x_continuous(
