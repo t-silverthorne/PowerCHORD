@@ -35,7 +35,7 @@ pb = dfB |>
 Fig = (pa|pb) + plot_layout(guides='collect',
                     widths=c(1,3))+plot_annotation(tag_levels='A')&
   theme(legend.position = "bottom")
-ggsave('MATLAB/peer_review/figures/output/pr_fig_robustness.png',
+ggsave('figures/suppCosinorRobustnessFig.png',
        Fig,
        width=6,height=4.5,
        device='png',

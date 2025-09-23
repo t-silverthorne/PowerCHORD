@@ -58,7 +58,9 @@ meas_times = tau[bvec>0]
 evalWorstPower(meas_times, Amp=2, freq=1) 
 ```
 
-Interpretation: The returned binary vector `bvec` indicates selected grid locations. Converting to `meas_times` yields the actual schedule for downstream power evaluation or simulation.
+Interpretation: The returned binary vector `bvec` indicates selected grid
+locations. Converting to `meas_times` yields the actual schedule for downstream
+power evaluation or simulation.
 
 
 ## Return all constrained designs

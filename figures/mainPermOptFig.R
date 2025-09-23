@@ -7,35 +7,37 @@ source('clean_theme.R')
 # -----------------------------
 # Build Fig (from peerReviewFig1.R)
 # -----------------------------
-df1        = read.csv('figures/data/prF1c_n48_moderealhd.csv',F)
+df1        = read.csv('figures/data/prF1c_n48_modereal.csv',F)
 names(df1) = c('Amp','fmax','freq','power')
 df1        = cbind(df1,data.frame(type='equispaced'))
-df2        = read.csv('figures/data/prF1c_cheb_n48_moderealhd.csv',F)
+df2        = read.csv('figures/data/prF1c_cheb_n48_modereal.csv',F)
 names(df2) = c('Amp','fmax','freq','power')
 df2        = cbind(df2,data.frame(type='irregular'))
-df3        = read.csv('figures/data/prF1c_diffEv_n48_moderealhd.csv',F)
+df3        = read.csv('figures/data/prF1c_diffEv_n48_modereal.csv',F)
 names(df3) = c('Amp','fmax','freq','power')
 df3        = cbind(df3,data.frame(type='diffEv'))
 df         = rbind(df1,df2,df3)
-df$type    = factor(df$type, levels = c('equispaced','irregular','diffEv'))
+df$type    = factor(df$type, 
+                    levels = c('equispaced','irregular','diffEv'),
+                    labels=c('equispaced','permutation bound','fixed-period heuristic'))
 df$fmax = factor(df$fmax, levels = c(12,16,24),
             labels = c(expression(f[max]==N/4),
                        expression(f[max]==N/3),
                       expression(f[max]==N/2)))
 df  = df |> filter(Amp>1)
-df$Amp  = factor(df$Amp, levels = c(1, 1.5),
-            labels = c(expression(Amp==1),
-                       expression(Amp==1.5)))
+df$Amp  = factor(df$Amp, levels = c(1.5,2),
+            labels = c(expression(Amp==1.5),
+                       expression(Amp==2)))
 
 Fig = df |> ggplot(aes(x=freq,y=power,color=type,group=type))+
-  facet_wrap(~fmax, scales='free_x',labeller=label_parsed)+
-  geom_line()+geom_point()+labs(x='frequency')+
+  facet_grid(Amp~fmax, scales='free_x',labeller=label_parsed)+
+  geom_line(size=0.5)+geom_point(size=0.5)+labs(x='frequency')+
   coord_cartesian(xlim = c(1, NA))+clean_theme()+
   labs(color = NULL)+
   scale_color_manual(values = c(
-    equispaced = '#619CFF',  # ggplot default blue
-    irregular  = '#F8766D',  # ggplot default red
-    diffEv     = '#00BA38'   # ggplot default green
+    'equispaced' = '#619CFF',  # ggplot default blue
+    'permutation bound' = '#F8766D',  # ggplot default red
+    'fixed-period heuristic' = '#00BA38'   # ggplot default green
   ))+
   scale_x_continuous(
     limits = c(1, NA),
@@ -69,13 +71,11 @@ p_a = p_a + guides(color='none')
 # -----------------------------
 # Combine and save
 # -----------------------------
-Combined = (Fig/ p_a) + plot_annotation(tag_levels='A')+
-  plot_layout(heights=c(1,1),guides='collect') & theme(legend.position='bottom')
+Combined = (Fig/p_a) + plot_annotation(tag_levels='A')+
+  plot_layout(heights=c(1.5,1),guides='collect') & theme(legend.position='bottom')
 
-ggsave('figures/pr_fig_peerReview_plus_panelA.png',
+ggsave('figures/mainPermOptFig.png',
        Combined,
        width=6,height=4,
        device='png',
        dpi=600)
-
-Combined
