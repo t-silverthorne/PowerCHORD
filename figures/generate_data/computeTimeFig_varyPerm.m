@@ -15,8 +15,7 @@ for Nperm=nvals
 
     ntrep = 100; % number of times to benchmark, currently unused
 
-    Nsamp = 1e2;
-    %Nperm = 1e3;
+    Nsamp = 1e3;
     fqf   = reshape(linspace(1,2,1e3),1,1,[]);
     [Q2,Qinf] = getQuadForm(tt,fqf);
     wrap_Tinf = @(tt,freq,acro,Amp) estTinfloc(tt,Nsamp,freq,acro,Amp,Nperm,Qinf);
