@@ -19,7 +19,6 @@ sim_noise             = function(tt){rnorm(length(tt))}
 sim_osc_noise         = function(tt){rnorm(length(tt))*(1+rAmp()*cos(2*pi*tt - racro()))}
 sim_cosinor           = function(tt,noise=T){rAmp()*cos(2*pi*tt - racro())+noise*rnorm(length(tt))}
 sim_cosinor_osc_amp   = function(tt,noise=T){(  (1+runif(1,0,.95)*cos(2*pi*tt-racro()))*rAmp()  )*cos(2*pi*tt - racro())+noise*rnorm(length(tt))}
-#sim_cosinor_osc_phase = function(tt,noise=T){rAmp()*cos(2*pi*tt - racro()*(1+runif(1,0,pi/2)*(cos(2*pi*tt-racro()))))+noise*rnorm(length(tt))}
 sim_cosinor_osc_noise = function(tt,noise=T){rAmp()*cos(2*pi*tt - racro())+noise*rnorm(length(tt))*(1+rAmp()*cos(2*pi*tt - racro()))}
 sim_square_wave       = function(tt,noise=T){rAmp()*ifelse((tt-racro())%%1<.5,1,0)+noise*rnorm(length(tt))}
 sim_sqr_burst         = function(tt,noise=T){rAmp()*ifelse((tt-racro())%%1<.25,1,0)+noise*rnorm(length(tt))}
@@ -131,12 +130,8 @@ pB = pB + facet_wrap(~method, nrow=1,
   clean_theme()
 Fig = (pA/pB)+plot_annotation(tag_levels='A')&theme(legend.position = 'bottom')
 show_temp_plt(Fig,6,4)
-ggsave('figures/pr_fig_robust.png',
+ggsave('figures/suppNonCosinorRobustness.png',
        Fig,
        width=6,height=3.5,
        device='png',
        dpi=600)
-#dfa =df
-#saveRDS(dfa,'df_robustA.RDS')
-
-

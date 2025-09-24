@@ -1,0 +1,12 @@
+CRITICAL (Must Fix)
+1. Test all figure scripts - Run each .R file in figures/ to ensure they complete without errors
+2. Run unit tests - devtools::test() for R package tests
+3. Check for missing data files - Ensure all CSV references exist and are accessible
+4. Verify package dependencies - Make sure DESCRIPTION has all required packages
+
+HIGH PRIORITY (Should Fix)
+5. Update README.md - Add basic installation and usage (DONE)
+6. Run devtools::check() - Catch any real package issues
+7. Clean up any broken code - Fix actual errors, not warnings
+
+Start with #1 and #2 - test the figures and run the unit tests. If either fails, that's a show-stopper for release.

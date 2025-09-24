@@ -1,49 +1,72 @@
 
-# Overview
+---
+title: "Optimizing sampling schedules with PowerCHORD"
+output: html_document
+---
 
-PowerCHORD includes three optimization methods: 
-* differential evolution
-* exhaustive search
-* semidefinite programming
-In this notebook we demonstrate how to perform an exhaustive search using PowerCHORD in R.
+## Who is this for?
+This guide is for bioinformatics and experimental design practitioners who need
+to choose sampling times under real-world constraints (e.g., clinic
+availability, dark periods) while maintaining power to detect circadian rhythms.
 
-**Note:** We are using a very coarse grid in this notebook `(Nfine=24)` to speed up computations. For research questions, you would likely want to use a finer grid `(Nfine=48)`.
+## Optimization methods available
+PowerCHORD includes three optimization methods:
+- differential evolution (heuristic, flexible)
+- exhaustive search (exact over a grid, used here)
+- semidefinite programming (convex relaxation for certain formulations)
+
+In this notebook we demonstrate an exhaustive search in R.
+
+Note: We use a coarse time grid `(Nfine=24)` for speed. For research
+applications, consider `(Nfine=48)` (half-hour resolution) or finer if
+computation permits.
 ```{r}
 library(PowerCHORD)
+set.seed(123)
 ```
 
 # Basic usage
 
-## Example of a search
+## Example: schedule with a rest window
 
-The `exhaustiveSearch` function uses an underlying `C` library to generate a database of all possible designs, and then filters for those which satisfy the window constraint using `awk`.
+The `exhaustiveSearch` function enumerates designs on a discrete grid and
+filters those satisfying constraints. Typical constraints include rest 
+windows (no sampling allowed) and total number of samples `N`.
 
-Schedule 8 measurements in circadian such that:
-* measurements are confined to half hour grid
-* there is a 12 hour window during which no measurements are scheduled
+Schedule 8 measurements in a circadian study such that:
+- measurements lie on an hourly grid
+- there is a 12-hour window during which no measurements are scheduled
 
 ```{r}
-Nfine    = 24 # corresponds to 1hr intervals in circadian study
-N        = 8  # number of measurements to collect
+Nfine    = 24 # 1-hr intervals on [0,1], equivalent to hourly resolution of a circadian study
+N        = 8  # number of samples
 
-# no measurements for half the study 
-wlen     = 12  # length of window
-wdensity = 0   # prescribed number of measurements during window
+# blackout window over half the study
+wlen     = 12  # window length in grid units (hours here)
+wdensity = 0   # number of samples allowed inside the window
 
-# if using larger Nfine, this will take a few minutes to run 
+# if using larger Nfine, this may take minutes
 bvec = exhaustiveSearch(N=N,
-                 Nfine=Nfine,wlen=wlen,wdensity=wdensity,
-                 returnType='optimal')
+                        Nfine=Nfine, wlen=wlen, wdensity=wdensity,
+                        returnType='optimal')
 
-# convert to actual measurement times
-tau = c(1:Nfine)/Nfine - 1/Nfine # temporal grid
+# convert to scaled times
+tau = c(1:Nfine)/Nfine - 1/Nfine
 meas_times = tau[bvec>0]
-evalWorstPower(meas_times,Amp=2,freq=1) 
+
+# worst-case power across acrophases
+evalWorstPower(meas_times, Amp=2, freq=1) 
 ```
+
+Interpretation: The returned binary vector `bvec` indicates selected grid
+locations. Converting to `meas_times` yields the actual schedule for downstream
+power evaluation or simulation.
 
 
 ## Return all constrained designs
-Modify output so that all constrained designs are returned (rather than returning only the constrained-optimal design)
+Return all designs satisfying the constraints (rather than just the optimal
+one). This is useful if you want to compare designs on additional criteria
+(e.g., logistics) after filtering by power.
 ```{r}
 Nfine    = 24 # corresponds to hour intervals in circadian study
 N        = 8  # number of measurements to collect
@@ -59,7 +82,7 @@ head(df)
 ```
 
 ## Remove window constraint
-If you want to see the entire database, you can turn off the window constraint as follows
+To see the entire design database, turn off the window constraint:
 ```{r}
 Nfine    = 24 # corresponds to hour intervals in circadian study
 N        = 8  # number of measurements to collect
@@ -87,3 +110,11 @@ for (jj in jvals){
 }
 count/Nfine
 ```
+
+## Practical guidance
+- Choose `Nfine` to match your feasible resolution (e.g., 30 min ⇒ `Nfine=48`). Larger `Nfine` grows the search space.
+- Use `returnType='all'` to shortlist designs by power, then pick the most practical schedule.
+- Evaluate both exact power at nominal acrophases and worst-case power when acrophase is uncertain.
+
+## Next steps
+- For study planning with sample size calculations and Nyquist considerations, see `power_analysis.Rmd`.

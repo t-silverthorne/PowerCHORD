@@ -1,6 +1,31 @@
+---
+title: "Power analysis with PowerCHORD"
+output: html_document
+---
+
+## Who is this for?
+This walkthrough is written for analysts who want to plan circadian sampling and
+estimate statistical power assuming basic R familiarity and no background in
+signal processing.
+
+## What is PowerCHORD?
+PowerCHORD provides fast, closed-form power calculations for sinusoidal signals
+under Gaussian noise. You specify when you will sample within a day (scaled to
+the interval [0,1]), the expected signal frequency (e.g., 1 cycle per day),
+amplitude (effect size), and acrophase (peak time). The package returns the
+probability of detecting the rhythm at a chosen significance level.
+
+## Setup
 ```{r}
 library(PowerCHORD)
+set.seed(1)
 ```
+
+### Units and scaling
+- **Time scaling**: All measurement times are scaled to [0,1]. Multiply by 24 to convert to hours in a circadian study.
+- **Frequency**: 1 corresponds to 1 cycle per scaled unit (i.e., 1 cycle per day if [0,1] maps to 24 hours).
+- **Amplitude (`Amp`)**: Effect size of the sinusoidal signal (on the measurement scale). Larger means easier to detect.
+- **Acrophase (`acro`)**: Peak time of the sinusoid (in radians). Our method assumes taht you do not know acrophase, so we use worst-case power (elaborated on below).
 
 # Power analysis
 
@@ -17,7 +42,10 @@ Show measurement times in circadian units (hrs)
 24*mt
 ```
 
-Specify signal parameters and compare exact vs an approximate Monte Carlo power estimate
+Specify signal parameters and compare exact vs an approximate Monte Carlo power
+estimate. We assume one measurement per subject per timepoint,
+Gaussian noise, and a sinusoidal signal with amplitude `Amp` and daily frequency
+`freq=1`.
 ```{r}
 Amp  = 2              # signal amplitude
 freq = 1              # frequency
@@ -29,22 +57,24 @@ evalMonteCarloPower(mt,freq=freq,Amp=Amp,acro=acro,Nmc=Nmc)
 
 ## Circadian study with random measurements
 
-Same measurement budget as above but now measurements are collected at random time intervals
+Same measurement budget as above but now measurements are collected at random time intervals. Randomized schedules can reduce worst-case alignment with unknown acrophase.
 ```{r}
 mt_rand = runif(N)
 evalPower(mt_rand,freq=freq,Amp=Amp,acro=acro)
 ```
 
+For fixed `N`, equispaced designs maximize average power but can have low power for adversarial acrophases. Randomization or optimized schedules can mitigate this.
+
 
 ## Worst case power
-Given an experimental design, find the lowest power across all acrophases for signals of a fixed frequency and amplitude.
+Given an experimental design, find the lowest power across all acrophases for signals of a fixed frequency and amplitude. Use this when acrophase is unknown across your cohort.
 ```{r}
 # only requires frequency and amplitude since it is looking for
 #    minimum power across all acrophases
 evalWorstPower(mt,freq=freq,Amp=Amp) 
 ```
 
-As the frequency approaches the Nyquist rate, we should expect worst-case power of an equispaced design to drop to the type I error rate
+As the frequency approaches the Nyquist rate, we should expect worst-case power of an equispaced design to drop to the type I error rate. This reflects aliasing limits: with `N=8` equispaced samples, the Nyquist frequency is 4 cycles/day.
 ```{r}
 fNyq=4 # Nyquist rate of 8 measurement equispaced
 scales = c(.5,.8,.9,.95,.99,.999) # frequency scales
@@ -58,7 +88,9 @@ for (scale in scales){
 
 ## Solve for sample size
 
-Assume a study wants to use equispaced and detect signals of amplitude > 1 with at least 80% power
+Assume a study wants to use equispaced sampling and detect signals of amplitude
+> 1 with at least 80% worst-case power at daily frequency. The loop below
+increments `N` until the target is reached.
 ```{r}
 thresh      = .8
 N           = 4
@@ -73,3 +105,9 @@ while (low_power){
 }
 print(paste0('Design with ', N,' measurements achieves ', round(wcp,4) , ' worst-case power.'))
 ```
+
+
+### Next steps
+- To optimize schedules under constraints (e.g., clinic hours, blackout
+windows), see the companion tutorial on exhaustive search in
+`power_optimization.Rmd`.
