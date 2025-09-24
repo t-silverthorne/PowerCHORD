@@ -40,7 +40,7 @@ switch mode
 end
 
 fmin = 1;
-DIFFEV = readtable('../data/diffEvolveOutput.csv');
+DIFFEV = readtable('../../data/diffEvolveOutput.csv');
 data_all=[];
 for Amp=Amps
 	fprintf('|On Amp %d\n',Amp)

@@ -4,7 +4,7 @@ addpath('../../MATLAB/utils/');
 
 nvals  = [10 20 30 40 50];
 dat    = [];
-tmeth  = 'timeit';
+tmeth  = 'tictoc';
 for n=flip(nvals)
     fprintf('Running n = %d\n',n)
     freq  = rand;

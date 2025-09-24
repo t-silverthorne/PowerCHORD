@@ -7,7 +7,7 @@ Nmeas = 48;
 
 Amps  = [1.5 2];
 fmaxs = [Nmeas/4,Nmeas/3,Nmeas/2];
-load('tt_opt.mat');
+load('../tt_opt.mat');
 tt    = reshape(tt_opt,[],1);
 
 switch mode

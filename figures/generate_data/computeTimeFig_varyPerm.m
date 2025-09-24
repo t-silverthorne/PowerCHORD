@@ -41,7 +41,7 @@ for Nperm=nvals
     dat = [dat;datloc];
 end
 
-writematrix(dat,sprintf('../data/compTimes_varyPermmethod%s.csv',tmeth));
+writematrix(dat,sprintf('../data/compTimes_varyPerm_method%s.csv',tmeth));
 
 function Jval = Jfun(tt,freq,acro,Qform,Amp,Nsamp)
 	tt    = reshape(tt,[],1);
