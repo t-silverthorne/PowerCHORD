@@ -130,12 +130,8 @@ pB = pB + facet_wrap(~method, nrow=1,
   clean_theme()
 Fig = (pA/pB)+plot_annotation(tag_levels='A')&theme(legend.position = 'bottom')
 show_temp_plt(Fig,6,4)
-ggsave('figures/pr_fig_robust.png',
+ggsave('figures/suppNonCosinorRobustness.png',
        Fig,
        width=6,height=3.5,
        device='png',
        dpi=600)
-#dfa =df
-#saveRDS(dfa,'df_robustA.RDS')
-
-

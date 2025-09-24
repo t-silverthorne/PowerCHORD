@@ -31,7 +31,7 @@ df$Amp  = factor(df$Amp, levels = c(1.5,2),
 
 Fig = df |> ggplot(aes(x=freq,y=power,color=type,group=type))+
   facet_grid(Amp~fmax, scales='free_x',labeller=label_parsed)+
-  geom_line(size=0.5)+geom_point(size=0.5)+labs(x='frequency')+
+  geom_line(linewidth=0.5)+geom_point(size=0.5)+labs(x='frequency')+
   coord_cartesian(xlim = c(1, NA))+clean_theme()+
   labs(color = NULL)+
   scale_color_manual(values = c(
@@ -41,9 +41,11 @@ Fig = df |> ggplot(aes(x=freq,y=power,color=type,group=type))+
   ))+
   scale_x_continuous(
     limits = c(1, NA),
-    breaks = function(x) {
-      seq(1, ceiling(max(x)), by = 4)
-    })& theme(legend.position='bottom')
+  breaks = function(x) {
+    # x is the range of the axis, x[2] is the max
+    max_x = ceiling(max(x, na.rm=TRUE))
+    breaks = c(1,seq(4, max_x, by=4))
+  })& theme(legend.position='bottom')
 
 # ---------------------------------------------
 # Build Panel A (from freePeriod_multipanel.R)
@@ -61,10 +63,9 @@ p_a = df_a |> ggplot(aes(x=pfixed,y=pfree,color=freq))+geom_point(size=.3)+
   facet_wrap(~fmax,labeller=label_parsed)+  scale_color_viridis_c(limits=c(1,6),
                         name   = "frequency",
                         )+clean_theme()+labs(x='fixed period power',y='free period power')+
-  scale_x_continuous(limits=c(0,1), breaks=seq(0,1,by=.25))+
-  scale_y_continuous(limits=c(0,1), breaks=c(0,0.25,0.5,0.75,1),
-    labels = c("0", "0.25", "0.5", "0.75", "1"))+
   scale_x_continuous(limits=c(0,1), breaks=c(0,0.25,0.5,0.75,1),
+    labels = c("0", "0.25", "0.5", "0.75", "1"))+
+  scale_y_continuous(limits=c(0,1), breaks=c(0,0.25,0.5,0.75,1),
     labels = c("0", "0.25", "0.5", "0.75", "1"))
 p_a = p_a + guides(color='none')
 
