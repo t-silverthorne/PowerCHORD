@@ -1,3 +1,0 @@
-test isserlis vect
-test mask vect
-test exact moments vect
