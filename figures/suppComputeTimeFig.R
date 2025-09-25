@@ -36,7 +36,7 @@ pA = df1 |>
   clean_theme()
 
 # Panel B:  Compute times for varying sample sizes
-df2 = read.csv("figures/data/compTimes_methodtictoc_Ns1000_Np1000.csv",header=F)
+df2 = read.csv("figures/data/compTimes_methodtictoc_Ns1000_Np1000_2.csv",header=F)
 names(df2)=c('Nmeas','time','q1','q3','idx')
 df2$idx <- factor(df2$idx,
                  levels = c(1,4,3,2),
