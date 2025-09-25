@@ -5,8 +5,13 @@ require(scales)
 require(latex2exp)
 
 # Panel A: Compute Times
-df1 = read.csv('figures/data/compTimes_varyPermmethodtictoc.csv',header=F)
+df1 = read.csv('figures/data/compTimes_varyPerm_methodtictoc_alt.csv',header=F)
 names(df1)=c('Nmeas','time','q1','q3','idx')
+
+# Group by Nmeas and idx, then average the times
+df1 <- df1 |>
+  group_by(Nmeas, idx) |>
+  summarise(time = mean(time, na.rm = TRUE), .groups = 'drop')
 
 legend_labels <- c(
   TeX("fixed period F-test"),
@@ -29,11 +34,9 @@ pA = df1 |>
   labs(x = 'permutations', y = 'time (seconds)', color = 'power method') +
   scale_color_viridis_d(option = 'H',labels=legend_labels)+
   clean_theme()
-pA
 
-
-# Panel B: Secondary data (placeholder)
-df2 = read.csv("figures/data/compTimes_methodtimeit_Ns1000,Np1000.csv",header=F)
+# Panel B:  Compute times for varying sample sizes
+df2 = read.csv("figures/data/compTimes_methodtictoc_Ns1000_Np1000_2.csv",header=F)
 names(df2)=c('Nmeas','time','q1','q3','idx')
 df2$idx <- factor(df2$idx,
                  levels = c(1,4,3,2),
@@ -43,7 +46,6 @@ pB = df2 |>
   ggplot(aes(x = Nmeas, y = time, group = idx, color = idx)) +
   geom_line() +
   geom_point() +
-  geom_errorbar(aes(ymin = q1, ymax = q3)) +
   scale_y_continuous(
     trans = 'log10',
     breaks = 10^(-3:2),
