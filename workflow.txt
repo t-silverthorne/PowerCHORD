@@ -1,0 +1,9 @@
+# Work in priv_PowerCHORD
+cd /home/turner/research/priv_PowerCHORD
+# Make changes, commit 5 times
+git push
+
+# Pull into PowerCHORD
+cd /path/to/PowerCHORD
+git pull priv main
+git push origin main

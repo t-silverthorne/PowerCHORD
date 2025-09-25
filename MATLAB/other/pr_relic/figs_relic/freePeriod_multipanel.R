@@ -7,9 +7,9 @@ require(ggplot2)
 require(dplyr)
 source('clean_theme.R')
 require(patchwork)
-df1  = read.csv('MATLAB/peer_review/figures/data/results_prF1a_equi_1.csv',header=F)
-df2  = read.csv('MATLAB/peer_review/figures/data/results_prF1a_equi_2.csv',header=F)
-df3  = read.csv('MATLAB/peer_review/figures/data/results_prF1a_equi_3.csv',header=F)
+df1  = read.csv('../../../../figures/data/results_prF1a_equi_1.csv',header=F)
+df2  = read.csv('../../../../figures/data/results_prF1a_equi_2.csv',header=F)
+df3  = read.csv('../../../../figures/data/results_prF1a_equi_3.csv',header=F)
 #df1b = read.csv('MATLAB/peer_review/figures/data/results_prF1a_equi48_1.csv',header=F)
 #df2b = read.csv('MATLAB/peer_review/figures/data/results_prF1a_equi48_2.csv',header=F)
 #df3b = read.csv('MATLAB/peer_review/figures/data/results_prF1a_equi48_3.csv',header=F)
@@ -29,7 +29,7 @@ p_a
 # --------
 # Panel B
 # --------
-dfb = read.csv('MATLAB/peer_review/figures/data/results_prF1b_equi.csv',header=F)
+dfb = read.csv('../../../../figures/data/results_prF1b_equi.csv',header=F)
 names(dfb) = c('Nmeas','fmin','fmax','Amp','acro','freq','pfree','pfixed')
 dfb$fmax_harm = dfb$fmax/dfb$Nmeas
 
@@ -58,9 +58,9 @@ p_b = dfb_summary |>
 # --------
 # Panel C
 # --------
-df  = read.csv('MATLAB/peer_review/figures/real_Nover2_results_prFig1data_Nsamp1000_Nperm1000_c95_Amp2_20250831_162552/pwr.csv',
+df  = read.csv('../../../../figures/real_Nover2_results_prFig1data_Nsamp1000_Nperm1000_c95_Amp2_20250831_162552/pwr.csv',
                header=T)
-dfu = read.csv('MATLAB/peer_review/figures/real_Nover2_results_prFig1data_Nsamp1000_Nperm1000_c95_Amp2_20250831_162552/pwru.csv',
+dfu = read.csv('../../../../figures/real_Nover2_results_prFig1data_Nsamp1000_Nperm1000_c95_Amp2_20250831_162552/pwru.csv',
                header=T)
 freq = seq(1,8,length.out=16)
 pwr=as.numeric(df[1,])
@@ -74,7 +74,7 @@ p_c = df |> ggplot(aes(x=freq,y=power,group=type,color=type))+geom_point()+geom_
 
 Fig = ((p_a/p_b)|p_c) + plot_annotation(tag_levels='A')+
   plot_layout(widths=c(2,1),guides='collect')&theme(legend.position='bottom')
-ggsave('MATLAB/peer_review/figures/output/pr_fig_approx.png',
+ggsave('../../../../figures/output/pr_fig_approx.png',
        Fig,
        width=6,height=4,
        device='png',
