@@ -60,14 +60,14 @@ exhaustiveSearch = function(N,Nfine=48,wlen,wdensity=1,
 
   # based on returnType find optimal design or return all designs
   tau = c(1:Nfine)/Nfine-1/Nfine
-
-  if (returnType=='optimal'){
-    best_idx = df |> apply(1,function(x){
+  ncps = df |> apply(1,function(x){
      bv = x |> as.numeric()
       return(evalMinEig(tau[bv>0],freq=freq))
-    }) |> which.max()
+    })
+  if (returnType=='optimal'){
+    best_idx = ncps |> which.max()
     return(df[best_idx,])
   }else if(returnType=='all'){
-    return(df)
+    return(list(df=df,ncp=ncps))
   }
 }

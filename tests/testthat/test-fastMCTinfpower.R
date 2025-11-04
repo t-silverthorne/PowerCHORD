@@ -34,6 +34,7 @@ test_that('eval matches matlab',{
   x     = makeCosinorArray(tt,1e2,freqs,acros)
   Q     = getQuadForm(tt,freqs) |>  (\(x) x$Qf)()
   Nperm = 1e3
+  alpha = .05
   system.time({
     pwr = fastMCTinfpower(Q,x,Nperm,alpha)}
   )
