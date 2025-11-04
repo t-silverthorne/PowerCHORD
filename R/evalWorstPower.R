@@ -36,7 +36,7 @@ evalWorstPower=function(mt,freq,Amp,alpha=.05,method=c('eig','test'),
     min_pwr = evalPower(mt,freq,Amp,acro=NaN,method='ncp',lambda_in=ncp,alpha=alpha)
     min_pwr
   }else if(method=='test'){
-    Nacro = 2^12
+    Nacro = 2^15
     acro = seq(0,2*pi,length.out=Nacro+1)
     acro = acro[1:Nacro]
     min_pwr= acro |> sapply(function(phi){
