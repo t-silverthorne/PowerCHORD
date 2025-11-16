@@ -17,7 +17,7 @@ MATLAB implementation of [differential evolution](https://en.wikipedia.org/wiki/
 MATLAB functions for estimating permutation test power in the free-period cosinor model.
 
 
-Please cite the manuscript [Silverthorne et al, 2024](https://www.biorxiv.org/content/10.1101/2024.05.19.594858v1.abstract) which contains details concerning the analysis and optimization methods in this package.
+Please cite the manuscript [Silverthorne et al, 2025](https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1013662) which contains details concerning the analysis and optimization methods in this package.
 
 **Manuscript figures |** The code for generating the figures in our manuscript is stored in a separate repository which includes PowerCHORD as a Git submodule. If you are interested in recreating the figures, please consult the [dedicated repository](https://github.com/t-silverthorne/PowerCHORDFigures).
 
